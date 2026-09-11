@@ -1,0 +1,25 @@
+# Local WordPress runtime.
+/cms/wp-config.php
+/cms/wp-content/uploads/
+/cms/wp-content/upgrade/
+/cms/wp-content/cache/
+/cms/wp-content/debug.log
+
+# WordPress core copied locally for Laragon.
+/cms/wp-admin/
+/cms/wp-includes/
+/cms/*.php
+/cms/*.txt
+/cms/*.html
+/cms/.htaccess
+
+# Local tooling binaries.
+/tools/wp-cli.phar
+
+# Local frontend env files.
+/frontend/.env
+/frontend/.env.local
+
+# OS/editor noise.
+Thumbs.db
+.DS_Store

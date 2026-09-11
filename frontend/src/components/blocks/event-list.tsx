@@ -3,6 +3,7 @@ import type { ReactNode } from 'react';
 import { EventCard } from '@/components/blocks/event-card';
 import { Container } from '@/components/layout/container';
 import { Section } from '@/components/layout/section';
+import { AnimatedReveal } from '@/components/primitives/animated-reveal';
 import { Heading } from '@/components/primitives/heading';
 import { LinkButton } from '@/components/primitives/link-button';
 import { Text } from '@/components/primitives/text';
@@ -48,9 +49,11 @@ export function EventList({
 
           {events.length > 0 ? (
             <ul className="flex flex-col gap-8">
-              {events.map((event) => (
-                <li key={event.id}>
-                  <EventCard event={event} variant="list" headingLevel={3} />
+              {events.map((event, index) => (
+                <li key={event.id} id={`event-${event.slug}`} className="scroll-mt-24">
+                  <AnimatedReveal delay={Math.min(index * 0.1, 0.5)}>
+                    <EventCard event={event} variant="list" headingLevel={3} />
+                  </AnimatedReveal>
                 </li>
               ))}
             </ul>

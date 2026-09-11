@@ -9,6 +9,7 @@ import { InstagramFeed } from '@/components/blocks/instagram-feed';
 import { People } from '@/components/blocks/people';
 import { SplitFeature } from '@/components/blocks/split-feature';
 import { TextSection } from '@/components/blocks/text-section';
+import { AnimatedReveal } from '@/components/primitives/animated-reveal';
 import type { PageBlock } from '@/types/api';
 
 /*
@@ -62,29 +63,56 @@ export function PageBlockRenderer({
             return <Hero key={key} block={block} isPrimary={index === 0} />;
           case 'text':
             return (
-              <TextSection
-                key={key}
-                block={block}
-                band={nextBand()}
-                headingLevelOffset={headingLevelOffset}
-              />
+              <AnimatedReveal key={key}>
+                <TextSection
+                  block={block}
+                  band={nextBand()}
+                  headingLevelOffset={headingLevelOffset}
+                />
+              </AnimatedReveal>
             );
           case 'split_feature':
-            return <SplitFeature key={key} block={block} band={nextBand()} />;
+            return (
+              <AnimatedReveal key={key}>
+                <SplitFeature block={block} band={nextBand()} />
+              </AnimatedReveal>
+            );
           case 'gallery':
-            return <Gallery key={key} block={block} band={nextBand()} />;
+            return (
+              <AnimatedReveal key={key}>
+                <Gallery block={block} band={nextBand()} />
+              </AnimatedReveal>
+            );
           case 'cta_band':
-            return <CtaBand key={key} block={block} />;
+            return (
+              <AnimatedReveal key={key}>
+                <CtaBand block={block} />
+              </AnimatedReveal>
+            );
           case 'featured_items':
             return (
-              <FeaturedMenuRow key={key} block={block} band={nextBand()} />
+              <AnimatedReveal key={key}>
+                <FeaturedMenuRow block={block} band={nextBand()} />
+              </AnimatedReveal>
             );
           case 'events_preview':
-            return <EventsPreview key={key} block={block} band={nextBand()} />;
+            return (
+              <AnimatedReveal key={key}>
+                <EventsPreview block={block} band={nextBand()} />
+              </AnimatedReveal>
+            );
           case 'people':
-            return <People key={key} block={block} band={nextBand()} />;
+            return (
+              <AnimatedReveal key={key}>
+                <People block={block} band={nextBand()} />
+              </AnimatedReveal>
+            );
           case 'instagram_feed':
-            return <InstagramFeed key={key} block={block} band={nextBand()} />;
+            return (
+              <AnimatedReveal key={key}>
+                <InstagramFeed block={block} band={nextBand()} />
+              </AnimatedReveal>
+            );
           default: {
             const exhaustive: never = block;
             if (process.env.NODE_ENV !== 'production') {

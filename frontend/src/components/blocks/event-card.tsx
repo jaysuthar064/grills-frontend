@@ -49,15 +49,15 @@ export function EventCard({
   return (
     <article
       className={cn(
-        'flex flex-col gap-4',
-        variant === 'list' && 'md:flex-row md:items-start md:gap-6',
+        'flex flex-col gap-4 rounded-xl border border-border bg-surface p-4 transition-shadow hover:shadow-md',
+        variant === 'list' && 'md:flex-row md:items-start md:gap-6 md:p-6',
       )}
     >
       <time
         dateTime={event.startDateTime}
         className={cn(
-          'flex shrink-0 flex-col items-center justify-center rounded-md bg-surface-sunken px-4 py-3',
-          variant === 'list' && 'md:w-20',
+          'flex shrink-0 flex-col items-center justify-center rounded-lg bg-surface-sunken border border-border px-4 py-3 text-center',
+          variant === 'list' && 'md:w-24 md:py-4',
         )}
       >
         <Text as="span" size="overline" tone="muted" weight="semibold">
@@ -69,17 +69,19 @@ export function EventCard({
       </time>
 
       <div className="flex flex-1 flex-col gap-2">
-        {event.image ? (
-          <Image
-            image={event.image}
-            fill
-            aspectRatio="3/2"
-            sizes={
-              variant === 'list'
-                ? '(min-width: 768px) 66vw, 100vw'
-                : '(min-width: 1024px) 33vw, 100vw'
-            }
-          />
+        {event.image?.src ? (
+          <div className="relative w-full overflow-hidden rounded-lg max-h-64">
+            <Image
+              image={event.image}
+              fill
+              aspectRatio="3/2"
+              sizes={
+                variant === 'list'
+                  ? '(min-width: 768px) 66vw, 100vw'
+                  : '(min-width: 1024px) 33vw, 100vw'
+              }
+            />
+          </div>
         ) : null}
 
         <Heading level={headingLevel} visualLevel="h4">

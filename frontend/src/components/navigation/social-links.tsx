@@ -62,7 +62,7 @@ export function SocialLinks({
               target="_blank"
               rel="noopener noreferrer"
               aria-label={`${siteName} on ${platformLabel}`}
-              className="inline-flex items-center text-ink transition-colors hover:text-brand"
+              className="inline-flex items-center text-inherit transition-colors hover:text-accent"
             >
               {iconName ? (
                 <Icon name={iconName} size={24} />

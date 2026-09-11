@@ -80,6 +80,8 @@ const SIZES = {
   mark: '(min-width: 768px) 52px, 41px',
 } as const satisfies Record<LogoVariant, string>;
 
+import { cn } from '@/lib/cn';
+
 export function Logo({
   variant = 'primary',
   height = 'header',
@@ -96,7 +98,7 @@ export function Logo({
       sizes={SIZES[variant]}
       priority={priority}
       quality={90}
-      className={className}
+      className={cn('object-contain w-auto max-w-full', className)}
       style={style}
     />
   );

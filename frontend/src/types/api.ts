@@ -218,6 +218,7 @@ export interface HeroBlock {
   subheading?: string;
   eyebrow?: string;
   image: ImageObject;
+  videoUrl?: string;
   overlay: number;
   primaryCta: CtaLink;
   secondaryCta?: CtaLink;
@@ -229,6 +230,7 @@ export interface TextBlock {
   bodyHtml: string;
   width: 'narrow' | 'wide';
   align: 'left' | 'center';
+  image?: ImageObject;
 }
 
 export interface SplitFeatureBlock {

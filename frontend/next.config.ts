@@ -38,6 +38,8 @@ function wordpressRemotePatterns(): NonNullable<
 const nextConfig = {
   reactStrictMode: true,
   images: {
+    dangerouslyAllowLocalIP: true,
+    qualities: [75, 90],
     formats: ['image/avif', 'image/webp'],
     remotePatterns: wordpressRemotePatterns(),
   },

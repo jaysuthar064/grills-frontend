@@ -4,6 +4,7 @@ import { EventCard } from '@/components/blocks/event-card';
 import { Container } from '@/components/layout/container';
 import { Grid } from '@/components/layout/grid';
 import { Section } from '@/components/layout/section';
+import { AnimatedReveal } from '@/components/primitives/animated-reveal';
 import { Heading } from '@/components/primitives/heading';
 import { LinkButton } from '@/components/primitives/link-button';
 import { slugId } from '@/lib/slug';
@@ -47,13 +48,14 @@ export function EventsPreview({
           </Heading>
 
           <Grid columns={3}>
-            {block.events.map((event) => (
-              <EventCard
-                key={event.id}
-                event={event}
-                variant="preview"
-                headingLevel={3}
-              />
+            {block.events.map((event, index) => (
+              <AnimatedReveal key={event.id} delay={Math.min(index * 0.1, 0.5)}>
+                <EventCard
+                  event={event}
+                  variant="preview"
+                  headingLevel={3}
+                />
+              </AnimatedReveal>
             ))}
           </Grid>
 

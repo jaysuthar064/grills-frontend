@@ -1,5 +1,6 @@
 import type { ReactNode } from 'react';
 
+import { Image } from '@/components/primitives/image';
 import { RichText } from '@/components/blocks/rich-text';
 import { Container } from '@/components/layout/container';
 import { Section } from '@/components/layout/section';
@@ -11,7 +12,7 @@ import type { TextBlock } from '@/types/api';
 /*
  * TextSection — 06-COMPONENT-SPEC.md §TextSection and RichText. Section >
  * Container (narrow when block.width is 'narrow') > optional Heading
- * (level 2 + offset) > RichText.
+ * (level 2 + offset) > RichText + optional image.
  *
  * `headingLevelOffset` comes from PageBlockRenderer: 0 when blocks sit directly
  * under a page <h1> (Home), 1 when they sit under a PageHeader that already
@@ -45,10 +46,25 @@ export function TextSection({
       <Container width={block.width === 'narrow' ? 'narrow' : 'default'}>
         <div
           className={cn(
-            'flex flex-col gap-4',
+            'flex flex-col gap-5',
             block.align === 'center' && 'items-center text-center',
           )}
         >
+          {block.image ? (
+            <div className={cn(
+              'overflow-hidden rounded-2xl shadow-lg border border-border/60 relative',
+              block.align === 'center'
+                ? 'w-24 h-24 sm:w-28 sm:h-28 rounded-full ring-4 ring-brand-primary-subtle/30 shadow-md mx-auto mb-1'
+                : 'w-full max-w-md aspect-3-2 mb-2'
+            )}>
+              <Image
+                image={block.image}
+                fill
+                sizes="(min-width: 768px) 320px, 100vw"
+              />
+            </div>
+          ) : null}
+
           {hasHeading ? (
             <Heading
               level={HEADING_LEVEL[headingLevelOffset]}

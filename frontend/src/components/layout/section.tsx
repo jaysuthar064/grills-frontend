@@ -31,8 +31,8 @@ export interface SectionProps {
 }
 
 const TONE = {
-  surface: 'bg-surface text-ink',
-  sunken: 'bg-surface-sunken text-ink',
+  surface: 'bg-surface-raised text-ink',
+  sunken: 'bg-surface text-ink',
   inverse: 'bg-surface-inverse text-ink-inverse',
 } as const;
 

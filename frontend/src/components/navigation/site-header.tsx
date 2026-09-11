@@ -45,9 +45,14 @@ export function SiteHeader({
   return (
     <header
       data-variant={variant}
+      data-scrolled={scrolled}
       className={cn(
-        'sticky top-0 flex items-center border-b bg-surface-raised transition-shadow',
-        scrolled ? 'border-border shadow-md' : 'border-border',
+        'group sticky top-0 flex items-center border-b transition-all duration-300',
+        variant === 'transparent' && !scrolled
+          ? 'border-transparent bg-transparent text-ink-inverse'
+          : scrolled
+            ? 'border-border/30 bg-white/90 shadow-md backdrop-blur-md text-ink'
+            : 'border-transparent bg-white text-ink',
       )}
       style={style}
     >

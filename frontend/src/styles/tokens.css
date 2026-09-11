@@ -11,26 +11,24 @@
 
 :root {
   /* Colour — brand and surface */
-  --color-brand-primary: #1e4338;
-  --color-brand-primary-hover: #19372e;
-  --color-brand-primary-active: #142c25;
-  --color-brand-primary-subtle: #dfe2dc;
-  /* Accent. Logo, large display accents, decoration. 4.40:1 on surface —
-     below the 4.5:1 normal-text floor, so never body text, small labels, or
-     form errors (05-DESIGN-SYSTEM.md §1.1). */
-  --color-brand-accent: #de2a33;
-  --color-brand-accent-subtle: #f6e3df;
-  --color-surface: #f9f8f2;
+  --color-brand-primary: #1c1917;
+  --color-brand-primary-hover: #292524;
+  --color-brand-primary-active: #0c0a09;
+  --color-brand-primary-subtle: #f5f5f4;
+  /* Accent. Logo, large display accents, decoration. */
+  --color-brand-accent: #c2410c;
+  --color-brand-accent-subtle: #fff7ed;
+  --color-surface: #fafaf9;
   --color-surface-raised: #ffffff;
-  --color-surface-sunken: #eae0da;
-  --color-surface-inverse: #1e4338;
+  --color-surface-sunken: #e7e5e4;
+  --color-surface-inverse: #1c1917;
 
   /* Colour — ink */
-  --color-ink: #111111;
-  --color-ink-muted: #3e4743;
-  --color-ink-subtle: #59615d;
-  --color-ink-inverse: #f9f8f2;
-  --color-ink-inverse-muted: #bcc5be;
+  --color-ink: #0c0a09;
+  --color-ink-muted: #44403c;
+  --color-ink-subtle: #78716c;
+  --color-ink-inverse: #fafaf9;
+  --color-ink-inverse-muted: #d6d3d1;
 
   /* Colour — semantic */
   --color-success: #1f6b4a;
@@ -43,19 +41,19 @@
   --color-info-subtle: #dfe6e5;
 
   /* Colour — border and overlay */
-  --color-border: #d2cdc7;
-  --color-border-strong: #a5aba3;
-  --color-border-interactive: #6c7f76;
-  --color-border-inverse: #577268;
+  --color-border: #d6d3d1;
+  --color-border-strong: #a8a29e;
+  --color-border-interactive: #78716c;
+  --color-border-inverse: #57534e;
   /* Two-tone focus indicator. No single hue clears 3:1 against cream, sand,
      and brand green at once, so the ring is an ink outline over a cream halo:
      on light surfaces the outline carries it (17.75:1 / 14.54:1), on green the
      halo does (10.31:1). 05-DESIGN-SYSTEM.md §9. */
-  --color-focus-ring: #111111;
-  --color-focus-ring-halo: #f9f8f2;
-  --color-overlay-scrim: rgba(17, 17, 17, 0.6);
-  --hero-overlay-alpha: 0.6;
-  --color-hero-overlay: rgba(17, 17, 17, var(--hero-overlay-alpha));
+  --color-focus-ring: #0c0a09;
+  --color-focus-ring-halo: #fafaf9;
+  --color-overlay-scrim: rgba(12, 10, 9, 0.7);
+  --hero-overlay-alpha: 0.45;
+  --color-hero-overlay: rgba(12, 10, 9, var(--hero-overlay-alpha));
 
   /* Typography — families. Faces are declared in fonts.css; 05-DESIGN-SYSTEM.md
      §2.1 gives the role of each and the coverage caveats.
@@ -138,7 +136,7 @@
   --container-narrow: 768px;
   --gutter: var(--space-6);
   --section-y: var(--space-12);
-  --header-height: 64px;
+  --header-height: 72px;
   --mobile-cta-bar-height: 64px;
 
   /* Logo heights (06-COMPONENT-SPEC.md §Logo). Width is always `auto` — the
@@ -227,7 +225,7 @@
     --text-body-lg: 1.25rem;
     --gutter: var(--space-10);
     --section-y: var(--space-24);
-    --header-height: 80px;
+    --header-height: 96px;
     --logo-height: 56px;
     --logo-height-footer: 68px;
     --logo-height-badge: 224px;

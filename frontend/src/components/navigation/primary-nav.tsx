@@ -26,7 +26,7 @@ function isActive(href: string, currentPath: string): boolean {
 export function PrimaryNav({ items, currentPath }: PrimaryNavProps): ReactNode {
   return (
     <nav aria-label="Primary" className="hidden md:block">
-      <ul className="flex items-center gap-6">
+      <ul className="flex items-center gap-7">
         {items.map((item) => {
           const active = isActive(item.href, currentPath);
           return (
@@ -35,13 +35,17 @@ export function PrimaryNav({ items, currentPath }: PrimaryNavProps): ReactNode {
                 href={item.href}
                 aria-current={active ? 'page' : undefined}
                 className={cn(
-                  'font-display text-label text-ink hover:text-brand uppercase transition-colors',
-                  active
-                    ? 'border-brand border-b-2 pb-1 font-semibold'
-                    : 'font-medium',
+                  'group relative font-display text-[18px] tracking-[0.05em] text-inherit hover:text-accent uppercase transition-colors pb-1',
+                  active ? 'font-bold' : 'font-semibold',
                 )}
               >
                 {item.label}
+                <span
+                  className={cn(
+                    'absolute bottom-0 left-0 h-[2px] w-full origin-center bg-accent transition-transform duration-300',
+                    active ? 'scale-x-100' : 'scale-x-0 group-hover:scale-x-100',
+                  )}
+                />
               </Link>
             </li>
           );

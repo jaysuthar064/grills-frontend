@@ -41,13 +41,17 @@ export function Gallery({
     ) : (
       <Grid columns={3} gap={4}>
         {block.images.map((image) => (
-          <Image
+          <div
             key={image.src}
-            image={image}
-            fill
-            aspectRatio="1/1"
-            sizes="(min-width: 1024px) 33vw, (min-width: 640px) 50vw, 100vw"
-          />
+            className="group relative overflow-hidden rounded-2xl shadow-sm transition-all duration-300 hover:-translate-y-1 hover:shadow-xl"
+          >
+            <Image
+              image={image}
+              fill
+              aspectRatio="1/1"
+              sizes="(min-width: 1024px) 33vw, (min-width: 640px) 50vw, 100vw"
+            />
+          </div>
         ))}
       </Grid>
     );

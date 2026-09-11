@@ -79,7 +79,7 @@ export function PageShell({
               <div className="hidden md:block">
                 <LinkButton
                   href={navigation.headerCta.href}
-                  variant="primary"
+                  variant="secondary"
                   isExternal={navigation.headerCta.isExternal}
                 >
                   {navigation.headerCta.label}

@@ -5,6 +5,7 @@ import { EventList } from '@/components/blocks/event-list';
 import { PageBlockRenderer } from '@/components/blocks/page-block-renderer';
 import { PageHeader } from '@/components/blocks/page-header';
 import { RecurringProgrammeCard } from '@/components/blocks/recurring-programme-card';
+import { MonthCalendar } from '@/components/events/month-calendar';
 import { PageShell } from '@/components/layout/page-shell';
 import { JsonLd } from '@/components/seo/json-ld';
 import { getEvents } from '@/lib/api';
@@ -45,7 +46,15 @@ export default async function EventsPage(): Promise<ReactNode> {
       {upcoming.length > 0 ? (
         <JsonLd data={eventsJsonLd(_global, upcoming)} />
       ) : null}
-      <PageHeader title={title} />
+      <PageHeader
+        title={title}
+        eyebrow="Live Music & Special Happenings"
+        intro="Live music every Friday & Saturday, patio barbecue specials, and community events fairway-side at the 18th hole."
+        imageSrc="http://localhost:8885/wp-content/uploads/2026/08/the-canyon-band.png"
+      />
+
+      {/* Month Calendar View (Wood Ranch client requirement) */}
+      <MonthCalendar events={upcoming} />
 
       {recurring ? <RecurringProgrammeCard recurring={recurring} /> : null}
 

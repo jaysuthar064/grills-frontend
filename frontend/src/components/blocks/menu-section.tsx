@@ -2,6 +2,7 @@ import type { CSSProperties, ReactNode } from 'react';
 
 import { MenuCard } from '@/components/blocks/menu-card';
 import { BrandAccent } from '@/components/brand/brand-decor';
+import { AnimatedReveal } from '@/components/primitives/animated-reveal';
 import { Heading } from '@/components/primitives/heading';
 import { Image } from '@/components/primitives/image';
 import { Text } from '@/components/primitives/text';
@@ -51,9 +52,11 @@ export function MenuSection({
       <Text tone="muted">Not served at {activeDaypart}.</Text>
     ) : (
       <ul className="flex flex-col gap-4 lg:columns-2 lg:gap-8">
-        {visibleItems.map((item) => (
+        {visibleItems.map((item, index) => (
           <li key={item.id} className="break-inside-avoid">
-            <MenuCard item={item} headingLevel={cardHeadingLevel} />
+            <AnimatedReveal delay={Math.min(index * 0.1, 0.5)}>
+              <MenuCard item={item} headingLevel={cardHeadingLevel} />
+            </AnimatedReveal>
           </li>
         ))}
       </ul>

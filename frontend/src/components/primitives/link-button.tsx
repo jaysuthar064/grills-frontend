@@ -34,9 +34,9 @@ export interface LinkButtonProps {
 
 const VARIANT = {
   primary:
-    'bg-brand text-ink-inverse hover:bg-brand-hover active:bg-brand-active',
+    'bg-accent text-ink-inverse hover:bg-opacity-90 active:bg-opacity-80',
   secondary:
-    'bg-surface-raised text-ink border border-border-interactive hover:bg-surface-sunken',
+    'bg-transparent text-inherit border border-current hover:bg-black/10 hover:shadow-inner',
   ghost: 'text-ink hover:bg-surface-sunken',
   danger: 'bg-danger text-ink-inverse',
 } as const;
@@ -76,7 +76,7 @@ export function LinkButton({
     // whitespace-nowrap: a button label is a single action and never reads as
     // two lines. 'Call 805-842-2947' is the case that forced it — a wrapped
     // phone number looks broken and costs a tap target's worth of height.
-    'inline-flex items-center justify-center gap-2 rounded-md font-body font-semibold whitespace-nowrap transition-colors active:translate-y-px',
+    'inline-flex items-center justify-center gap-2 rounded-full font-body font-semibold whitespace-nowrap transition-all duration-300 active:translate-y-px hover:scale-[1.03] hover:shadow-lg',
     VARIANT[variant],
     sizing.classes,
     fullWidth && 'w-full',

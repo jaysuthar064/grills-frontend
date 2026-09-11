@@ -69,8 +69,9 @@ async function fetchEndpoint<T>({
     throw new Error('WP_API_BASE_URL is not set');
   }
 
+  const isDev = process.env.NODE_ENV === 'development';
   const response = await fetch(`${WP_API_BASE}/wp-json/gotg/v1/${path}`, {
-    next: { tags: [tag], revalidate },
+    ...(isDev ? { cache: 'no-store' } : { next: { tags: [tag], revalidate } }),
     headers: { Accept: 'application/json' },
   });
 

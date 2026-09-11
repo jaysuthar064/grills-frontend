@@ -51,47 +51,61 @@ export function MenuCard({
   return (
     <article
       className={cn(
-        'flex flex-col gap-4 rounded-lg p-4 md:flex-row',
-        variant === 'featured' && 'border-brand border shadow-sm',
+        'group flex flex-col gap-4 md:flex-row rounded-xl border p-4 transition-all duration-300',
+        variant === 'featured'
+          ? 'border-brand-primary bg-brand-primary-subtle/20 shadow-md hover:shadow-lg'
+          : 'border-border bg-surface hover:border-brand-primary/30 hover:shadow-sm'
       )}
     >
       {item.image ? (
-        <div className="aspect-3-2 bg-surface-sunken relative w-full shrink-0 overflow-hidden rounded-lg md:aspect-square md:w-24">
+        <div className="aspect-3-2 bg-surface-sunken relative w-full shrink-0 overflow-hidden rounded-lg md:aspect-square md:w-28 group-hover:scale-[1.02] transition-transform">
           <Image
             image={item.image}
             fill
-            sizes="(min-width: 768px) 96px, 100vw"
+            sizes="(min-width: 768px) 112px, 100vw"
           />
         </div>
       ) : null}
 
-      <div className="flex flex-1 flex-col gap-2">
-        <div className="flex items-baseline justify-between gap-4">
-          <span className="flex items-center gap-2">
-            <Heading level={headingLevel} visualLevel="h4">
-              {item.name}
-            </Heading>
-            {item.spiceLevel !== 'none' ? (
-              <span className="text-accent">
-                <Icon
-                  name="flame"
-                  size={16}
-                  title={SPICE_LABEL[item.spiceLevel]}
-                />
+      <div className="flex flex-1 flex-col justify-between gap-2">
+        <div>
+          <div className="flex items-baseline justify-between gap-2">
+            <span className="flex items-center gap-2">
+              <span className="font-bold text-ink group-hover:text-brand-primary transition-colors">
+                <Heading level={headingLevel} visualLevel="h4">
+                  {item.name}
+                </Heading>
               </span>
-            ) : null}
-          </span>
-          <PriceList variants={item.priceVariants} />
+              {item.spiceLevel !== 'none' ? (
+                <span className="text-accent">
+                  <Icon
+                    name="flame"
+                    size={16}
+                    title={SPICE_LABEL[item.spiceLevel]}
+                  />
+                </span>
+              ) : null}
+            </span>
+
+            {/* Menu pricing dotted leader style */}
+            <div className="flex-1 border-b border-dotted border-border/80 mx-2 hidden sm:block" />
+
+            <div className="font-bold text-brand-primary text-body">
+              <PriceList variants={item.priceVariants} />
+            </div>
+          </div>
+
+          {item.description !== undefined && item.description !== '' ? (
+            <div className="mt-1.5 leading-relaxed">
+              <Text size="body-sm" tone="muted">
+                {item.description}
+              </Text>
+            </div>
+          ) : null}
         </div>
 
-        {item.description !== undefined && item.description !== '' ? (
-          <Text size="body-sm" tone="muted">
-            {item.description}
-          </Text>
-        ) : null}
-
         {item.dietaryTags.length > 0 ? (
-          <ul aria-label="Dietary information" className="flex flex-wrap gap-2">
+          <ul aria-label="Dietary information" className="flex flex-wrap gap-2 pt-1">
             {item.dietaryTags.map((tag) => (
               <li key={tag.slug}>
                 <Badge tone={DIETARY_TONE[tag.color]} title={tag.description}>

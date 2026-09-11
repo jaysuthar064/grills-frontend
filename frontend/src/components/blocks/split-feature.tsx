@@ -43,12 +43,14 @@ export function SplitFeature({
   const headingId = slugId('split', block.heading);
 
   const media = (
-    <Image
-      image={block.image}
-      fill
-      aspectRatio="4/3"
-      sizes="(min-width: 1024px) 50vw, 100vw"
-    />
+    <div className="overflow-hidden rounded-xl shadow-lg border border-border transition-transform hover:scale-[1.02] duration-300">
+      <Image
+        image={block.image}
+        fill
+        aspectRatio="4/3"
+        sizes="(min-width: 1024px) 50vw, 100vw"
+      />
+    </div>
   );
 
   const content = (

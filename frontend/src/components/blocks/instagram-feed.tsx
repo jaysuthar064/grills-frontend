@@ -10,6 +10,7 @@ import { Heading } from '@/components/primitives/heading';
 import { Image } from '@/components/primitives/image';
 import { LinkButton } from '@/components/primitives/link-button';
 import { Skeleton } from '@/components/primitives/skeleton';
+import { Text } from '@/components/primitives/text';
 import { slugId } from '@/lib/slug';
 import type { ImageObject, InstagramFeedBlock } from '@/types/api';
 
@@ -154,9 +155,14 @@ export function InstagramFeed({
     );
   } else {
     body = (
-      <LinkButton href={profileUrl} variant="secondary" isExternal iconStart="instagram">
-        See our Instagram
-      </LinkButton>
+      <div className="flex w-full flex-col items-center justify-center gap-5 rounded-2xl border border-dashed border-border bg-surface p-12 text-center shadow-sm">
+        <Text tone="muted" size="body-lg">
+          Follow us on Instagram to see what's on the smoker today.
+        </Text>
+        <LinkButton href={profileUrl} variant="secondary" isExternal iconStart="instagram">
+          View @{block.handle}
+        </LinkButton>
+      </div>
     );
   }
 
