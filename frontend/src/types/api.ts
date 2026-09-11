@@ -231,6 +231,7 @@ export interface TextBlock {
   width: 'narrow' | 'wide';
   align: 'left' | 'center';
   image?: ImageObject;
+  videoUrl?: string;
 }
 
 export interface SplitFeatureBlock {

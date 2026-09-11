@@ -3,7 +3,6 @@ import type { ReactNode } from 'react';
 import { Badge } from '@/components/primitives/badge';
 import { Heading } from '@/components/primitives/heading';
 import { Icon } from '@/components/primitives/icons/icon';
-import { Image } from '@/components/primitives/image';
 import { PriceList } from '@/components/primitives/price-list';
 import { Text } from '@/components/primitives/text';
 import { cn } from '@/lib/cn';
@@ -51,22 +50,12 @@ export function MenuCard({
   return (
     <article
       className={cn(
-        'group flex flex-col gap-4 md:flex-row rounded-xl border p-4 transition-all duration-300',
+        'group flex flex-col justify-between gap-2 rounded-xl border p-4 transition-all duration-300',
         variant === 'featured'
           ? 'border-brand-primary bg-brand-primary-subtle/20 shadow-md hover:shadow-lg'
           : 'border-border bg-surface hover:border-brand-primary/30 hover:shadow-sm'
       )}
     >
-      {item.image ? (
-        <div className="aspect-3-2 bg-surface-sunken relative w-full shrink-0 overflow-hidden rounded-lg md:aspect-square md:w-28 group-hover:scale-[1.02] transition-transform">
-          <Image
-            image={item.image}
-            fill
-            sizes="(min-width: 768px) 112px, 100vw"
-          />
-        </div>
-      ) : null}
-
       <div className="flex flex-1 flex-col justify-between gap-2">
         <div>
           <div className="flex items-baseline justify-between gap-2">

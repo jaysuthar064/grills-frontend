@@ -43,37 +43,49 @@ export function TextSection({
       tone={band}
       {...(headingId !== undefined ? { ariaLabelledBy: headingId } : {})}
     >
-      <Container width={block.width === 'narrow' ? 'narrow' : 'default'}>
+      <Container width={block.videoUrl || block.image ? 'default' : (block.width === 'narrow' ? 'narrow' : 'default')}>
         <div
           className={cn(
-            'flex flex-col gap-5',
+            'flex flex-col gap-6',
             block.align === 'center' && 'items-center text-center',
           )}
         >
-          {block.image ? (
-            <div className={cn(
-              'overflow-hidden rounded-2xl shadow-lg border border-border/60 relative',
-              block.align === 'center'
-                ? 'w-24 h-24 sm:w-28 sm:h-28 rounded-full ring-4 ring-brand-primary-subtle/30 shadow-md mx-auto mb-1'
-                : 'w-full max-w-md aspect-3-2 mb-2'
-            )}>
+          {/* Centered Story Text */}
+          <div className="max-w-2xl mx-auto flex flex-col gap-3 text-center">
+            {hasHeading ? (
+              <Heading
+                level={HEADING_LEVEL[headingLevelOffset]}
+                {...(headingId !== undefined ? { id: headingId } : {})}
+              >
+                {block.heading}
+              </Heading>
+            ) : null}
+            <RichText html={block.bodyHtml} />
+          </div>
+
+          {/* Cinematic Photo or Video Showcase */}
+          {block.videoUrl ? (
+            <div className="w-full max-w-4xl mx-auto aspect-16-9 md:aspect-21-9 rounded-2xl md:rounded-3xl overflow-hidden shadow-2xl border border-border/50 relative bg-black">
+              <video
+                autoPlay
+                loop
+                muted
+                playsInline
+                poster={block.image?.src}
+                className="w-full h-full object-cover opacity-90"
+              >
+                <source src={block.videoUrl} type="video/mp4" />
+              </video>
+            </div>
+          ) : block.image ? (
+            <div className="w-full max-w-4xl mx-auto aspect-16-9 md:aspect-21-9 rounded-2xl md:rounded-3xl overflow-hidden shadow-2xl border border-border/50 relative">
               <Image
                 image={block.image}
                 fill
-                sizes="(min-width: 768px) 320px, 100vw"
+                sizes="(min-width: 1024px) 896px, 100vw"
               />
             </div>
           ) : null}
-
-          {hasHeading ? (
-            <Heading
-              level={HEADING_LEVEL[headingLevelOffset]}
-              {...(headingId !== undefined ? { id: headingId } : {})}
-            >
-              {block.heading}
-            </Heading>
-          ) : null}
-          <RichText html={block.bodyHtml} />
         </div>
       </Container>
     </Section>

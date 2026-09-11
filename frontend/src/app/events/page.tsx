@@ -50,7 +50,7 @@ export default async function EventsPage(): Promise<ReactNode> {
         title={title}
         eyebrow="Live Music & Special Happenings"
         intro="Live music every Friday & Saturday, patio barbecue specials, and community events fairway-side at the 18th hole."
-        imageSrc="http://localhost:8885/wp-content/uploads/2026/08/the-canyon-band.png"
+        imageSrc="http://localhost:8885/wp-content/uploads/2026/09/IMG_2172.JPG.jpeg"
       />
 
       {/* Month Calendar View (Wood Ranch client requirement) */}
