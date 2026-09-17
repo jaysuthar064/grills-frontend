@@ -10,6 +10,7 @@ import { LinkButton } from '@/components/primitives/link-button';
 import { Text } from '@/components/primitives/text';
 import { JsonLd } from '@/components/seo/json-ld';
 import { getAbout } from '@/lib/api';
+import { getWpUploadUrl, PUBLIC_WP_URL } from '@/lib/media';
 import { buildMetadata } from '@/lib/seo';
 
 export const dynamic = 'force-dynamic';
@@ -33,7 +34,7 @@ export default async function CateringPage(): Promise<ReactNode> {
     {
       title: 'Full Buffet Setup',
       guests: '30–500+ Guests',
-      image: 'http://localhost:8885/wp-content/uploads/2026/09/IMG_2175.JPG.jpeg',
+      image: getWpUploadUrl('IMG_2175.JPG.jpeg'),
       description:
         'Hot, slow-smoked BBQ delivered and set up with chaffing dishes, serving utensils, and complete table service. Perfect for golf tournaments, weddings, and large corporate events.',
       highlights: ['Brisket & Baby Back Ribs', 'Choice of 3 House Sides', 'Garlic Rolls & Cornbread', 'Full Service Staff Available'],
@@ -42,7 +43,7 @@ export default async function CateringPage(): Promise<ReactNode> {
     {
       title: 'Party Packs & Drop-Off',
       guests: '10–30 Guests',
-      image: 'http://localhost:8885/wp-content/uploads/2026/09/IMG_2170.JPG.jpeg',
+      image: getWpUploadUrl('IMG_2170.JPG.jpeg'),
       description:
         'Ready-to-serve trays packed hot and delivered directly to your doorstep or office. Ideal for family gatherings, game days, and team lunches.',
       highlights: ['Meat by the Pound', 'Pints & Quarts of Sides', 'Pickles, Jalapeños & BBQ Sauce', 'Disposable Plates & Napkins'],
@@ -51,7 +52,7 @@ export default async function CateringPage(): Promise<ReactNode> {
     {
       title: 'Fairway Tournament Special',
       guests: 'Golf Outings & Clubs',
-      image: 'http://localhost:8885/wp-content/uploads/2026/09/IMG_2176.JPG.jpeg',
+      image: getWpUploadUrl('IMG_2176.JPG.jpeg'),
       description:
         'Customized dining tailored for golfers at Simi Hills Golf Course. Boxed lunches on the course, patio post-round celebrations, or evening awards banquets.',
       highlights: ['On-Course Meal Boxes', 'Patio Firepit Buffet', 'Draft Beer & Cocktail Service', 'Custom Scoring Banquet Menus'],
@@ -67,7 +68,7 @@ export default async function CateringPage(): Promise<ReactNode> {
           '@type': 'FoodEstablishment',
           name: 'Grill On the Green Catering',
           description: 'Full service and drop-off BBQ catering in Simi Valley, California.',
-          url: 'http://localhost:8885/catering',
+          url: `${PUBLIC_WP_URL}/catering`,
           telephone: '805-842-2947',
         }}
       />
@@ -77,7 +78,7 @@ export default async function CateringPage(): Promise<ReactNode> {
           <div className="absolute inset-0 z-0">
             {/* Poster image fallback immediately visible */}
             <img
-              src="http://localhost:8885/wp-content/uploads/2026/09/IMG_2175.JPG.jpeg"
+              src={getWpUploadUrl('IMG_2175.JPG.jpeg')}
               alt="Catering & Private Events BBQ Feast"
               className="absolute inset-0 h-full w-full object-cover opacity-80"
             />
@@ -87,10 +88,10 @@ export default async function CateringPage(): Promise<ReactNode> {
               loop
               muted
               playsInline
-              poster="http://localhost:8885/wp-content/uploads/2026/09/IMG_2175.JPG.jpeg"
+              poster={getWpUploadUrl('IMG_2175.JPG.jpeg')}
               className="absolute inset-0 h-full w-full object-cover opacity-85"
             >
-              <source src="http://localhost:8885/wp-content/uploads/2026/09/IMG_2207.mp4" type="video/mp4" />
+              <source src={getWpUploadUrl('IMG_2207.mp4')} type="video/mp4" />
             </video>
             <div className="absolute inset-0 bg-black/20 bg-gradient-to-b from-black/55 via-black/20 to-black/60" />
           </div>
@@ -214,7 +215,7 @@ export default async function CateringPage(): Promise<ReactNode> {
               <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
                 <div className="group relative overflow-hidden rounded-xl aspect-4-3 shadow-sm border border-border">
                   <img
-                    src="http://localhost:8885/wp-content/uploads/2026/09/IMG_2175.JPG.jpeg"
+                    src={getWpUploadUrl('IMG_2175.JPG.jpeg')}
                     alt="Smoked meat carving"
                     className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
                   />
@@ -225,7 +226,7 @@ export default async function CateringPage(): Promise<ReactNode> {
 
                 <div className="group relative overflow-hidden rounded-xl aspect-4-3 shadow-sm border border-border">
                   <img
-                    src="http://localhost:8885/wp-content/uploads/2026/09/IMG_2176.JPG.jpeg"
+                    src={getWpUploadUrl('IMG_2176.JPG.jpeg')}
                     alt="Kitchen pass plating"
                     className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
                   />
@@ -236,7 +237,7 @@ export default async function CateringPage(): Promise<ReactNode> {
 
                 <div className="group relative overflow-hidden rounded-xl aspect-4-3 shadow-sm border border-border">
                   <img
-                    src="http://localhost:8885/wp-content/uploads/2026/09/IMG_2170.JPG.jpeg"
+                    src={getWpUploadUrl('IMG_2170.JPG.jpeg')}
                     alt="Burger and ribs feast"
                     className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
                   />
@@ -247,7 +248,7 @@ export default async function CateringPage(): Promise<ReactNode> {
 
                 <div className="group relative overflow-hidden rounded-xl aspect-4-3 shadow-sm border border-border">
                   <img
-                    src="http://localhost:8885/wp-content/uploads/2026/09/IMG_2185.JPG.jpeg"
+                    src={getWpUploadUrl('IMG_2185.JPG.jpeg')}
                     alt="Fried chicken and sandwiches"
                     className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
                   />

@@ -14,6 +14,7 @@ import { LinkButton } from '@/components/primitives/link-button';
 import { JsonLd } from '@/components/seo/json-ld';
 import { getEvents } from '@/lib/api';
 import { eventsJsonLd } from '@/lib/json-ld';
+import { getWpUploadUrl } from '@/lib/media';
 import { buildMetadata } from '@/lib/seo';
 
 export const dynamic = 'force-dynamic';
@@ -56,7 +57,7 @@ export default async function EventsPage(): Promise<ReactNode> {
         title={title}
         eyebrow="Live Music & Special Happenings"
         intro="Live music every Friday & Saturday, patio barbecue specials, and community events fairway-side at the 18th hole."
-        imageSrc="http://localhost:8885/wp-content/uploads/2026/09/IMG_2172.JPG.jpeg"
+        imageSrc={getWpUploadUrl('IMG_2172.JPG.jpeg')}
       />
 
       {/* Month Calendar View (Wood Ranch client requirement) */}

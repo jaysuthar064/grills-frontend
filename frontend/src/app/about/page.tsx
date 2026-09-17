@@ -10,6 +10,7 @@ import { AnimatedReveal } from '@/components/primitives/animated-reveal';
 import { Heading } from '@/components/primitives/heading';
 import { LinkButton } from '@/components/primitives/link-button';
 import { getAbout } from '@/lib/api';
+import { getWpUploadUrl } from '@/lib/media';
 import { buildMetadata } from '@/lib/seo';
 
 export const dynamic = 'force-dynamic';
@@ -35,7 +36,7 @@ export default async function AboutPage(): Promise<ReactNode> {
   const displayBlocks = isFirstBlockText ? blocks.slice(1) : blocks;
 
   const storyHeading = isFirstBlockText && firstBlock.heading ? firstBlock.heading : 'How It Started';
-  const storyImage = isFirstBlockText && firstBlock.image ? firstBlock.image.src : 'http://localhost:8885/wp-content/uploads/2026/09/IMG_2175.JPG.jpeg';
+  const storyImage = isFirstBlockText && firstBlock.image ? firstBlock.image.src : getWpUploadUrl('IMG_2175.JPG.jpeg');
 
   const hasInstagramFeed = blocks.some((b) => b.type === 'instagram_feed');
 

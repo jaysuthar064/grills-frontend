@@ -2,6 +2,7 @@ import NextImage from 'next/image';
 import type { ReactNode } from 'react';
 
 import { cn } from '@/lib/cn';
+import { normalizeMediaUrl } from '@/lib/media';
 import type { ImageObject } from '@/types/api';
 
 /* Maps the aspectRatio union to its token utility (05-DESIGN-SYSTEM.md §4.4). */
@@ -51,6 +52,7 @@ export function Image({
 }: ImageProps): ReactNode {
   const alt = decorative ? '' : image.alt;
   const blur = image.blurDataUrl;
+  const normalizedSrc = normalizeMediaUrl(image.src);
 
   const blurProps =
     typeof blur === 'string' && blur.length > 0
@@ -59,7 +61,7 @@ export function Image({
 
   const filled = (
     <NextImage
-      src={image.src}
+      src={normalizedSrc}
       alt={alt}
       fill
       sizes={sizes}
@@ -92,7 +94,7 @@ export function Image({
 
   return (
     <NextImage
-      src={image.src}
+      src={normalizedSrc}
       alt={alt}
       width={image.width}
       height={image.height}

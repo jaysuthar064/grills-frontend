@@ -9,30 +9,46 @@ import type { NextConfig } from 'next';
 function wordpressRemotePatterns(): NonNullable<
   NonNullable<NextConfig['images']>['remotePatterns']
 > {
-  const base = process.env.WP_API_BASE_URL;
-
-  if (!base) {
-    return [];
-  }
-
-  let url: URL;
-
-  try {
-    url = new URL(base);
-  } catch {
-    return [];
-  }
-
-  const protocol = url.protocol === 'https:' ? 'https' : 'http';
-
-  return [
+  const patterns: NonNullable<NonNullable<NextConfig['images']>['remotePatterns']> = [
     {
-      protocol,
-      hostname: url.hostname,
+      protocol: 'https',
+      hostname: 'grills.launchpreview.live',
       pathname: '/wp-content/uploads/**',
-      ...(url.port ? { port: url.port } : {}),
+    },
+    {
+      protocol: 'http',
+      hostname: 'localhost',
+      port: '8885',
+      pathname: '/wp-content/uploads/**',
+    },
+    {
+      protocol: 'http',
+      hostname: '127.0.0.1',
+      port: '8885',
+      pathname: '/wp-content/uploads/**',
     },
   ];
+
+  const envBases = [process.env.WP_API_BASE_URL, process.env.NEXT_PUBLIC_WORDPRESS_URL].filter(
+    (b): b is string => Boolean(b)
+  );
+
+  for (const base of envBases) {
+    try {
+      const url = new URL(base);
+      const protocol = url.protocol === 'https:' ? 'https' : 'http';
+      patterns.push({
+        protocol,
+        hostname: url.hostname,
+        pathname: '/wp-content/uploads/**',
+        ...(url.port ? { port: url.port } : {}),
+      });
+    } catch {
+      // Ignore invalid URL in env
+    }
+  }
+
+  return patterns;
 }
 
 const nextConfig = {

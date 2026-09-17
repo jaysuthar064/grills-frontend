@@ -12,6 +12,7 @@ import { LinkButton } from '@/components/primitives/link-button';
 import { Skeleton } from '@/components/primitives/skeleton';
 import { Text } from '@/components/primitives/text';
 import { slugId } from '@/lib/slug';
+import { getWpUploadUrl } from '@/lib/media';
 import type { ImageObject, InstagramFeedBlock } from '@/types/api';
 
 /*
@@ -54,7 +55,7 @@ const DEFAULT_POSTS: InstagramPost[] = [
     id: 'post-1',
     permalink: 'https://www.instagram.com/grillonthegreen_simi/',
     image: {
-      src: 'http://localhost:8885/wp-content/uploads/2026/09/IMG_2175.JPG.jpeg',
+      src: getWpUploadUrl('IMG_2175.JPG.jpeg'),
       alt: 'Fresh brisket off the pit',
       width: 800,
       height: 800,
@@ -64,7 +65,7 @@ const DEFAULT_POSTS: InstagramPost[] = [
     id: 'post-2',
     permalink: 'https://www.instagram.com/grillonthegreen_simi/',
     image: {
-      src: 'http://localhost:8885/wp-content/uploads/2026/09/IMG_2170.JPG.jpeg',
+      src: getWpUploadUrl('IMG_2170.JPG.jpeg'),
       alt: 'Smoked burger and golden fries',
       width: 800,
       height: 800,
@@ -74,7 +75,7 @@ const DEFAULT_POSTS: InstagramPost[] = [
     id: 'post-3',
     permalink: 'https://www.instagram.com/grillonthegreen_simi/',
     image: {
-      src: 'http://localhost:8885/wp-content/uploads/2026/09/IMG_2185.JPG.jpeg',
+      src: getWpUploadUrl('IMG_2185.JPG.jpeg'),
       alt: 'Crispy fried chicken sandwich',
       width: 800,
       height: 800,
@@ -84,7 +85,7 @@ const DEFAULT_POSTS: InstagramPost[] = [
     id: 'post-4',
     permalink: 'https://www.instagram.com/grillonthegreen_simi/',
     image: {
-      src: 'http://localhost:8885/wp-content/uploads/2026/09/IMG_2176.JPG.jpeg',
+      src: getWpUploadUrl('IMG_2176.JPG.jpeg'),
       alt: 'Plating on the kitchen pass',
       width: 800,
       height: 800,
@@ -94,7 +95,7 @@ const DEFAULT_POSTS: InstagramPost[] = [
     id: 'post-5',
     permalink: 'https://www.instagram.com/grillonthegreen_simi/',
     image: {
-      src: 'http://localhost:8885/wp-content/uploads/2026/09/IMG_2187.JPG.jpeg',
+      src: getWpUploadUrl('IMG_2187.JPG.jpeg'),
       alt: 'Central Texas barbecue tradition',
       width: 800,
       height: 800,
@@ -104,7 +105,7 @@ const DEFAULT_POSTS: InstagramPost[] = [
     id: 'post-6',
     permalink: 'https://www.instagram.com/grillonthegreen_simi/',
     image: {
-      src: 'http://localhost:8885/wp-content/uploads/2026/09/IMG_2180.JPG.jpeg',
+      src: getWpUploadUrl('IMG_2180.JPG.jpeg'),
       alt: 'Firing up the oak wood smoker',
       width: 800,
       height: 800,
