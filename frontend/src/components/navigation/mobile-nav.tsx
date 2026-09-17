@@ -9,6 +9,7 @@ import { createPortal } from 'react-dom';
 import { Logo } from '@/components/brand/logo';
 import { SocialLinks } from '@/components/navigation/social-links';
 import { IconButton } from '@/components/primitives/icon-button';
+import { cn } from '@/lib/cn';
 import {
   getMobileNavOpen,
   getMobileNavServerSnapshot,
@@ -184,31 +185,39 @@ export function MobileNav({ global }: MobileNavProps): ReactNode {
                   />
                 </div>
 
-                <nav aria-label="Site" className="flex flex-col gap-1">
-                  {navigation.primary.map((item) =>
-                    item.isExternal ? (
+                <nav aria-label="Site" className="flex flex-col gap-1.5">
+                  {navigation.primary.map((item) => {
+                    const active = pathname === item.href;
+                    return item.isExternal ? (
                       <a
                         key={item.href}
                         href={item.href}
                         target="_blank"
                         rel="noopener noreferrer"
-                        className="font-display text-body-lg text-ink py-3 font-semibold uppercase"
+                        className="flex items-center justify-between font-display text-body-lg text-ink py-2.5 px-3 rounded-xl font-semibold uppercase transition-all hover:bg-surface-sunken hover:text-brand-primary active:scale-[0.98]"
                       >
-                        {item.label}
+                        <span>{item.label}</span>
+                        <span className="text-caption text-ink-muted">↗</span>
                       </a>
                     ) : (
                       <Link
                         key={item.href}
                         href={item.href}
-                        className="font-display text-body-lg text-ink py-3 font-semibold uppercase"
-                        aria-current={
-                          pathname === item.href ? 'page' : undefined
-                        }
+                        className={cn(
+                          'flex items-center justify-between font-display text-body-lg py-2.5 px-3 rounded-xl uppercase transition-all active:scale-[0.98]',
+                          active
+                            ? 'bg-brand-primary-subtle font-bold text-brand-primary'
+                            : 'font-semibold text-ink hover:bg-surface-sunken hover:text-brand-primary',
+                        )}
+                        aria-current={active ? 'page' : undefined}
                       >
-                        {item.label}
+                        <span>{item.label}</span>
+                        {active ? (
+                          <span className="h-2 w-2 rounded-full bg-brand-primary shadow-[0_0_8px_rgba(211,84,0,0.6)]" />
+                        ) : null}
                       </Link>
-                    ),
-                  )}
+                    );
+                  })}
                 </nav>
 
                 <a
