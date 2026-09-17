@@ -4,6 +4,14 @@
 /cms/wp-content/upgrade/
 /cms/wp-content/cache/
 /cms/wp-content/debug.log
+/cms/wp-content/plugins/
+/cms/wp-content/themes/
+/cms/wp-content/updraft/
+/cms/wp-content/upgrade-temp-backup/
+/cms/wp-content/litespeed/
+/cms/wp-content/*.dat
+/cms/wp-content/*.php
+/cms/wp-content/mu-plugins/hostinger-*.php
 
 # WordPress core copied locally for Laragon.
 /cms/wp-admin/

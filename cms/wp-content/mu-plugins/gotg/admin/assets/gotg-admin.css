@@ -1,0 +1,123 @@
+/*
+ * Grill on the Green — admin edit-screen styles.
+ * Plain CSS, no build step. Scoped to the project post-type edit screens by
+ * enqueue.php.
+ */
+
+.gotg-field {
+	margin: 0 0 1.25rem;
+}
+
+.gotg-field > label,
+.gotg-field-heading > label,
+.gotg-field legend {
+	display: block;
+	font-weight: 600;
+	margin-bottom: 0.25rem;
+}
+
+.gotg-field input[type='text'],
+.gotg-field input[type='email'],
+.gotg-field input[type='tel'],
+.gotg-field input[type='url'],
+.gotg-field input[type='number'],
+.gotg-field input[type='datetime-local'],
+.gotg-field textarea,
+.gotg-field select {
+	width: 100%;
+	max-width: 32rem;
+}
+
+.gotg-field .description {
+	margin-top: 0.25rem;
+}
+
+.gotg-required {
+	color: #a32118;
+	font-weight: 600;
+}
+
+.gotg-field-error {
+	color: #a32118;
+	font-weight: 600;
+	margin: 0 0 0.5rem;
+}
+
+.gotg-checkbox {
+	display: block;
+	font-weight: 400;
+	margin: 0.25rem 0;
+}
+
+/* Repeater */
+
+.gotg-repeater-row {
+	align-items: flex-end;
+	border: 1px solid #dcdcde;
+	border-radius: 4px;
+	display: flex;
+	flex-wrap: wrap;
+	gap: 0.75rem;
+	margin-bottom: 0.5rem;
+	padding: 0.75rem;
+}
+
+.gotg-field-inline {
+	display: flex;
+	flex-direction: column;
+	gap: 0.25rem;
+}
+
+.gotg-field-inline label {
+	font-size: 0.85em;
+	font-weight: 600;
+}
+
+.gotg-repeater-controls {
+	display: flex;
+	gap: 0.25rem;
+	margin-left: auto;
+}
+
+.gotg-repeater-remove {
+	color: #a32118;
+}
+
+.gotg-repeater-empty {
+	color: #646970;
+	font-style: italic;
+}
+
+/* Media field */
+
+.gotg-media-preview {
+	display: block;
+	margin: 0.5rem 0;
+	max-width: 240px;
+}
+
+.gotg-media-preview img {
+	height: auto;
+	max-width: 100%;
+}
+
+/* Regular hours table */
+
+.gotg-hours-table th {
+	font-weight: 600;
+	padding: 0.25rem 0.75rem 0.25rem 0;
+	text-align: left;
+	white-space: nowrap;
+}
+
+.gotg-hours-table td {
+	padding: 0.25rem 0.5rem 0.25rem 0;
+}
+
+.gotg-flags-summary {
+	margin: 0.5rem 0 0;
+}
+
+.gotg-flags-summary li {
+	margin: 0 0 0.25rem;
+}
