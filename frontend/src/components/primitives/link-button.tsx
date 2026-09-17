@@ -29,6 +29,7 @@ export interface LinkButtonProps {
   iconStart?: IconName;
   iconEnd?: IconName;
   fullWidth?: boolean;
+  className?: string | undefined;
   children: ReactNode;
 }
 
@@ -69,10 +70,11 @@ export function LinkButton({
   iconStart,
   iconEnd,
   fullWidth = false,
+  className,
   children,
 }: LinkButtonProps): ReactNode {
   const sizing = SIZE[size];
-  const className = cn(
+  const combinedClassName = cn(
     // whitespace-nowrap: a button label is a single action and never reads as
     // two lines. 'Call 805-842-2947' is the case that forced it — a wrapped
     // phone number looks broken and costs a tap target's worth of height.
@@ -80,6 +82,7 @@ export function LinkButton({
     VARIANT[variant],
     sizing.classes,
     fullWidth && 'w-full',
+    className,
   );
   const style: CSSProperties = { minHeight: sizing.height };
 
@@ -94,7 +97,7 @@ export function LinkButton({
   // tel:/mailto: — a plain anchor, never a new tab.
   if (isDialHref(href)) {
     return (
-      <a href={href} className={className} style={style}>
+      <a href={href} className={combinedClassName} style={style}>
         {content}
       </a>
     );
@@ -107,7 +110,7 @@ export function LinkButton({
         href={href}
         target="_blank"
         rel="noopener noreferrer"
-        className={className}
+        className={combinedClassName}
         style={style}
       >
         {content}
@@ -117,7 +120,7 @@ export function LinkButton({
   }
 
   return (
-    <Link href={href} className={className} style={style}>
+    <Link href={href} className={combinedClassName} style={style}>
       {content}
     </Link>
   );

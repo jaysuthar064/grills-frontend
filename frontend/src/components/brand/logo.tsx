@@ -1,6 +1,7 @@
 import NextImage from 'next/image';
 import type { CSSProperties, ReactNode } from 'react';
 
+import flagMarkReverse from '../../../public/brand/flag-mark-reverse.png';
 import flagMark from '../../../public/brand/flag-mark.png';
 import logoHorizontal from '../../../public/brand/logo-horizontal.png';
 import logoMonoGreen from '../../../public/brand/logo-mono-green.png';
@@ -24,6 +25,7 @@ import logoStacked from '../../../public/brand/logo-stacked.png';
  * | stacked          | logo-stacked.png          | cream / white          |
  * | stacked-reverse  | logo-stacked-reverse.png  | brand green            |
  * | mark             | flag-mark.png             | cream / white, compact |
+ * | mark-reverse     | flag-mark-reverse.png     | dark / hero, compact   |
  *
  * The pairing is a contrast rule, not a preference. The cream variants measure
  * 10.31:1 on brand green and 1.06:1 on cream — invisible on the wrong ground —
@@ -36,7 +38,13 @@ import logoStacked from '../../../public/brand/logo-stacked.png';
  */
 
 export type LogoVariant =
-  'primary' | 'reverse' | 'mono' | 'stacked' | 'stacked-reverse' | 'mark';
+  | 'primary'
+  | 'reverse'
+  | 'mono'
+  | 'stacked'
+  | 'stacked-reverse'
+  | 'mark'
+  | 'mark-reverse';
 
 const ASSET = {
   primary: logoHorizontal,
@@ -45,6 +53,7 @@ const ASSET = {
   stacked: logoStacked,
   'stacked-reverse': logoStackedReverse,
   mark: flagMark,
+  'mark-reverse': flagMarkReverse,
 } as const satisfies Record<LogoVariant, typeof logoHorizontal>;
 
 export interface LogoProps {
@@ -78,6 +87,7 @@ const SIZES = {
   stacked: '(min-width: 768px) 148px, 119px',
   'stacked-reverse': '(min-width: 768px) 148px, 119px',
   mark: '(min-width: 768px) 52px, 41px',
+  'mark-reverse': '(min-width: 768px) 52px, 41px',
 } as const satisfies Record<LogoVariant, string>;
 
 import { cn } from '@/lib/cn';

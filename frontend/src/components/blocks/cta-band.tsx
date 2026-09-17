@@ -1,6 +1,7 @@
 import type { CSSProperties, ReactNode } from 'react';
 
 import { Container } from '@/components/layout/container';
+import { AnimatedReveal } from '@/components/primitives/animated-reveal';
 import { Heading } from '@/components/primitives/heading';
 import { LinkButton } from '@/components/primitives/link-button';
 import { Text } from '@/components/primitives/text';
@@ -41,44 +42,67 @@ const BUTTON_VARIANT = {
 
 export function CtaBand({ block }: CtaBandProps): ReactNode {
   const headingId = slugId('cta', block.heading);
-  const isInverse = block.style !== 'surface';
+  const imageSrc =
+    block.image?.src ||
+    'http://localhost:8885/wp-content/uploads/2026/09/IMG_2175.JPG.jpeg';
+  const hasImage = Boolean(imageSrc);
+  const isInverse = block.style !== 'surface' || hasImage;
   const style: CSSProperties = { paddingBlock: 'var(--section-y)' };
 
   return (
     <section
       aria-labelledby={headingId}
-      className={cn(BAND[block.style])}
+      className={cn('relative overflow-hidden', BAND[block.style])}
       style={style}
     >
-      <Container>
-        <div
-          className="mx-auto flex flex-col items-center gap-5 text-center"
-          style={{ maxWidth: 'var(--measure-narrow)' }}
-        >
-          <Heading level={2} id={headingId}>
-            {isInverse ? (
-              <span className="text-ink-inverse">{block.heading}</span>
-            ) : (
-              block.heading
-            )}
-          </Heading>
-
-          {block.body !== undefined && block.body !== '' ? (
-            <Text size="body-lg" tone={isInverse ? 'inverse-muted' : 'muted'}>
-              {block.body}
-            </Text>
-          ) : null}
-
-          <LinkButton
-            href={block.cta.href}
-            variant={BUTTON_VARIANT[block.style]}
-            size="lg"
-            isExternal={block.cta.isExternal}
-          >
-            {block.cta.label}
-          </LinkButton>
+      {hasImage ? (
+        <div className="absolute inset-0 z-0 overflow-hidden pointer-events-none">
+          <img
+            src={imageSrc}
+            alt={block.image?.alt || block.heading}
+            className="w-full h-full object-cover opacity-45"
+          />
+          <div className="absolute inset-0 bg-gradient-to-t from-black/75 via-black/45 to-black/75" />
         </div>
+      ) : null}
+
+      <Container className="relative z-10">
+        <AnimatedReveal>
+          <div
+            className="mx-auto flex flex-col items-center gap-5 text-center"
+            style={{ maxWidth: 'var(--measure-narrow)' }}
+          >
+            <Heading level={2} id={headingId}>
+              {isInverse ? (
+                <span className="text-ink-inverse drop-shadow-sm">{block.heading}</span>
+              ) : (
+                block.heading
+              )}
+            </Heading>
+
+            {block.body !== undefined && block.body !== '' ? (
+              <Text
+                size="body-lg"
+                tone={isInverse ? 'inverse-muted' : 'muted'}
+                className={isInverse ? 'drop-shadow-sm' : undefined}
+              >
+                {block.body}
+              </Text>
+            ) : null}
+
+            <LinkButton
+              href={block.cta.href}
+              variant={BUTTON_VARIANT[block.style]}
+              size="lg"
+              isExternal={block.cta.isExternal}
+              className="shadow-lg hover:shadow-xl transition-all"
+            >
+              {block.cta.label}
+            </LinkButton>
+          </div>
+        </AnimatedReveal>
       </Container>
     </section>
   );
 }
+

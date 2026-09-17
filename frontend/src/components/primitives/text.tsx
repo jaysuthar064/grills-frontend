@@ -18,6 +18,7 @@ export interface TextProps {
   tone?: 'default' | 'muted' | 'inverse' | 'inverse-muted';
   weight?: 'regular' | 'medium' | 'semibold';
   id?: string;
+  className?: string | undefined;
   children: ReactNode;
 }
 
@@ -48,11 +49,12 @@ export function Text({
   tone = 'default',
   weight = 'regular',
   id,
+  className,
   children,
 }: TextProps): ReactNode {
   const Tag = as;
   return (
-    <Tag id={id} className={cn(SIZE[size], TONE[tone], WEIGHT[weight])}>
+    <Tag id={id} className={cn(SIZE[size], TONE[tone], WEIGHT[weight], className)}>
       {children}
     </Tag>
   );

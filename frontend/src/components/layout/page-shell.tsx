@@ -41,11 +41,12 @@ export function PageShell({
   children,
 }: PageShellProps): ReactNode {
   const { site, navigation } = global;
+  const isHome = currentPath === '/';
 
   return (
     <>
       <SkipLink />
-      <SiteHeader variant="solid">
+      <SiteHeader variant={isHome ? 'transparent' : 'solid'}>
         <Container as="div">
           <div className="flex items-center justify-between gap-4">
             {/*
@@ -55,21 +56,35 @@ export function PageShell({
              * Below sm the full lockup still fits — it is 101px wide against
              * 272px of content at 320px — but at that width the "ON THE" inside
              * the flag is about 5px tall and reads as noise. The compact mark is
-             * swapped in there instead. This is the only breakpoint where the
-             * header identity changes, and it changes to the same brand mark the
-             * favicon uses, so the identity is narrowed rather than rotated.
+             * swapped in there instead.
+             *
+             * When the transparent header is over the hero, the reverse (white)
+             * lockup is used for maximum contrast against the background video.
              */}
             <Link
               href="/"
-              className="flex shrink-0 items-center"
+              className="flex shrink-0 items-center transition-opacity hover:opacity-90"
               aria-label={site.name}
             >
-              <span className="flex sm:hidden">
-                <Logo variant="mark" height="header" priority />
-              </span>
-              <span className="hidden sm:flex">
-                <Logo variant="primary" height="header" priority />
-              </span>
+              {/* White reverse logos (active only when floating over transparent hero) */}
+              <div className="hidden group-[.header-transparent-mode]:flex items-center">
+                <span className="flex sm:hidden">
+                  <Logo variant="mark-reverse" height="header" priority />
+                </span>
+                <span className="hidden sm:flex">
+                  <Logo variant="reverse" height="header" priority />
+                </span>
+              </div>
+
+              {/* Standard dark/cream logos (active on solid header or when scrolled) */}
+              <div className="flex group-[.header-transparent-mode]:hidden items-center">
+                <span className="flex sm:hidden">
+                  <Logo variant="mark" height="header" priority />
+                </span>
+                <span className="hidden sm:flex">
+                  <Logo variant="primary" height="header" priority />
+                </span>
+              </div>
             </Link>
             <div className="flex items-center gap-6">
               <PrimaryNav
@@ -81,6 +96,7 @@ export function PageShell({
                   href={navigation.headerCta.href}
                   variant="secondary"
                   isExternal={navigation.headerCta.isExternal}
+                  className="transition-all group-[.header-transparent-mode]:border-white/80 group-[.header-transparent-mode]:hover:bg-white/15 group-[.header-transparent-mode]:hover:border-white"
                 >
                   {navigation.headerCta.label}
                 </LinkButton>

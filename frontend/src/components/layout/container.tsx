@@ -13,6 +13,7 @@ import { cn } from '@/lib/cn';
 export interface ContainerProps {
   width?: 'default' | 'narrow' | 'full';
   as?: 'div' | 'section' | 'article' | 'header' | 'footer' | 'nav' | 'main';
+  className?: string | undefined;
   children: ReactNode;
 }
 
@@ -25,6 +26,7 @@ const MAX_WIDTH = {
 export function Container({
   width = 'default',
   as = 'div',
+  className,
   children,
 }: ContainerProps): ReactNode {
   const Tag = as;
@@ -34,7 +36,7 @@ export function Container({
   };
 
   return (
-    <Tag className={cn('mx-auto w-full')} style={style}>
+    <Tag className={cn('mx-auto w-full', className)} style={style}>
       {children}
     </Tag>
   );

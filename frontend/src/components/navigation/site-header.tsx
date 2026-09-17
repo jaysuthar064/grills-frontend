@@ -28,7 +28,7 @@ export function SiteHeader({
 
   useEffect(() => {
     const onScroll = (): void => {
-      setScrolled(window.scrollY > 16);
+      setScrolled(window.scrollY > 20);
     };
     onScroll();
     window.addEventListener('scroll', onScroll, { passive: true });
@@ -42,17 +42,22 @@ export function SiteHeader({
     minHeight: 'var(--header-height)',
   };
 
+  const isTransparentMode = variant === 'transparent' && !scrolled;
+
   return (
     <header
       data-variant={variant}
       data-scrolled={scrolled}
       className={cn(
-        'group sticky top-0 flex items-center border-b transition-all duration-300',
-        variant === 'transparent' && !scrolled
-          ? 'border-transparent bg-transparent text-ink-inverse'
-          : scrolled
-            ? 'border-border/30 bg-white/90 shadow-md backdrop-blur-md text-ink'
-            : 'border-transparent bg-white text-ink',
+        'group flex items-center transition-all duration-300 w-full',
+        variant === 'transparent'
+          ? 'fixed top-0 left-0 right-0'
+          : 'sticky top-0 border-b border-transparent bg-white text-ink shadow-sm',
+        isTransparentMode
+          ? 'header-transparent-mode border-b border-transparent bg-transparent text-white'
+          : variant === 'transparent'
+            ? 'border-b border-border/20 bg-white/95 shadow-md backdrop-blur-md text-ink'
+            : '',
       )}
       style={style}
     >

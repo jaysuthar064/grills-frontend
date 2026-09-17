@@ -14,18 +14,19 @@ import { cn } from '@/lib/cn';
 export interface IconButtonProps
   extends Omit<
     ButtonHTMLAttributes<HTMLButtonElement>,
-    'className' | 'children'
+    'children'
   > {
   icon: IconName;
   label: string;
   variant?: 'solid' | 'ghost';
   size?: 'sm' | 'md';
+  className?: string;
 }
 
 const VARIANT = {
   solid:
     'bg-surface-raised text-ink border border-border-interactive hover:bg-surface-sunken',
-  ghost: 'text-ink hover:bg-surface-sunken',
+  ghost: 'text-inherit hover:bg-surface-sunken',
 } as const;
 
 const ICON_SIZE = {
@@ -38,6 +39,7 @@ export function IconButton({
   label,
   variant = 'ghost',
   size = 'md',
+  className,
   ...rest
 }: IconButtonProps): ReactNode {
   // The 44px floor is a control-height token, applied as a minimum in both axes.
@@ -53,6 +55,7 @@ export function IconButton({
       className={cn(
         'inline-flex items-center justify-center rounded-md transition-colors active:translate-y-px disabled:cursor-not-allowed disabled:opacity-50',
         VARIANT[variant],
+        className,
       )}
       style={style}
       {...rest}

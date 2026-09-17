@@ -4,6 +4,7 @@ import { Image } from '@/components/primitives/image';
 import { RichText } from '@/components/blocks/rich-text';
 import { Container } from '@/components/layout/container';
 import { Section } from '@/components/layout/section';
+import { AnimatedReveal } from '@/components/primitives/animated-reveal';
 import { Heading } from '@/components/primitives/heading';
 import { cn } from '@/lib/cn';
 import { slugId } from '@/lib/slug';
@@ -51,40 +52,46 @@ export function TextSection({
           )}
         >
           {/* Centered Story Text */}
-          <div className="max-w-2xl mx-auto flex flex-col gap-3 text-center">
-            {hasHeading ? (
-              <Heading
-                level={HEADING_LEVEL[headingLevelOffset]}
-                {...(headingId !== undefined ? { id: headingId } : {})}
-              >
-                {block.heading}
-              </Heading>
-            ) : null}
-            <RichText html={block.bodyHtml} />
-          </div>
+          <AnimatedReveal>
+            <div className="max-w-2xl mx-auto flex flex-col gap-3 text-center">
+              {hasHeading ? (
+                <Heading
+                  level={HEADING_LEVEL[headingLevelOffset]}
+                  {...(headingId !== undefined ? { id: headingId } : {})}
+                >
+                  {block.heading}
+                </Heading>
+              ) : null}
+              <RichText html={block.bodyHtml} />
+            </div>
+          </AnimatedReveal>
 
           {/* Cinematic Photo or Video Showcase */}
           {block.videoUrl ? (
-            <div className="w-full max-w-4xl mx-auto aspect-16-9 md:aspect-21-9 rounded-2xl md:rounded-3xl overflow-hidden shadow-2xl border border-border/50 relative bg-black">
-              <video
-                autoPlay
-                loop
-                muted
-                playsInline
-                poster={block.image?.src}
-                className="w-full h-full object-cover opacity-90"
-              >
-                <source src={block.videoUrl} type="video/mp4" />
-              </video>
-            </div>
+            <AnimatedReveal delay={0.2} className="w-full">
+              <div className="w-full max-w-4xl mx-auto aspect-16-9 md:aspect-21-9 rounded-2xl md:rounded-3xl overflow-hidden shadow-2xl border border-border/50 relative bg-black">
+                <video
+                  autoPlay
+                  loop
+                  muted
+                  playsInline
+                  poster={block.image?.src}
+                  className="w-full h-full object-cover opacity-90"
+                >
+                  <source src={block.videoUrl} type="video/mp4" />
+                </video>
+              </div>
+            </AnimatedReveal>
           ) : block.image ? (
-            <div className="w-full max-w-4xl mx-auto aspect-16-9 md:aspect-21-9 rounded-2xl md:rounded-3xl overflow-hidden shadow-2xl border border-border/50 relative">
-              <Image
-                image={block.image}
-                fill
-                sizes="(min-width: 1024px) 896px, 100vw"
-              />
-            </div>
+            <AnimatedReveal delay={0.2} className="w-full">
+              <div className="w-full max-w-4xl mx-auto aspect-16-9 md:aspect-21-9 rounded-2xl md:rounded-3xl overflow-hidden shadow-2xl border border-border/50 relative">
+                <Image
+                  image={block.image}
+                  fill
+                  sizes="(min-width: 1024px) 896px, 100vw"
+                />
+              </div>
+            </AnimatedReveal>
           ) : null}
         </div>
       </Container>

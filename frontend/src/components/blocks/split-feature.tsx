@@ -4,6 +4,7 @@ import type { ReactNode } from 'react';
 import { Container } from '@/components/layout/container';
 import { Section } from '@/components/layout/section';
 import { SplitLayout } from '@/components/layout/split-layout';
+import { AnimatedReveal } from '@/components/primitives/animated-reveal';
 import { Heading } from '@/components/primitives/heading';
 import { Image } from '@/components/primitives/image';
 import { LinkButton } from '@/components/primitives/link-button';
@@ -43,34 +44,38 @@ export function SplitFeature({
   const headingId = slugId('split', block.heading);
 
   const media = (
-    <div className="overflow-hidden rounded-xl shadow-lg border border-border transition-transform hover:scale-[1.02] duration-300">
-      <Image
-        image={block.image}
-        fill
-        aspectRatio="4/3"
-        sizes="(min-width: 1024px) 50vw, 100vw"
-      />
-    </div>
+    <AnimatedReveal delay={0.1} className="w-full">
+      <div className="overflow-hidden rounded-xl shadow-lg border border-border transition-transform hover:scale-[1.02] duration-300">
+        <Image
+          image={block.image}
+          fill
+          aspectRatio="4/3"
+          sizes="(min-width: 1024px) 50vw, 100vw"
+        />
+      </div>
+    </AnimatedReveal>
   );
 
   const content = (
-    <div className="flex flex-col items-start gap-4">
-      <Heading level={2} id={headingId}>
-        {block.heading}
-      </Heading>
-      <Text size="body-lg" tone="muted">
-        {withLineBreaks(block.body)}
-      </Text>
-      {block.cta ? (
-        <LinkButton
-          href={block.cta.href}
-          variant="secondary"
-          isExternal={block.cta.isExternal}
-        >
-          {block.cta.label}
-        </LinkButton>
-      ) : null}
-    </div>
+    <AnimatedReveal delay={0.2} className="w-full">
+      <div className="flex flex-col items-start gap-4">
+        <Heading level={2} id={headingId}>
+          {block.heading}
+        </Heading>
+        <Text size="body-lg" tone="muted">
+          {withLineBreaks(block.body)}
+        </Text>
+        {block.cta ? (
+          <LinkButton
+            href={block.cta.href}
+            variant="secondary"
+            isExternal={block.cta.isExternal}
+          >
+            {block.cta.label}
+          </LinkButton>
+        ) : null}
+      </div>
+    </AnimatedReveal>
   );
 
   return (
