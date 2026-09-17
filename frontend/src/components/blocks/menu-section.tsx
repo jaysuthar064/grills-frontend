@@ -51,10 +51,10 @@ export function MenuSection({
     visibleItems.length === 0 && activeDaypart !== 'all' ? (
       <Text tone="muted">Not served at {activeDaypart}.</Text>
     ) : (
-      <ul className="flex flex-col gap-4 lg:columns-2 lg:gap-8">
+      <ul className="grid grid-cols-1 md:grid-cols-2 gap-4 lg:gap-5">
         {visibleItems.map((item, index) => (
-          <li key={item.id} className="break-inside-avoid">
-            <AnimatedReveal delay={Math.min(index * 0.1, 0.5)}>
+          <li key={item.id} className="h-full">
+            <AnimatedReveal delay={Math.min(index * 0.05, 0.4)} className="h-full">
               <MenuCard item={item} headingLevel={cardHeadingLevel} />
             </AnimatedReveal>
           </li>

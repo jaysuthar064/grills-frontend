@@ -14,6 +14,10 @@
   --color-brand-hover: var(--color-brand-primary-hover);
   --color-brand-active: var(--color-brand-primary-active);
   --color-brand-subtle: var(--color-brand-primary-subtle);
+  --color-brand-primary: var(--color-brand-primary);
+  --color-brand-primary-hover: var(--color-brand-primary-hover);
+  --color-brand-primary-active: var(--color-brand-primary-active);
+  --color-brand-primary-subtle: var(--color-brand-primary-subtle);
   --color-accent: var(--color-brand-accent);
   --color-accent-subtle: var(--color-brand-accent-subtle);
 

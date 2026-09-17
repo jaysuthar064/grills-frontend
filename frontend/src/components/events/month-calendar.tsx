@@ -4,6 +4,7 @@ import { useState } from 'react';
 import type { ReactNode } from 'react';
 import { Container } from '@/components/layout/container';
 import { Section } from '@/components/layout/section';
+import { AnimatedReveal } from '@/components/primitives/animated-reveal';
 import { Heading } from '@/components/primitives/heading';
 import type { EventItem } from '@/types/api';
 
@@ -15,8 +16,31 @@ const DAYS_OF_WEEK = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
 
 export function MonthCalendar({ events }: MonthCalendarProps): ReactNode {
   const now = new Date();
-  const [currentYear] = useState(now.getFullYear());
-  const [currentMonth] = useState(now.getMonth());
+  const [currentYear, setCurrentYear] = useState(now.getFullYear());
+  const [currentMonth, setCurrentMonth] = useState(now.getMonth());
+
+  function handlePrevMonth(): void {
+    if (currentMonth === 0) {
+      setCurrentMonth(11);
+      setCurrentYear((y) => y - 1);
+    } else {
+      setCurrentMonth((m) => m - 1);
+    }
+  }
+
+  function handleNextMonth(): void {
+    if (currentMonth === 11) {
+      setCurrentMonth(0);
+      setCurrentYear((y) => y + 1);
+    } else {
+      setCurrentMonth((m) => m + 1);
+    }
+  }
+
+  function handleToday(): void {
+    setCurrentMonth(now.getMonth());
+    setCurrentYear(now.getFullYear());
+  }
 
   // Get total days in month
   const firstDayOfMonth = new Date(currentYear, currentMonth, 1).getDay();
@@ -40,86 +64,122 @@ export function MonthCalendar({ events }: MonthCalendarProps): ReactNode {
   return (
     <Section tone="surface">
       <Container>
-        <div className="flex flex-col gap-6">
-          <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 border-b border-border pb-4">
-            <div>
-              <span className="text-overline uppercase tracking-widest text-brand-primary font-bold">
-                Schedule at a Glance
-              </span>
-              <Heading level={2} visualLevel="h2">
-                {monthName} {currentYear} Calendar
-              </Heading>
+        <AnimatedReveal>
+          <div className="flex flex-col gap-6">
+            <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 border-b border-border pb-4">
+              <div>
+                <span className="text-overline uppercase tracking-widest text-brand-primary font-bold">
+                  Schedule at a Glance
+                </span>
+                <Heading level={2} visualLevel="h2">
+                  {monthName} {currentYear} Calendar
+                </Heading>
+              </div>
+
+              {/* Month Navigation Controls */}
+              <div className="flex items-center gap-2">
+                <button
+                  type="button"
+                  onClick={handlePrevMonth}
+                  className="px-3 py-1.5 rounded-lg border border-border bg-surface-raised font-bold text-body-sm text-ink hover:border-brand-primary hover:text-brand-primary transition-all cursor-pointer shadow-xs active:scale-95"
+                  title="Previous month"
+                >
+                  ‹ Prev
+                </button>
+                <button
+                  type="button"
+                  onClick={handleToday}
+                  className="px-3 py-1.5 rounded-lg border border-border bg-surface-raised font-semibold text-caption uppercase tracking-wider text-ink-muted hover:border-brand-primary hover:text-brand-primary transition-all cursor-pointer shadow-xs active:scale-95"
+                  title="Current month"
+                >
+                  Today
+                </button>
+                <button
+                  type="button"
+                  onClick={handleNextMonth}
+                  className="px-3 py-1.5 rounded-lg border border-border bg-surface-raised font-bold text-body-sm text-ink hover:border-brand-primary hover:text-brand-primary transition-all cursor-pointer shadow-xs active:scale-95"
+                  title="Next month"
+                >
+                  Next ›
+                </button>
+              </div>
             </div>
-            <div className="flex items-center gap-2 text-body-sm font-semibold text-ink-muted">
-              <span className="inline-block w-3 h-3 rounded-full bg-brand-primary" />
-              Special Event Scheduled
-            </div>
-          </div>
 
-          {/* Calendar Grid */}
-          <div className="bg-surface-raised rounded-2xl border border-border shadow-xs overflow-hidden">
-            {/* Header row */}
-            <div className="grid grid-cols-7 bg-brand-primary text-white font-bold text-center py-3 text-body-sm tracking-wider uppercase">
-              {DAYS_OF_WEEK.map((day) => (
-                <div key={day}>{day}</div>
-              ))}
-            </div>
-
-            {/* Days grid */}
-            <div className="grid grid-cols-7 border-t border-border">
-              {/* Empty leading cells */}
-              {Array.from({ length: firstDayOfMonth }).map((_, idx) => (
-                <div
-                  key={`empty-${idx}`}
-                  className="min-h-[90px] border-b border-r border-border/40 bg-surface/40 p-2"
-                />
-              ))}
-
-              {/* Month dates */}
-              {Array.from({ length: daysInMonth }).map((_, idx) => {
-                const dayNum = idx + 1;
-                const dayEvents = eventsByDate.get(dayNum) || [];
-                const isToday =
-                  dayNum === now.getDate() &&
-                  currentMonth === now.getMonth() &&
-                  currentYear === now.getFullYear();
-
-                return (
+            {/* Calendar Grid */}
+            <div className="bg-surface-raised rounded-2xl border border-border shadow-xs overflow-hidden">
+              {/* Day of Week Header */}
+              <div className="grid grid-cols-7 border-b border-border bg-surface-sunken">
+                {DAYS_OF_WEEK.map((day) => (
                   <div
-                    key={dayNum}
-                    className={`min-h-[90px] border-b border-r border-border/60 p-2 flex flex-col justify-between transition-colors ${
-                      isToday ? 'bg-brand-primary-subtle/30 font-bold' : 'hover:bg-surface/60'
-                    }`}
+                    key={day}
+                    className="py-3 text-center text-body-sm font-bold text-ink uppercase tracking-wider"
                   >
-                    <div className="flex justify-between items-center">
-                      <span
-                        className={`text-body-sm font-semibold inline-flex items-center justify-center w-7 h-7 rounded-full ${
-                          isToday ? 'bg-brand-primary text-white' : 'text-ink'
-                        }`}
-                      >
-                        {dayNum}
-                      </span>
-                    </div>
-
-                    {/* Event badges */}
-                    <div className="flex flex-col gap-1 mt-1">
-                      {dayEvents.map((evt) => (
-                        <a
-                          key={evt.id}
-                          href={`#event-${evt.slug}`}
-                          className="block text-[11px] font-bold text-white bg-brand-primary rounded px-1.5 py-0.5 truncate hover:bg-brand-primary-hover transition-colors"
-                          title={evt.title}
-                        >
-                          {evt.title}
-                        </a>
-                      ))}
-                    </div>
+                    {day}
                   </div>
-                );
-              })}
+                ))}
+              </div>
+
+              {/* Day Cells */}
+              <div className="grid grid-cols-7 auto-rows-fr divide-x divide-y divide-border">
+                {/* Empty cells before month starts */}
+                {Array.from({ length: firstDayOfMonth }).map((_, i) => (
+                  <div key={`empty-${i}`} className="min-h-[90px] p-2 bg-surface-sunken/40" />
+                ))}
+
+                {/* Days of month */}
+                {Array.from({ length: daysInMonth }).map((_, i) => {
+                  const dayNumber = i + 1;
+                  const dayEvents = eventsByDate.get(dayNumber) || [];
+                  const isToday =
+                    now.getDate() === dayNumber &&
+                    now.getMonth() === currentMonth &&
+                    now.getFullYear() === currentYear;
+
+                  return (
+                    <div
+                      key={dayNumber}
+                      className={`min-h-[90px] p-2 flex flex-col gap-1 transition-colors ${
+                        isToday ? 'bg-brand-primary/5' : 'bg-surface hover:bg-surface-raised'
+                      }`}
+                    >
+                      <div className="flex justify-between items-center">
+                        <span
+                          className={`text-body-sm font-bold w-6 h-6 flex items-center justify-center rounded-full ${
+                            isToday
+                              ? 'bg-brand text-white'
+                              : 'text-ink'
+                          }`}
+                        >
+                          {dayNumber}
+                        </span>
+                        {dayEvents.length > 0 ? (
+                          <span className="text-[10px] uppercase font-bold text-accent">
+                            {dayEvents.length} {dayEvents.length === 1 ? 'event' : 'events'}
+                          </span>
+                        ) : null}
+                      </div>
+
+                      {/* Event pills - high contrast solid badges with visible white text */}
+                      <div className="flex flex-col gap-1.5 mt-1 overflow-y-auto max-h-[85px]">
+                        {dayEvents.map((evt) => (
+                          <a
+                            key={evt.id}
+                            href={`#event-${evt.slug}`}
+                            className="block text-[11px] font-bold text-white bg-[#1c1917] hover:bg-[#292524] rounded-md px-2 py-1 truncate transition-all shadow-xs hover:scale-[1.02]"
+                            title={evt.title}
+                          >
+                            {evt.eventType === 'live_music' ? '🎸 ' : evt.eventType === 'special_menu' ? '🍽️ ' : '📅 '}
+                            {evt.title}
+                          </a>
+                        ))}
+                      </div>
+                    </div>
+                  );
+                })}
+              </div>
             </div>
           </div>
-        </div>
+        </AnimatedReveal>
       </Container>
     </Section>
   );

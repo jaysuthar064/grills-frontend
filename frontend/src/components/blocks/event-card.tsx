@@ -3,7 +3,6 @@ import type { ReactNode } from 'react';
 
 import { Badge } from '@/components/primitives/badge';
 import { Heading } from '@/components/primitives/heading';
-import { Image } from '@/components/primitives/image';
 import { LinkButton } from '@/components/primitives/link-button';
 import { Text } from '@/components/primitives/text';
 import { cn } from '@/lib/cn';
@@ -69,20 +68,6 @@ export function EventCard({
       </time>
 
       <div className="flex flex-1 flex-col gap-2">
-        {event.image?.src ? (
-          <div className="relative w-full overflow-hidden rounded-lg max-h-64">
-            <Image
-              image={event.image}
-              fill
-              aspectRatio="3/2"
-              sizes={
-                variant === 'list'
-                  ? '(min-width: 768px) 66vw, 100vw'
-                  : '(min-width: 1024px) 33vw, 100vw'
-              }
-            />
-          </div>
-        ) : null}
 
         <Heading level={headingLevel} visualLevel="h4">
           <Link href={`/events/${event.slug}`}>{event.title}</Link>

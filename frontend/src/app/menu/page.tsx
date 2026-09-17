@@ -9,6 +9,7 @@ import { SectionDivider } from '@/components/brand/brand-decor';
 import { Container } from '@/components/layout/container';
 import { PageShell } from '@/components/layout/page-shell';
 import { Section } from '@/components/layout/section';
+import { AnimatedReveal } from '@/components/primitives/animated-reveal';
 import { Heading } from '@/components/primitives/heading';
 import { Text } from '@/components/primitives/text';
 import { JsonLd } from '@/components/seo/json-ld';
@@ -55,6 +56,38 @@ export default async function MenuPage(): Promise<ReactNode> {
       <JsonLd data={menuJsonLd(_global, sections)} />
       <PageHeader title={title} />
 
+      {/* Quick Category Navigation & Action Bar */}
+      {sections.length > 0 ? (
+        <nav aria-label="Menu sections" className="sticky top-[var(--header-height)] z-20 border-y border-border/80 bg-surface/95 backdrop-blur-md py-3 shadow-xs">
+          <Container>
+            <div className="flex items-center justify-between gap-4 overflow-x-auto no-scrollbar">
+              <ul className="flex items-center gap-2 sm:gap-3 shrink-0">
+                {sections.map((section) => (
+                  <li key={section.slug}>
+                    <a
+                      href={`#${section.slug}`}
+                      className="inline-flex items-center rounded-full bg-surface-raised px-4 py-1.5 text-body-sm font-semibold text-ink border border-border/60 hover:border-brand-primary hover:text-brand-primary transition-all whitespace-nowrap"
+                    >
+                      {section.title}
+                    </a>
+                  </li>
+                ))}
+              </ul>
+              <div className="hidden sm:flex items-center gap-2 shrink-0">
+                <button
+                  type="button"
+                  onClick={undefined}
+                  className="inline-flex items-center gap-1.5 text-caption font-semibold text-ink-muted hover:text-brand-primary transition-colors cursor-pointer"
+                  title="Print friendly menu"
+                >
+                  <span>🖨️</span> Print Menu
+                </button>
+              </div>
+            </div>
+          </Container>
+        </nav>
+      ) : null}
+
       <Section>
         <Container>
           {sections.length === 0 ? (
@@ -65,8 +98,7 @@ export default async function MenuPage(): Promise<ReactNode> {
             <div className="flex flex-col gap-16">
               {sections.map((section, index) => (
                 <Fragment key={section.slug}>
-                  {/* A flag divider between sections, never above the first —
-                      a rule at the top of a list separates it from nothing. */}
+                  {/* A flag divider between sections, never above the first */}
                   {index > 0 ? <SectionDivider /> : null}
                   <MenuSection section={section} activeDaypart="all" />
                 </Fragment>
@@ -79,12 +111,14 @@ export default async function MenuPage(): Promise<ReactNode> {
       {showLegend ? (
         <Section tone="sunken" ariaLabelledBy="dietary-legend-heading">
           <Container width="narrow">
-            <div className="flex flex-col gap-6">
-              <Heading level={2} id="dietary-legend-heading">
-                Dietary Information
-              </Heading>
-              <DietaryLegend tags={dietaryTags} />
-            </div>
+            <AnimatedReveal>
+              <div className="flex flex-col gap-6">
+                <Heading level={2} id="dietary-legend-heading">
+                  Dietary Information
+                </Heading>
+                <DietaryLegend tags={dietaryTags} />
+              </div>
+            </AnimatedReveal>
           </Container>
         </Section>
       ) : null}
@@ -92,9 +126,11 @@ export default async function MenuPage(): Promise<ReactNode> {
       {disclaimer !== '' ? (
         <Section spacing="tight">
           <Container width="narrow">
-            <Text size="body-sm" tone="muted">
-              {disclaimer}
-            </Text>
+            <AnimatedReveal>
+              <Text size="body-sm" tone="muted">
+                {disclaimer}
+              </Text>
+            </AnimatedReveal>
           </Container>
         </Section>
       ) : null}

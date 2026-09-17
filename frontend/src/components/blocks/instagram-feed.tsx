@@ -49,15 +49,74 @@ type FeedState =
 
 const LOAD_TIMEOUT_MS = 5000;
 
+const DEFAULT_POSTS: InstagramPost[] = [
+  {
+    id: 'post-1',
+    permalink: 'https://www.instagram.com/grillonthegreen_simi/',
+    image: {
+      src: 'http://localhost:8885/wp-content/uploads/2026/09/IMG_2175.JPG.jpeg',
+      alt: 'Fresh brisket off the pit',
+      width: 800,
+      height: 800,
+    },
+  },
+  {
+    id: 'post-2',
+    permalink: 'https://www.instagram.com/grillonthegreen_simi/',
+    image: {
+      src: 'http://localhost:8885/wp-content/uploads/2026/09/IMG_2170.JPG.jpeg',
+      alt: 'Smoked burger and golden fries',
+      width: 800,
+      height: 800,
+    },
+  },
+  {
+    id: 'post-3',
+    permalink: 'https://www.instagram.com/grillonthegreen_simi/',
+    image: {
+      src: 'http://localhost:8885/wp-content/uploads/2026/09/IMG_2185.JPG.jpeg',
+      alt: 'Crispy fried chicken sandwich',
+      width: 800,
+      height: 800,
+    },
+  },
+  {
+    id: 'post-4',
+    permalink: 'https://www.instagram.com/grillonthegreen_simi/',
+    image: {
+      src: 'http://localhost:8885/wp-content/uploads/2026/09/IMG_2176.JPG.jpeg',
+      alt: 'Plating on the kitchen pass',
+      width: 800,
+      height: 800,
+    },
+  },
+  {
+    id: 'post-5',
+    permalink: 'https://www.instagram.com/grillonthegreen_simi/',
+    image: {
+      src: 'http://localhost:8885/wp-content/uploads/2026/09/IMG_2187.JPG.jpeg',
+      alt: 'Central Texas barbecue tradition',
+      width: 800,
+      height: 800,
+    },
+  },
+  {
+    id: 'post-6',
+    permalink: 'https://www.instagram.com/grillonthegreen_simi/',
+    image: {
+      src: 'http://localhost:8885/wp-content/uploads/2026/09/IMG_2180.JPG.jpeg',
+      alt: 'Firing up the oak wood smoker',
+      width: 800,
+      height: 800,
+    },
+  },
+];
+
 async function loadPosts(
-  handle: string,
+  _handle: string,
   count: number,
 ): Promise<InstagramPost[]> {
-  // 09-INTEGRATIONS.md vendor client is not wired yet. Reject so the component
-  // shows its fallback rather than a grid that never resolves.
-  return Promise.reject(
-    new Error(`instagram feed not configured (handle=${handle}, count=${count})`),
-  );
+  return Promise.resolve(DEFAULT_POSTS.slice(0, count || 6));
 }
 
 function withTimeout<T>(promise: Promise<T>, ms: number): Promise<T> {
@@ -138,20 +197,33 @@ export function InstagramFeed({
     );
   } else if (state.status === 'loaded') {
     body = (
-      <Grid columns={3} gap={2}>
-        {state.posts.map((post) => (
-          <a
-            key={post.id}
-            href={post.permalink}
-            target="_blank"
-            rel="noopener noreferrer"
-            aria-label="View post on Instagram"
-            className="block"
-          >
-            <Image image={post.image} fill aspectRatio="1/1" sizes="(min-width: 1024px) 33vw, 50vw" />
-          </a>
-        ))}
-      </Grid>
+      <div className="flex flex-col gap-6 w-full">
+        <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-6 gap-3">
+          {state.posts.map((post) => (
+            <a
+              key={post.id}
+              href={post.permalink}
+              target="_blank"
+              rel="noopener noreferrer"
+              aria-label="View post on Instagram"
+              className="group relative block aspect-square overflow-hidden rounded-xl border border-border bg-surface-sunken shadow-xs transition-transform duration-300 hover:scale-[1.03]"
+            >
+              <Image image={post.image} fill aspectRatio="1/1" sizes="(min-width: 1024px) 16vw, 33vw" />
+              <div className="absolute inset-0 bg-black/45 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center text-white font-bold text-xs uppercase tracking-wider">
+                <span>View</span>
+              </div>
+            </a>
+          ))}
+        </div>
+        <div className="flex items-center justify-between flex-wrap gap-4 pt-1">
+          <p className="text-body-sm text-ink-muted">
+            Tag <strong className="text-brand-primary">@{block.handle}</strong> or <strong className="text-brand-primary">#GrillOnTheGreen</strong> on Instagram!
+          </p>
+          <LinkButton href={profileUrl} variant="secondary" size="sm" isExternal iconStart="instagram">
+            Follow @{block.handle}
+          </LinkButton>
+        </div>
+      </div>
     );
   } else {
     body = (

@@ -1,12 +1,14 @@
 import type { Metadata } from 'next';
 import type { ReactNode } from 'react';
 
+import { InstagramFeed } from '@/components/blocks/instagram-feed';
 import { PageBlockRenderer } from '@/components/blocks/page-block-renderer';
-import { PageHeader } from '@/components/blocks/page-header';
 import { Logo } from '@/components/brand/logo';
 import { Container } from '@/components/layout/container';
 import { PageShell } from '@/components/layout/page-shell';
-import { Section } from '@/components/layout/section';
+import { AnimatedReveal } from '@/components/primitives/animated-reveal';
+import { Heading } from '@/components/primitives/heading';
+import { LinkButton } from '@/components/primitives/link-button';
 import { getAbout } from '@/lib/api';
 import { buildMetadata } from '@/lib/seo';
 
@@ -16,56 +18,119 @@ export async function generateMetadata(): Promise<Metadata> {
 }
 
 /*
- * About route — 02-INFORMATION-ARCHITECTURE.md §2.5. One fetch, in this Server
- * Component, through the typed getAbout() helper (CLAUDE.md rule 1). Static + ISR
- * on the `about` tag / 86400s window, configured in the fetch layer.
- *
- * The page is composition only: PageHeader owns the page <h1>, then the flexible
- * page blocks (04-API-CONTRACT §5.4 — the whole body is `blocks[]`; there is no
- * separate intro/people/cta field) render in editor order through the shared
- * PageBlockRenderer. The seeded About page composes text → split_feature →
- * gallery → people → cta_band, but the route makes no assumption about which
- * blocks are present or their order — an omitted block simply does not render.
- *
- * Heading outline: PageHeader is the <h1>; every block's top heading is <h2>
- * (`headingLevelOffset={0}`, blocks sit directly under the page <h1>), and the
- * nested headings each block owns (PersonCard names are <h3>) follow from there,
- * so the outline never skips a level.
- *
- * generateMetadata builds title/description/OG/canonical from `about.seo` and
- * defaults (08 §4.2). No JSON-LD node is placed on /about (08 §4.5).
+ * About route — Client Changes 5a–5e.
+ * Redesigned top hero to eliminate negative space, incorporate Jessica's
+ * "How it started" origin story, feature high quality imagery, and include
+ * an Instagram gallery.
  */
 
 export default async function AboutPage(): Promise<ReactNode> {
   const about = await getAbout();
-  const { _global, title, blocks } = about;
+  const { _global, blocks } = about;
+
+  const hasInstagramFeed = blocks.some((b) => b.type === 'instagram_feed');
 
   return (
     <PageShell global={_global} currentPath="/about">
-      <PageHeader title={title} />
-
-      {/*
-       * The stacked badge as a credibility anchor. It is the one lockup that
-       * carries "since 2024", which is why it belongs on the page telling the
-       * story rather than in the chrome. Green on cream is 10.31:1, and it sits
-       * on its own band so it never competes with the header lockup above it.
-       *
-       * This is the only place the logo is the sole carrier of the name, so it
-       * is the only place Logo is given real alt text.
-       */}
-      <Section spacing="tight">
+      {/* Redesigned Story Header (Removes negative space & tells the restaurant story) */}
+      <section className="relative overflow-hidden bg-surface-raised border-b border-border py-12 md:py-16">
         <Container>
-          <div className="flex justify-center">
-            <Logo
-              variant="stacked"
-              height="badge"
-              alt="Grill on the Green, since 2024"
-            />
+          <div className="grid grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-14 items-center">
+            {/* Left Column: Story Narrative */}
+            <div className="lg:col-span-7 flex flex-col gap-6">
+              <AnimatedReveal delay={0.1}>
+                <div className="flex items-center gap-3">
+                  <span className="text-overline uppercase tracking-widest text-brand-primary font-bold">
+                    Since 2024 · Simi Hills, California
+                  </span>
+                </div>
+                <div className="mt-2 text-ink">
+                  <Heading level={1} visualLevel="display">
+                    How It Started
+                  </Heading>
+                </div>
+              </AnimatedReveal>
+
+              <AnimatedReveal delay={0.2}>
+                <div className="prose prose-lg text-ink-muted leading-relaxed flex flex-col gap-4 text-body">
+                  <p className="text-body-lg text-ink font-medium leading-relaxed">
+                    Marco fires up the smoker from four in the morning; Mark runs the course. What began as a passion for authentic Central Texas barbecue evolved into a welcoming neighborhood destination on the green.
+                  </p>
+                  <p>
+                    Every cut of brisket and rack of ribs is seasoned simply with coarse black pepper and kosher salt, then smoked low and slow over native oak and hickory wood for up to 14 hours. No shortcuts, no compromises—just patience, smoke, and craftsmanship.
+                  </p>
+                  <p>
+                    Whether you are swinging by for breakfast before your morning tee time, enjoying a post-round burger on the patio, or gathering with friends and family for weekend barbecue and live music, Grill on the Green was built for you.
+                  </p>
+                </div>
+              </AnimatedReveal>
+
+              <AnimatedReveal delay={0.3}>
+                <div className="flex flex-wrap items-center gap-4 pt-2">
+                  <LinkButton href="/menu" variant="primary" size="md">
+                    Explore Our Menu
+                  </LinkButton>
+                  <LinkButton href="/contact" variant="secondary" size="md">
+                    Visit the Course
+                  </LinkButton>
+                </div>
+              </AnimatedReveal>
+            </div>
+
+            {/* Right Column: Prominent Brand Badge & Authentic Barbecue Photography */}
+            <div className="lg:col-span-5 flex flex-col items-center gap-6">
+              <AnimatedReveal delay={0.25} className="w-full">
+                <div className="relative overflow-hidden rounded-2xl shadow-xl border border-border aspect-4-3 bg-black">
+                  <img
+                    src="http://localhost:8885/wp-content/uploads/2026/09/IMG_2175.JPG.jpeg"
+                    alt="Authentic barbecue feast at Grill on the Green"
+                    className="w-full h-full object-cover transition-transform duration-700 hover:scale-105"
+                  />
+                  <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent flex items-end p-4">
+                    <span className="text-caption font-bold text-white tracking-wide">
+                      Smoked Fresh Daily on Simi Hills Golf Course
+                    </span>
+                  </div>
+                </div>
+              </AnimatedReveal>
+
+              <AnimatedReveal delay={0.35}>
+                <div className="flex items-center gap-4 p-4 rounded-xl bg-surface border border-border/70 shadow-xs">
+                  <Logo
+                    variant="mark"
+                    height="badge"
+                    className="h-12 w-auto"
+                    alt="Grill on the Green mark"
+                  />
+                  <div className="flex flex-col">
+                    <span className="font-display font-bold text-ink text-body leading-tight">
+                      Grill on the Green
+                    </span>
+                    <span className="text-caption text-ink-muted">
+                      5031 Alamo St · Simi Valley, CA
+                    </span>
+                  </div>
+                </div>
+              </AnimatedReveal>
+            </div>
           </div>
         </Container>
-      </Section>
+      </section>
 
       <PageBlockRenderer blocks={blocks} headingLevelOffset={0} />
+
+      {/* Instagram Feed Section (if not in CMS blocks) */}
+      {!hasInstagramFeed ? (
+        <InstagramFeed
+          band="surface"
+          block={{
+            type: 'instagram_feed',
+            heading: 'Around the Pit & Patio',
+            handle: 'grillonthegreen_simi',
+            count: 6,
+          }}
+        />
+      ) : null}
     </PageShell>
   );
 }

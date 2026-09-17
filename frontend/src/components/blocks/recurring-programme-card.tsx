@@ -2,6 +2,7 @@ import type { ReactNode } from 'react';
 
 import { Container } from '@/components/layout/container';
 import { Section } from '@/components/layout/section';
+import { AnimatedReveal } from '@/components/primitives/animated-reveal';
 import { Heading } from '@/components/primitives/heading';
 import { Text } from '@/components/primitives/text';
 import { formatWallClockRange, formatWeekdaysPlural } from '@/lib/datetime';
@@ -36,19 +37,22 @@ export function RecurringProgrammeCard({
   return (
     <Section spacing="tight" ariaLabelledBy={headingId}>
       <Container>
-        <div className="border-brand bg-surface-raised flex flex-col gap-3 rounded-lg border p-6 shadow-sm md:p-8">
-          <Text as="span" size="overline" tone="muted" weight="semibold">
-            {daysLabel} · <time dateTime={recurring.starts}>{startLabel}</time>–
-            <time dateTime={recurring.ends}>{endLabel}</time>
-          </Text>
-          <Heading level={2} id={headingId}>
-            {recurring.heading}
-          </Heading>
-          <Text size="body-lg" tone="muted">
-            {recurring.body}
-          </Text>
-        </div>
+        <AnimatedReveal>
+          <div className="border-brand bg-surface-raised flex flex-col gap-3 rounded-lg border p-6 shadow-sm md:p-8">
+            <Text as="span" size="overline" tone="muted" weight="semibold">
+              {daysLabel} · <time dateTime={recurring.starts}>{startLabel}</time>–
+              <time dateTime={recurring.ends}>{endLabel}</time>
+            </Text>
+            <Heading level={2} id={headingId}>
+              {recurring.heading}
+            </Heading>
+            <Text size="body-lg" tone="muted">
+              {recurring.body}
+            </Text>
+          </div>
+        </AnimatedReveal>
       </Container>
     </Section>
   );
 }
+

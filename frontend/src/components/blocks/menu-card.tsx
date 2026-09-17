@@ -58,15 +58,15 @@ export function MenuCard({
     >
       <div className="flex flex-1 flex-col justify-between gap-2">
         <div>
-          <div className="flex items-baseline justify-between gap-2">
-            <span className="flex items-center gap-2">
+          <div className="flex flex-wrap items-baseline justify-between gap-x-4 gap-y-1">
+            <div className="flex items-center gap-2">
               <span className="font-bold text-ink group-hover:text-brand-primary transition-colors">
                 <Heading level={headingLevel} visualLevel="h4">
                   {item.name}
                 </Heading>
               </span>
               {item.spiceLevel !== 'none' ? (
-                <span className="text-accent">
+                <span className="text-accent inline-flex items-center">
                   <Icon
                     name="flame"
                     size={16}
@@ -74,18 +74,16 @@ export function MenuCard({
                   />
                 </span>
               ) : null}
-            </span>
+            </div>
 
-            {/* Menu pricing dotted leader style */}
-            <div className="flex-1 border-b border-dotted border-border/80 mx-2 hidden sm:block" />
-
-            <div className="font-bold text-brand-primary text-body">
+            {/* Clean, tightly-aligned price badge */}
+            <div className="font-display font-bold text-brand-primary text-body shrink-0">
               <PriceList variants={item.priceVariants} />
             </div>
           </div>
 
           {item.description !== undefined && item.description !== '' ? (
-            <div className="mt-1.5 leading-relaxed">
+            <div className="mt-1 leading-relaxed">
               <Text size="body-sm" tone="muted">
                 {item.description}
               </Text>

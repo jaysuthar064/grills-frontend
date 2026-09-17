@@ -256,6 +256,7 @@ export interface CtaBandBlock {
   body?: string;
   cta: CtaLink;
   style: 'brand' | 'ink' | 'surface';
+  image?: ImageObject;
 }
 
 export interface FeaturedItemsBlock {
