@@ -20,6 +20,8 @@ import { getContact } from '@/lib/api';
 import { contactJsonLd } from '@/lib/json-ld';
 import { buildMetadata } from '@/lib/seo';
 
+export const dynamic = 'force-dynamic';
+
 export async function generateMetadata(): Promise<Metadata> {
   const contact = await getContact();
   return buildMetadata(contact.seo, contact._global, '/contact');

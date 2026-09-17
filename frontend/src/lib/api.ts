@@ -62,16 +62,13 @@ function isApiError(value: unknown): value is ApiError {
  */
 async function fetchEndpoint<T>({
   path,
-  tag,
-  revalidate,
 }: EndpointConfig): Promise<T> {
   if (!WP_API_BASE) {
     throw new Error('WP_API_BASE_URL is not set');
   }
 
-  const isDev = process.env.NODE_ENV === 'development';
   const response = await fetch(`${WP_API_BASE}/wp-json/gotg/v1/${path}`, {
-    ...(isDev ? { cache: 'no-store' } : { next: { tags: [tag], revalidate } }),
+    cache: 'no-store',
     headers: { Accept: 'application/json' },
   });
 

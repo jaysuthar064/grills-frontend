@@ -29,6 +29,17 @@ function gotg_register_page_blocks_meta_box() {
 add_action( 'add_meta_boxes_page', 'gotg_register_page_blocks_meta_box' );
 
 /**
+ * Disables the block editor (Gutenberg) for pages so the headless Page Blocks editor
+ * is always the primary, reliable editing interface.
+ */
+add_filter( 'use_block_editor_for_post_type', function( $use, $post_type ) {
+	if ( 'page' === $post_type ) {
+		return false;
+	}
+	return $use;
+}, 10, 2 );
+
+/**
  * Renders the Page Blocks meta box.
  *
  * @param WP_Post $post Current page.
@@ -340,8 +351,9 @@ function gotg_render_text_block_fields( $prefix, array $b ) {
 	$body     = $b['body'] ?? '';
 	$width    = $b['width'] ?? 'narrow';
 	$align    = $b['align'] ?? 'center';
-	$image_id = absint( $b['image_id'] ?? 0 );
-	$video_id = absint( $b['video_id'] ?? 0 );
+	$image_id      = absint( $b['image_id'] ?? 0 );
+	$video_id      = absint( $b['video_id'] ?? 0 );
+	$media_display = sanitize_key( (string) ( $b['media_display'] ?? 'auto' ) );
 	?>
 	<div style="display:grid; grid-template-columns:1fr 1fr; gap:16px;">
 		<div style="grid-column:1 / -1;">
@@ -366,8 +378,8 @@ function gotg_render_text_block_fields( $prefix, array $b ) {
 							<span style="color:#999; font-size:12px;">No image chosen</span>
 						<?php endif; ?>
 					</div>
-					<button type="button" class="button gotg-choose-media-btn">Choose / Change Image</button>
-					<button type="button" class="button gotg-remove-image-btn" style="<?php echo $image_id ? '' : 'display:none;'; ?>">Remove Image</button>
+					<button type="button" class="button gotg-choose-image-btn gotg-choose-media-btn">Choose / Change Image</button>
+					<button type="button" class="button gotg-remove-image-btn gotg-remove-media-btn" style="<?php echo $image_id ? '' : 'display:none;'; ?>">Remove Image</button>
 				</div>
 			</div>
 		</div>
@@ -381,14 +393,40 @@ function gotg_render_text_block_fields( $prefix, array $b ) {
 					<div class="gotg-media-preview-box" style="margin-bottom:8px; min-height:80px; background:#fff; border:1px dashed #ccc; display:flex; flex-direction:column; align-items:center; justify-content:center; border-radius:4px; padding:10px;">
 						<?php if ( $video_id ) : ?>
 							<span class="dashicons dashicons-video-alt3" style="font-size:28px; width:28px; height:28px; color:#2271b1; margin-bottom:4px;"></span>
-							<strong style="font-size:12px;"><?php echo esc_html( basename( get_attached_file( $video_id ) ) ); ?></strong>
+							<strong style="font-size:12px;"><?php echo esc_html( basename( (string) get_attached_file( $video_id ) ) ); ?></strong>
 						<?php else : ?>
 							<span style="color:#999; font-size:12px;">No video chosen</span>
 						<?php endif; ?>
 					</div>
 					<button type="button" class="button gotg-choose-video-btn">Choose / Change Video</button>
-					<button type="button" class="button gotg-remove-image-btn" style="<?php echo $video_id ? '' : 'display:none;'; ?>">Remove Video</button>
+					<button type="button" class="button gotg-remove-image-btn gotg-remove-media-btn" style="<?php echo $video_id ? '' : 'display:none;'; ?>">Remove Video</button>
 				</div>
+				<p style="font-size:11px; color:#646970; margin:6px 0 0;">
+					💡 <em>Note: If a video is set, it plays as the section showcase. To show your photo instead, click <strong>Remove Video</strong> or select "Show Photo" below.</em>
+				</p>
+			</div>
+		</div>
+
+		<!-- Showcase Media Display Toggle -->
+		<div style="grid-column:1 / -1; background:#f0f6fc; border:1px solid #c8e1ff; border-radius:6px; padding:12px 16px;">
+			<label style="display:block; font-weight:700; color:#0969da; margin-bottom:8px;">Showcase Media on Frontend:</label>
+			<div style="display:flex; gap:18px; flex-wrap:wrap; font-size:13px;">
+				<label style="cursor:pointer; display:flex; align-items:center; gap:5px;">
+					<input type="radio" class="gotg-media-display-radio" name="<?php echo esc_attr( "{$prefix}[media_display]" ); ?>" value="auto" <?php checked( $media_display, 'auto' ); ?> />
+					<span>Auto (Video if set, else Photo)</span>
+				</label>
+				<label style="cursor:pointer; display:flex; align-items:center; gap:5px;">
+					<input type="radio" class="gotg-media-display-radio" name="<?php echo esc_attr( "{$prefix}[media_display]" ); ?>" value="photo" <?php checked( $media_display, 'photo' ); ?> />
+					<span>🖼️ <strong>Show Photo</strong></span>
+				</label>
+				<label style="cursor:pointer; display:flex; align-items:center; gap:5px;">
+					<input type="radio" class="gotg-media-display-radio" name="<?php echo esc_attr( "{$prefix}[media_display]" ); ?>" value="video" <?php checked( $media_display, 'video' ); ?> />
+					<span>🎥 <strong>Show Video</strong></span>
+				</label>
+				<label style="cursor:pointer; display:flex; align-items:center; gap:5px;">
+					<input type="radio" class="gotg-media-display-radio" name="<?php echo esc_attr( "{$prefix}[media_display]" ); ?>" value="none" <?php checked( $media_display, 'none' ); ?> />
+					<span>🚫 <strong>Text Only</strong> (No media)</span>
+				</label>
 			</div>
 		</div>
 
@@ -443,8 +481,8 @@ function gotg_render_cta_band_fields( $prefix, array $b ) {
 						<span style="color:#999; font-size:12px;">No custom image chosen (Uses default atmosphere)</span>
 					<?php endif; ?>
 				</div>
-				<button type="button" class="button gotg-choose-media-btn">Choose / Change Image</button>
-				<button type="button" class="button gotg-remove-image-btn" style="<?php echo $image_id ? '' : 'display:none;'; ?>">Remove Image</button>
+				<button type="button" class="button gotg-choose-image-btn gotg-choose-media-btn">Choose / Change Image</button>
+				<button type="button" class="button gotg-remove-image-btn gotg-remove-media-btn" style="<?php echo $image_id ? '' : 'display:none;'; ?>">Remove Image</button>
 			</div>
 		</div>
 

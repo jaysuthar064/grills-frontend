@@ -12,6 +12,8 @@ import { LinkButton } from '@/components/primitives/link-button';
 import { getAbout } from '@/lib/api';
 import { buildMetadata } from '@/lib/seo';
 
+export const dynamic = 'force-dynamic';
+
 export async function generateMetadata(): Promise<Metadata> {
   const about = await getAbout();
   return buildMetadata(about.seo, about._global, '/about');
@@ -21,12 +23,19 @@ export async function generateMetadata(): Promise<Metadata> {
  * About route — Client Changes 5a–5e.
  * Redesigned top hero to eliminate negative space, incorporate Jessica's
  * "How it started" origin story, feature high quality imagery, and include
- * an Instagram gallery.
+ * an Instagram gallery. Fully synced to WordPress Headless CMS blocks.
  */
 
 export default async function AboutPage(): Promise<ReactNode> {
   const about = await getAbout();
   const { _global, blocks } = about;
+
+  const firstBlock = blocks[0];
+  const isFirstBlockText = firstBlock?.type === 'text';
+  const displayBlocks = isFirstBlockText ? blocks.slice(1) : blocks;
+
+  const storyHeading = isFirstBlockText && firstBlock.heading ? firstBlock.heading : 'How It Started';
+  const storyImage = isFirstBlockText && firstBlock.image ? firstBlock.image.src : 'http://localhost:8885/wp-content/uploads/2026/09/IMG_2175.JPG.jpeg';
 
   const hasInstagramFeed = blocks.some((b) => b.type === 'instagram_feed');
 
@@ -46,23 +55,30 @@ export default async function AboutPage(): Promise<ReactNode> {
                 </div>
                 <div className="mt-2 text-ink">
                   <Heading level={1} visualLevel="display">
-                    How It Started
+                    {storyHeading}
                   </Heading>
                 </div>
               </AnimatedReveal>
 
               <AnimatedReveal delay={0.2}>
-                <div className="prose prose-lg text-ink-muted leading-relaxed flex flex-col gap-4 text-body">
-                  <p className="text-body-lg text-ink font-medium leading-relaxed">
-                    Marco fires up the smoker from four in the morning; Mark runs the course. What began as a passion for authentic Central Texas barbecue evolved into a welcoming neighborhood destination on the green.
-                  </p>
-                  <p>
-                    Every cut of brisket and rack of ribs is seasoned simply with coarse black pepper and kosher salt, then smoked low and slow over native oak and hickory wood for up to 14 hours. No shortcuts, no compromises—just patience, smoke, and craftsmanship.
-                  </p>
-                  <p>
-                    Whether you are swinging by for breakfast before your morning tee time, enjoying a post-round burger on the patio, or gathering with friends and family for weekend barbecue and live music, Grill on the Green was built for you.
-                  </p>
-                </div>
+                {isFirstBlockText && firstBlock.bodyHtml ? (
+                  <div
+                    className="prose prose-lg text-ink-muted leading-relaxed flex flex-col gap-4 text-body"
+                    dangerouslySetInnerHTML={{ __html: firstBlock.bodyHtml }}
+                  />
+                ) : (
+                  <div className="prose prose-lg text-ink-muted leading-relaxed flex flex-col gap-4 text-body">
+                    <p className="text-body-lg text-ink font-medium leading-relaxed">
+                      Marco fires up the smoker from four in the morning; Mark runs the course. What began as a passion for authentic Central Texas barbecue evolved into a welcoming neighborhood destination on the green.
+                    </p>
+                    <p>
+                      Every cut of brisket and rack of ribs is seasoned simply with coarse black pepper and kosher salt, then smoked low and slow over native oak and hickory wood for up to 14 hours. No shortcuts, no compromises—just patience, smoke, and craftsmanship.
+                    </p>
+                    <p>
+                      Whether you are swinging by for breakfast before your morning tee time, enjoying a post-round burger on the patio, or gathering with friends and family for weekend barbecue and live music, Grill on the Green was built for you.
+                    </p>
+                  </div>
+                )}
               </AnimatedReveal>
 
               <AnimatedReveal delay={0.3}>
@@ -82,8 +98,8 @@ export default async function AboutPage(): Promise<ReactNode> {
               <AnimatedReveal delay={0.25} className="w-full">
                 <div className="relative overflow-hidden rounded-2xl shadow-xl border border-border aspect-4-3 bg-black">
                   <img
-                    src="http://localhost:8885/wp-content/uploads/2026/09/IMG_2175.JPG.jpeg"
-                    alt="Authentic barbecue feast at Grill on the Green"
+                    src={storyImage}
+                    alt={storyHeading}
                     className="w-full h-full object-cover transition-transform duration-700 hover:scale-105"
                   />
                   <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent flex items-end p-4">
@@ -117,7 +133,7 @@ export default async function AboutPage(): Promise<ReactNode> {
         </Container>
       </section>
 
-      <PageBlockRenderer blocks={blocks} headingLevelOffset={0} />
+      <PageBlockRenderer blocks={displayBlocks} headingLevelOffset={0} />
 
       {/* Instagram Feed Section (if not in CMS blocks) */}
       {!hasInstagramFeed ? (

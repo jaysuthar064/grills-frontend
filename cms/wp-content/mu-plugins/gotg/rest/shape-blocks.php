@@ -135,19 +135,45 @@ function gotg_shape_text_block( array $block ) {
 		'align'    => 'center' === ( $block['align'] ?? '' ) ? 'center' : 'left',
 	);
 
-	$image_id = absint( $block['image_id'] ?? 0 );
-	if ( $image_id > 0 ) {
-		$image = gotg_shape_image( $image_id, 'gotg_card' );
-		if ( null !== $image ) {
-			$shaped['image'] = $image;
-		}
-	}
+	$media_display = sanitize_key( (string) ( $block['media_display'] ?? 'auto' ) );
+	$image_id      = absint( $block['image_id'] ?? 0 );
+	$video_id      = absint( $block['video_id'] ?? 0 );
 
-	$video_id = absint( $block['video_id'] ?? 0 );
-	if ( $video_id > 0 ) {
-		$video_url = wp_get_attachment_url( $video_id );
-		if ( $video_url ) {
-			$shaped['videoUrl'] = $video_url;
+	if ( 'photo' === $media_display ) {
+		if ( $image_id > 0 ) {
+			$image = gotg_shape_image( $image_id, 'gotg_card' );
+			if ( null !== $image ) {
+				$shaped['image'] = $image;
+			}
+		}
+	} elseif ( 'video' === $media_display ) {
+		if ( $video_id > 0 ) {
+			$video_url = wp_get_attachment_url( $video_id );
+			if ( $video_url ) {
+				$shaped['videoUrl'] = $video_url;
+			}
+		}
+		if ( $image_id > 0 ) {
+			$image = gotg_shape_image( $image_id, 'gotg_card' );
+			if ( null !== $image ) {
+				$shaped['image'] = $image;
+			}
+		}
+	} elseif ( 'none' === $media_display ) {
+		// Suppress media output
+	} else {
+		// Default / auto mode
+		if ( $image_id > 0 ) {
+			$image = gotg_shape_image( $image_id, 'gotg_card' );
+			if ( null !== $image ) {
+				$shaped['image'] = $image;
+			}
+		}
+		if ( $video_id > 0 ) {
+			$video_url = wp_get_attachment_url( $video_id );
+			if ( $video_url ) {
+				$shaped['videoUrl'] = $video_url;
+			}
 		}
 	}
 

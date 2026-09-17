@@ -8,6 +8,8 @@ import { getHome } from '@/lib/api';
 import { homeJsonLd } from '@/lib/json-ld';
 import { buildMetadata } from '@/lib/seo';
 
+export const dynamic = 'force-dynamic';
+
 export async function generateMetadata(): Promise<Metadata> {
   const home = await getHome();
   return buildMetadata(home.seo, home._global, '/');

@@ -42,9 +42,7 @@ const BUTTON_VARIANT = {
 
 export function CtaBand({ block }: CtaBandProps): ReactNode {
   const headingId = slugId('cta', block.heading);
-  const imageSrc =
-    block.image?.src ||
-    'http://localhost:8885/wp-content/uploads/2026/09/IMG_2175.JPG.jpeg';
+  const imageSrc = block.image?.src;
   const hasImage = Boolean(imageSrc);
   const isInverse = block.style !== 'surface' || hasImage;
   const style: CSSProperties = { paddingBlock: 'var(--section-y)' };

@@ -12,6 +12,8 @@ import { JsonLd } from '@/components/seo/json-ld';
 import { getAbout } from '@/lib/api';
 import { buildMetadata } from '@/lib/seo';
 
+export const dynamic = 'force-dynamic';
+
 export async function generateMetadata(): Promise<Metadata> {
   const data = await getAbout();
   const cateringSeo = {

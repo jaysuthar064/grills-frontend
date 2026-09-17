@@ -16,6 +16,8 @@ import { getEvents } from '@/lib/api';
 import { eventsJsonLd } from '@/lib/json-ld';
 import { buildMetadata } from '@/lib/seo';
 
+export const dynamic = 'force-dynamic';
+
 export async function generateMetadata(): Promise<Metadata> {
   const events = await getEvents();
   return buildMetadata(events.seo, events._global, '/events');

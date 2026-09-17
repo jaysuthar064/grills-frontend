@@ -17,6 +17,8 @@ import { getMenu } from '@/lib/api';
 import { menuJsonLd } from '@/lib/json-ld';
 import { buildMetadata } from '@/lib/seo';
 
+export const dynamic = 'force-dynamic';
+
 export async function generateMetadata(): Promise<Metadata> {
   const menu = await getMenu();
   return buildMetadata(menu.seo, menu._global, '/menu');

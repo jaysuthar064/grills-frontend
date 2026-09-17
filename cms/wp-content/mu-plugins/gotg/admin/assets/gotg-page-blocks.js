@@ -15,13 +15,13 @@
 		}
 
 		// ── 1. Single Image Picker ─────────────────────────────────────────
-		$(document).on('click', '.gotg-choose-image-btn', function (e) {
+		$(document).on('click', '.gotg-choose-image-btn, .gotg-choose-media-btn', function (e) {
 			e.preventDefault();
 			var $btn = $(this);
 			var $picker = $btn.closest('.gotg-media-picker');
 			var $input = $picker.find('.gotg-media-id-input');
 			var $preview = $picker.find('.gotg-media-preview-box');
-			var $remove = $picker.find('.gotg-remove-image-btn');
+			var $remove = $picker.find('.gotg-remove-image-btn, .gotg-remove-media-btn');
 
 			var frame = wp.media({
 				title: 'Select Image',
@@ -37,6 +37,9 @@
 				var url = (attachment.sizes && attachment.sizes.medium) ? attachment.sizes.medium.url : attachment.url;
 				$preview.html('<img src="' + url + '" style="max-height:120px; width:auto;" alt="" />');
 				$remove.show();
+
+				// If this block has a media display radio (e.g. Text Block), set to photo
+				$picker.closest('.gotg-block-card').find('.gotg-media-display-radio[value="photo"]').prop('checked', true);
 			});
 
 			frame.open();
@@ -49,7 +52,7 @@
 			var $picker = $btn.closest('.gotg-media-picker');
 			var $input = $picker.find('.gotg-media-id-input');
 			var $preview = $picker.find('.gotg-media-preview-box');
-			var $remove = $picker.find('.gotg-remove-image-btn');
+			var $remove = $picker.find('.gotg-remove-image-btn, .gotg-remove-media-btn');
 
 			var frame = wp.media({
 				title: 'Select Video (MP4)',
@@ -68,22 +71,36 @@
 					'<div style="color:#666; font-size:11px; margin-top:4px;">ID: ' + attachment.id + ' (Active Video)</div>'
 				);
 				$remove.show();
+
+				// If this block has a media display radio (e.g. Text Block), set to video
+				$picker.closest('.gotg-block-card').find('.gotg-media-display-radio[value="video"]').prop('checked', true);
 			});
 
 			frame.open();
 		});
 
 		// ── Remove Media (Image or Video) ──────────────────────────────────
-		$(document).on('click', '.gotg-remove-image-btn', function (e) {
+		$(document).on('click', '.gotg-remove-image-btn, .gotg-remove-media-btn', function (e) {
 			e.preventDefault();
 			var $btn = $(this);
 			var $picker = $btn.closest('.gotg-media-picker');
+			var $card = $btn.closest('.gotg-block-card');
 			var $input = $picker.find('.gotg-media-id-input');
 			var $preview = $picker.find('.gotg-media-preview-box');
 
 			$input.val('0');
 			$preview.html('<span style="color:#999; font-size:12px;">No media chosen</span>');
 			$btn.hide();
+
+			// Auto update showcase toggle if present
+			var isVideoPicker = $picker.data('picker') === 'video';
+			if (isVideoPicker) {
+				var hasImage = parseInt($card.find('[data-picker="image"] .gotg-media-id-input').val(), 10) > 0;
+				$card.find('.gotg-media-display-radio[value="' + (hasImage ? 'photo' : 'none') + '"]').prop('checked', true);
+			} else {
+				var hasVideo = parseInt($card.find('[data-picker="video"] .gotg-media-id-input').val(), 10) > 0;
+				$card.find('.gotg-media-display-radio[value="' + (hasVideo ? 'video' : 'none') + '"]').prop('checked', true);
+			}
 		});
 
 		// ── 3. Multi-Image Gallery Picker ──────────────────────────────────
