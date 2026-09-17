@@ -105,10 +105,19 @@ export function MonthCalendar({ events }: MonthCalendarProps): ReactNode {
               </div>
             </div>
 
-            {/* Calendar Grid */}
-            <div className="bg-surface-raised rounded-2xl border border-border shadow-xs overflow-hidden">
-              {/* Day of Week Header */}
-              <div className="grid grid-cols-7 border-b border-border bg-surface-sunken">
+            {/* Mobile Swipe Hint */}
+            <div className="flex sm:hidden items-center justify-between text-[11px] text-ink-muted px-1 -mb-3">
+              <span className="flex items-center gap-1.5 font-medium">
+                <span>👈👉</span> Swipe horizontally to view full calendar
+              </span>
+              <span className="font-bold text-brand-primary">7-Day Grid</span>
+            </div>
+
+            {/* Calendar Grid Container (Horizontally scrollable on small mobile viewports) */}
+            <div className="w-full overflow-x-auto -mx-4 sm:mx-0 px-4 sm:px-0 pb-2">
+              <div className="min-w-[620px] bg-surface-raised rounded-2xl border border-border shadow-xs overflow-hidden">
+                {/* Day of Week Header */}
+                <div className="grid grid-cols-7 border-b border-border bg-surface-sunken">
                 {DAYS_OF_WEEK.map((day) => (
                   <div
                     key={day}
@@ -179,7 +188,8 @@ export function MonthCalendar({ events }: MonthCalendarProps): ReactNode {
               </div>
             </div>
           </div>
-        </AnimatedReveal>
+        </div>
+      </AnimatedReveal>
       </Container>
     </Section>
   );

@@ -1,7 +1,14 @@
-import type { Metadata } from 'next';
+import type { Metadata, Viewport } from 'next';
 import type { ReactNode } from 'react';
 
 import '@/styles/globals.css';
+
+export const viewport: Viewport = {
+  width: 'device-width',
+  initialScale: 1,
+  maximumScale: 5,
+  themeColor: '#141210',
+};
 
 /*
  * Root fallback only. Every route builds its own metadata from the CMS via

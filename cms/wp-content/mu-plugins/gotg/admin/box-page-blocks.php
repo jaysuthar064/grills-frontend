@@ -157,7 +157,7 @@ function gotg_render_hero_block_fields( $prefix, array $b ) {
 	$s_label    = $b['secondary_cta_label'] ?? '';
 	$s_url      = $b['secondary_cta_url'] ?? '';
 	?>
-	<div style="display:grid; grid-template-columns:1fr 1fr; gap:16px;">
+	<div class="gotg-grid-2col">
 		<div style="grid-column:1 / -1;">
 			<label style="display:block; font-weight:600; margin-bottom:4px;">Eyebrow (Optional Script Line)</label>
 			<input type="text" name="<?php echo esc_attr( "{$prefix}[eyebrow]" ); ?>" value="<?php echo esc_attr( $eyebrow ); ?>" style="width:100%;" placeholder="e.g. Smoke & Fire" />
@@ -246,7 +246,7 @@ function gotg_render_split_feature_fields( $prefix, array $b ) {
 	$cta_label  = $b['cta_label'] ?? '';
 	$cta_url    = $b['cta_url'] ?? '';
 	?>
-	<div style="display:grid; grid-template-columns:1fr 1fr; gap:16px;">
+	<div class="gotg-grid-2col">
 		<div style="grid-column:1 / -1;">
 			<label style="display:block; font-weight:600; margin-bottom:4px;">Section Headline</label>
 			<input type="text" name="<?php echo esc_attr( "{$prefix}[heading]" ); ?>" value="<?php echo esc_attr( $heading ); ?>" style="width:100%; font-weight:600;" required />
@@ -355,7 +355,7 @@ function gotg_render_text_block_fields( $prefix, array $b ) {
 	$video_id      = absint( $b['video_id'] ?? 0 );
 	$media_display = sanitize_key( (string) ( $b['media_display'] ?? 'auto' ) );
 	?>
-	<div style="display:grid; grid-template-columns:1fr 1fr; gap:16px;">
+	<div class="gotg-grid-2col">
 		<div style="grid-column:1 / -1;">
 			<label style="display:block; font-weight:600; margin-bottom:4px;">Section Headline</label>
 			<input type="text" name="<?php echo esc_attr( "{$prefix}[heading]" ); ?>" value="<?php echo esc_attr( $heading ); ?>" style="width:100%; font-weight:600;" />
@@ -459,7 +459,7 @@ function gotg_render_cta_band_fields( $prefix, array $b ) {
 	$cta_url   = $b['cta_url'] ?? '';
 	$image_id  = absint( $b['image_id'] ?? 0 );
 	?>
-	<div style="display:grid; grid-template-columns:1fr 1fr; gap:16px;">
+	<div class="gotg-grid-2col">
 		<div style="grid-column:1 / -1;">
 			<label style="display:block; font-weight:600; margin-bottom:4px;">Banner Headline</label>
 			<input type="text" name="<?php echo esc_attr( "{$prefix}[heading]" ); ?>" value="<?php echo esc_attr( $heading ); ?>" style="width:100%; font-weight:600;" />

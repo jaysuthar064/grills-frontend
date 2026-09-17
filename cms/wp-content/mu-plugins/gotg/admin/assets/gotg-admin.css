@@ -121,3 +121,51 @@
 .gotg-flags-summary li {
 	margin: 0 0 0.25rem;
 }
+
+/* ── Responsive Page Blocks Admin Layout ──────────────────────────────────── */
+.gotg-grid-2col {
+	display: grid;
+	grid-template-columns: 1fr 1fr;
+	gap: 16px;
+}
+
+.gotg-block-card {
+	margin-bottom: 20px;
+	border: 1px solid #c3c4c7;
+	border-radius: 6px;
+	background: #fff;
+	box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+	overflow: hidden;
+}
+
+.gotg-media-picker .button {
+	margin-top: 4px;
+}
+
+@media (max-width: 782px) {
+	.gotg-grid-2col {
+		grid-template-columns: 1fr !important;
+		gap: 12px !important;
+	}
+
+	.gotg-block-card {
+		margin-bottom: 16px !important;
+	}
+
+	.gotg-media-picker .button {
+		width: 100% !important;
+		text-align: center !important;
+		margin-bottom: 6px !important;
+		padding: 6px 12px !important;
+		height: auto !important;
+	}
+
+	.gotg-media-display-options {
+		flex-direction: column !important;
+		gap: 8px !important;
+	}
+
+	.gotg-gallery-thumbnails {
+		justify-content: center !important;
+	}
+}

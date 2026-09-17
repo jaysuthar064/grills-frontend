@@ -135,7 +135,7 @@ export function Hero({ block, isPrimary = false }: HeroProps): ReactNode {
           type="button"
           onClick={toggleVideo}
           aria-label={isPlaying ? 'Pause background video' : 'Play background video'}
-          className="absolute bottom-6 right-6 z-20 flex h-10 w-10 items-center justify-center rounded-full bg-black/50 text-white backdrop-blur-md transition-all hover:bg-black/75 hover:scale-110 focus:outline-none focus:ring-2 focus:ring-accent border border-white/20"
+          className="absolute bottom-20 md:bottom-6 right-6 z-20 flex h-10 w-10 items-center justify-center rounded-full bg-black/50 text-white backdrop-blur-md transition-all hover:bg-black/75 hover:scale-110 focus:outline-none focus:ring-2 focus:ring-accent border border-white/20"
         >
           {isPlaying ? (
             <svg className="h-4 w-4 fill-current" viewBox="0 0 24 24">
@@ -153,7 +153,7 @@ export function Hero({ block, isPrimary = false }: HeroProps): ReactNode {
       {/* Subtle Scroll Down Prompt */}
       <div
         aria-hidden="true"
-        className="pointer-events-none absolute bottom-6 left-1/2 -translate-x-1/2 z-20 flex flex-col items-center gap-1.5 opacity-70 transition-opacity hover:opacity-100"
+        className="pointer-events-none absolute bottom-20 md:bottom-6 left-1/2 -translate-x-1/2 z-20 flex flex-col items-center gap-1.5 opacity-70 transition-opacity hover:opacity-100"
       >
         <span className="text-[11px] font-body uppercase tracking-[0.25em] text-white/80 drop-shadow-sm font-medium">
           Scroll

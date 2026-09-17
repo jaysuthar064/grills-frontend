@@ -69,7 +69,7 @@ export function TextSection({
           {/* Cinematic Photo or Video Showcase */}
           {block.videoUrl ? (
             <AnimatedReveal delay={0.2} className="w-full">
-              <div className="w-full max-w-4xl mx-auto aspect-16-9 md:aspect-21-9 rounded-2xl md:rounded-3xl overflow-hidden shadow-2xl border border-border/50 relative bg-black">
+              <div className="w-full max-w-4xl mx-auto aspect-4-3 sm:aspect-16-9 md:aspect-21-9 rounded-2xl md:rounded-3xl overflow-hidden shadow-2xl border border-border/50 relative bg-black">
                 <video
                   autoPlay
                   loop
@@ -84,7 +84,7 @@ export function TextSection({
             </AnimatedReveal>
           ) : block.image ? (
             <AnimatedReveal delay={0.2} className="w-full">
-              <div className="w-full max-w-4xl mx-auto aspect-16-9 md:aspect-21-9 rounded-2xl md:rounded-3xl overflow-hidden shadow-2xl border border-border/50 relative">
+              <div className="w-full max-w-4xl mx-auto aspect-4-3 sm:aspect-16-9 md:aspect-21-9 rounded-2xl md:rounded-3xl overflow-hidden shadow-2xl border border-border/50 relative">
                 <Image
                   image={block.image}
                   fill
