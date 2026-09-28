@@ -46,7 +46,7 @@ export function Hero({ block, isPrimary = false }: HeroProps): ReactNode {
   };
 
   const hasVideo = videoSrc !== undefined && videoSrc !== '';
-  const overlayOpacity = Math.max((block.overlay ?? 50) / 100, 0.45);
+  const overlayOpacity = typeof block.overlay === 'number' ? block.overlay / 100 : 0.4;
 
   return (
     <section
@@ -77,19 +77,16 @@ export function Hero({ block, isPrimary = false }: HeroProps): ReactNode {
         </div>
       ) : null}
 
-      {/* Cinematic Dark Multi-layer Vignette & Scrim (Full-bleed, open layout) */}
+      {/* Cinematic Dark Gradient Scrim — keeps video clearly visible and vibrant while ensuring text legibility */}
       <div
         aria-hidden="true"
-        className="absolute inset-0 bg-black transition-opacity"
-        style={{ opacity: Math.max(overlayOpacity, 0.5) }}
+        className="absolute inset-0 bg-gradient-to-b from-black/70 via-black/25 to-black/75 transition-opacity"
+        style={{ opacity: overlayOpacity }}
       />
+      {/* Soft radial focus behind logo and center text */}
       <div
         aria-hidden="true"
-        className="absolute inset-0 bg-gradient-to-b from-black/80 via-black/40 to-black/85 transition-opacity"
-      />
-      <div
-        aria-hidden="true"
-        className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,rgba(0,0,0,0.35)_0%,rgba(0,0,0,0.8)_100%)] pointer-events-none"
+        className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,rgba(0,0,0,0.15)_0%,rgba(0,0,0,0.55)_100%)] pointer-events-none"
       />
 
       {/* Center Hero Content (Open, Full-Bleed — Logo, Text, Buttons) */}
