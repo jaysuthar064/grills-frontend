@@ -68,6 +68,36 @@ function gotg_block_optional_string( array &$shaped, array $block, $out_key, $st
 }
 
 /**
+ * Resolves a video attachment ID to a streaming-optimized URL.
+ * Prefers .mp4 sibling over .mov for universal browser streaming support.
+ *
+ * @param int $video_id Media attachment ID.
+ * @return string|null Resolved video URL or null.
+ */
+function gotg_resolve_video_url( $video_id ) {
+	$video_id = absint( $video_id );
+	if ( $video_id <= 0 ) {
+		return null;
+	}
+
+	$video_url = wp_get_attachment_url( $video_id );
+	if ( ! $video_url ) {
+		return null;
+	}
+
+	if ( preg_match( '/\.mov$/i', $video_url ) ) {
+		$mp4_url = preg_replace( '/\.mov$/i', '.mp4', $video_url );
+		$upload_dir = wp_upload_dir();
+		$mp4_file = str_replace( $upload_dir['baseurl'], $upload_dir['basedir'], $mp4_url );
+		if ( file_exists( $mp4_file ) ) {
+			return $mp4_url;
+		}
+	}
+
+	return $video_url;
+}
+
+/**
  * Shapes a hero block.
  *
  * @param array $block Stored block.
@@ -95,12 +125,9 @@ function gotg_shape_hero_block( array $block ) {
 	);
 
 	// Resolve video attachment URL from the stored media library ID.
-	$video_id = (int) ( $block['video_id'] ?? 0 );
-	if ( $video_id > 0 ) {
-		$video_url = wp_get_attachment_url( $video_id );
-		if ( $video_url ) {
-			$shaped['videoUrl'] = $video_url;
-		}
+	$video_url = gotg_resolve_video_url( $block['video_id'] ?? 0 );
+	if ( $video_url ) {
+		$shaped['videoUrl'] = $video_url;
 	}
 
 	gotg_block_optional_string( $shaped, $block, 'subheading', 'subheading' );
@@ -148,7 +175,7 @@ function gotg_shape_text_block( array $block ) {
 		}
 	} elseif ( 'video' === $media_display ) {
 		if ( $video_id > 0 ) {
-			$video_url = wp_get_attachment_url( $video_id );
+			$video_url = gotg_resolve_video_url( $video_id );
 			if ( $video_url ) {
 				$shaped['videoUrl'] = $video_url;
 			}
@@ -170,7 +197,7 @@ function gotg_shape_text_block( array $block ) {
 			}
 		}
 		if ( $video_id > 0 ) {
-			$video_url = wp_get_attachment_url( $video_id );
+			$video_url = gotg_resolve_video_url( $video_id );
 			if ( $video_url ) {
 				$shaped['videoUrl'] = $video_url;
 			}

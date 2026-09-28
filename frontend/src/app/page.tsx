@@ -6,6 +6,7 @@ import { PageShell } from '@/components/layout/page-shell';
 import { JsonLd } from '@/components/seo/json-ld';
 import { getHome } from '@/lib/api';
 import { homeJsonLd } from '@/lib/json-ld';
+import { normalizeMediaUrl } from '@/lib/media';
 import { buildMetadata } from '@/lib/seo';
 
 export const dynamic = 'force-dynamic';
@@ -48,14 +49,18 @@ export default async function HomePage(): Promise<ReactNode> {
   const home = await getHome();
   const { _global, blocks } = home;
 
-  // Enhance blocks with client-provided assets:
-  // 1. Replace main hero background video with new B-roll video (Frame.io)
-  // 2. Feature client's high-quality food photography
+  // Enhance blocks with headless CMS synchronization & client assets
   const enhancedBlocks = blocks.map((block) => {
     if (block.type === 'hero') {
+      const rawUrl = block.videoUrl && block.videoUrl !== '' ? block.videoUrl : '/media/hero-broll.mp4';
+      // In production/remote, ensure localhost:8885 is mapped to public WP host
+      const normalizedUrl = process.env.NODE_ENV === 'production' ? normalizeMediaUrl(rawUrl) : rawUrl;
+      // Prefer faststart MP4 over raw MOV for universal browser streaming support
+      const videoUrl = normalizedUrl.replace(/\.mov$/i, '.mp4');
+
       return {
         ...block,
-        videoUrl: '/media/hero-broll.mp4',
+        videoUrl,
       };
     }
     if (block.type === 'featured_items') {
@@ -68,6 +73,18 @@ export default async function HomePage(): Promise<ReactNode> {
               image: {
                 src: '/media/burger-patio.jpg',
                 alt: 'Grill on the Green Double Cheeseburger on the patio',
+                width: 800,
+                height: 600,
+              },
+            };
+          }
+          // Replace 2KB solid brown placeholder seed image with real smoked brisket photo
+          if (item.slug === 'bbq-brisket-plate' || item.image?.src?.includes('brisket-plate.png')) {
+            return {
+              ...item,
+              image: {
+                src: 'https://grills.launchpreview.live/wp-content/uploads/2026/09/IMG_2175.JPG.jpeg',
+                alt: 'Freshly sliced smoked beef brisket plate',
                 width: 800,
                 height: 600,
               },
