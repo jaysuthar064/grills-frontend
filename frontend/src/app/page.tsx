@@ -48,11 +48,43 @@ export default async function HomePage(): Promise<ReactNode> {
   const home = await getHome();
   const { _global, blocks } = home;
 
+  // Enhance blocks with client-provided assets:
+  // 1. Replace main hero background video with new B-roll video (Frame.io)
+  // 2. Feature client's high-quality food photography
+  const enhancedBlocks = blocks.map((block) => {
+    if (block.type === 'hero') {
+      return {
+        ...block,
+        videoUrl: '/media/hero-broll.mp4',
+      };
+    }
+    if (block.type === 'featured_items') {
+      return {
+        ...block,
+        items: block.items.map((item) => {
+          if (item.slug === 'grill-on-the-green-cheeseburger') {
+            return {
+              ...item,
+              image: {
+                src: '/media/burger-patio.jpg',
+                alt: 'Grill on the Green Double Cheeseburger on the patio',
+                width: 800,
+                height: 600,
+              },
+            };
+          }
+          return item;
+        }),
+      };
+    }
+    return block;
+  });
+
   return (
     <>
       <JsonLd data={homeJsonLd(_global)} />
       <PageShell global={_global} currentPath="/">
-        <PageBlockRenderer blocks={blocks} headingLevelOffset={0} />
+        <PageBlockRenderer blocks={enhancedBlocks} headingLevelOffset={0} />
       </PageShell>
     </>
   );

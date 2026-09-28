@@ -28,6 +28,9 @@
 /frontend/.env
 /frontend/.env.local
 
+# Raw source media
+/assets/
+
 # OS/editor noise.
 Thumbs.db
 .DS_Store

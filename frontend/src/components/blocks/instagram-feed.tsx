@@ -55,8 +55,8 @@ const DEFAULT_POSTS: InstagramPost[] = [
     id: 'post-1',
     permalink: 'https://www.instagram.com/grillonthegreen_simi/',
     image: {
-      src: getWpUploadUrl('IMG_2175.JPG.jpeg'),
-      alt: 'Fresh brisket off the pit',
+      src: '/media/burger-patio.jpg',
+      alt: 'Grill on the Green Double Cheeseburger served on the patio',
       width: 800,
       height: 800,
     },
@@ -65,8 +65,8 @@ const DEFAULT_POSTS: InstagramPost[] = [
     id: 'post-2',
     permalink: 'https://www.instagram.com/grillonthegreen_simi/',
     image: {
-      src: getWpUploadUrl('IMG_2170.JPG.jpeg'),
-      alt: 'Smoked burger and golden fries',
+      src: '/media/bbq-salad.jpg',
+      alt: 'BBQ Chopped Salad loaded with chicken and fresh greens',
       width: 800,
       height: 800,
     },
@@ -75,8 +75,8 @@ const DEFAULT_POSTS: InstagramPost[] = [
     id: 'post-3',
     permalink: 'https://www.instagram.com/grillonthegreen_simi/',
     image: {
-      src: getWpUploadUrl('IMG_2185.JPG.jpeg'),
-      alt: 'Crispy fried chicken sandwich',
+      src: '/media/fairway-hotdog.jpg',
+      alt: 'Nathan’s All Beef Hot Dog on the 18th hole fairway',
       width: 800,
       height: 800,
     },
@@ -85,8 +85,8 @@ const DEFAULT_POSTS: InstagramPost[] = [
     id: 'post-4',
     permalink: 'https://www.instagram.com/grillonthegreen_simi/',
     image: {
-      src: getWpUploadUrl('IMG_2176.JPG.jpeg'),
-      alt: 'Plating on the kitchen pass',
+      src: '/media/club-sandwich.jpg',
+      alt: 'Clubhouse Sandwich with roasted turkey, ham and bacon',
       width: 800,
       height: 800,
     },
@@ -95,8 +95,8 @@ const DEFAULT_POSTS: InstagramPost[] = [
     id: 'post-5',
     permalink: 'https://www.instagram.com/grillonthegreen_simi/',
     image: {
-      src: getWpUploadUrl('IMG_2187.JPG.jpeg'),
-      alt: 'Central Texas barbecue tradition',
+      src: getWpUploadUrl('IMG_2175.JPG.jpeg'),
+      alt: 'Fresh brisket sliced straight off the smoker',
       width: 800,
       height: 800,
     },
@@ -106,7 +106,7 @@ const DEFAULT_POSTS: InstagramPost[] = [
     permalink: 'https://www.instagram.com/grillonthegreen_simi/',
     image: {
       src: getWpUploadUrl('IMG_2180.JPG.jpeg'),
-      alt: 'Firing up the oak wood smoker',
+      alt: 'Firing up the oak wood smoker at dawn',
       width: 800,
       height: 800,
     },

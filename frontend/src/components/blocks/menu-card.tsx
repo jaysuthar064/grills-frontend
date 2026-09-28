@@ -3,6 +3,7 @@ import type { ReactNode } from 'react';
 import { Badge } from '@/components/primitives/badge';
 import { Heading } from '@/components/primitives/heading';
 import { Icon } from '@/components/primitives/icons/icon';
+import { Image } from '@/components/primitives/image';
 import { PriceList } from '@/components/primitives/price-list';
 import { Text } from '@/components/primitives/text';
 import { cn } from '@/lib/cn';
@@ -13,11 +14,6 @@ import type { DietaryColor, MenuItem, SpiceLevel } from '@/types/api';
  * Renders <article> with no interactive elements. Prices go through PriceList
  * (one or many variants). Every optional field degrades: no image collapses to
  * text-only, no description omits the node, no dietary tags omit the list.
- *
- * The image is full-width at 3/2 on mobile and a 96px square (1/1) leading
- * thumbnail at md, per spec — expressed with the aspect-ratio token utilities
- * (aspect-3-2 md:aspect-square, 05-DESIGN-SYSTEM.md §4.4). The wrapper owns the
- * ratio and the sunken degrade box; Image fills it.
  */
 
 export interface MenuCardProps {
@@ -47,17 +43,40 @@ export function MenuCard({
   variant = 'default',
   headingLevel = 4,
 }: MenuCardProps): ReactNode {
+  const hasImage = Boolean(item.image?.src);
+
   return (
     <article
       className={cn(
-        'group flex flex-col justify-between gap-2 rounded-xl border p-4 transition-all duration-300',
+        'group flex flex-col justify-between gap-3 rounded-xl border p-4 transition-all duration-300',
         variant === 'featured'
-          ? 'border-brand-primary bg-brand-primary-subtle/20 shadow-md hover:shadow-lg'
-          : 'border-border bg-surface hover:border-brand-primary/30 hover:shadow-sm'
+          ? 'border-brand-primary/40 bg-surface shadow-md hover:shadow-xl hover:border-brand-primary'
+          : 'border-border bg-surface hover:border-brand-primary/40 hover:shadow-md'
       )}
     >
-      <div className="flex flex-1 flex-col justify-between gap-2">
-        <div>
+      {/* Featured Variant: Full top banner image */}
+      {variant === 'featured' && hasImage && item.image ? (
+        <div className="relative aspect-16-9 w-full overflow-hidden rounded-lg bg-surface-sunken shadow-xs">
+          <Image
+            image={item.image}
+            fill
+            sizes="(min-width: 1024px) 33vw, (min-width: 768px) 50vw, 100vw"
+          />
+          <div className="absolute top-2.5 left-2.5 z-10">
+            <span className="inline-flex items-center gap-1 rounded-full bg-black/75 px-2.5 py-1 text-[11px] font-bold uppercase tracking-wider text-accent backdrop-blur-md border border-accent/30 shadow-xs">
+              ★ Signature
+            </span>
+          </div>
+        </div>
+      ) : null}
+
+      <div
+        className={cn(
+          'flex flex-1 gap-4',
+          variant === 'default' && hasImage ? 'items-start justify-between' : 'flex-col justify-between'
+        )}
+      >
+        <div className="flex-1 min-w-0">
           <div className="flex flex-wrap items-baseline justify-between gap-x-4 gap-y-1">
             <div className="flex items-center gap-2">
               <span className="font-bold text-ink group-hover:text-brand-primary transition-colors">
@@ -83,24 +102,35 @@ export function MenuCard({
           </div>
 
           {item.description !== undefined && item.description !== '' ? (
-            <div className="mt-1 leading-relaxed">
+            <div className="mt-1.5 leading-relaxed">
               <Text size="body-sm" tone="muted">
                 {item.description}
               </Text>
             </div>
           ) : null}
+
+          {item.dietaryTags.length > 0 ? (
+            <ul aria-label="Dietary information" className="flex flex-wrap gap-2 pt-2">
+              {item.dietaryTags.map((tag) => (
+                <li key={tag.slug}>
+                  <Badge tone={DIETARY_TONE[tag.color]} title={tag.description}>
+                    {tag.abbreviation}
+                  </Badge>
+                </li>
+              ))}
+            </ul>
+          ) : null}
         </div>
 
-        {item.dietaryTags.length > 0 ? (
-          <ul aria-label="Dietary information" className="flex flex-wrap gap-2 pt-1">
-            {item.dietaryTags.map((tag) => (
-              <li key={tag.slug}>
-                <Badge tone={DIETARY_TONE[tag.color]} title={tag.description}>
-                  {tag.abbreviation}
-                </Badge>
-              </li>
-            ))}
-          </ul>
+        {/* Default Variant: Side thumbnail when image exists */}
+        {variant === 'default' && hasImage && item.image ? (
+          <div className="relative shrink-0 w-24 h-24 sm:w-28 sm:h-28 overflow-hidden rounded-lg bg-surface-sunken border border-border shadow-xs transition-transform duration-300 group-hover:scale-105">
+            <Image
+              image={item.image}
+              fill
+              sizes="(min-width: 640px) 112px, 96px"
+            />
+          </div>
         ) : null}
       </div>
     </article>
