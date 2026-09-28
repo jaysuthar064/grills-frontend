@@ -77,32 +77,32 @@ export function Hero({ block, isPrimary = false }: HeroProps): ReactNode {
         </div>
       ) : null}
 
-      {/* Cinematic Dark Multi-layer Vignette & Scrim (Fixes background brightness & video glare, synced with CMS overlay slider) */}
+      {/* Cinematic Dark Multi-layer Vignette & Scrim (Full-bleed, open layout) */}
       <div
         aria-hidden="true"
         className="absolute inset-0 bg-black transition-opacity"
-        style={{ opacity: overlayOpacity }}
+        style={{ opacity: Math.max(overlayOpacity, 0.5) }}
       />
       <div
         aria-hidden="true"
-        className="absolute inset-0 bg-gradient-to-b from-black/85 via-black/45 to-black/90 transition-opacity"
+        className="absolute inset-0 bg-gradient-to-b from-black/80 via-black/40 to-black/85 transition-opacity"
       />
       <div
         aria-hidden="true"
-        className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,rgba(0,0,0,0.5)_0%,rgba(0,0,0,0.85)_100%)] pointer-events-none"
+        className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,rgba(0,0,0,0.35)_0%,rgba(0,0,0,0.8)_100%)] pointer-events-none"
       />
 
-      {/* Center Hero Content (Frosted Glass Card so Logo & Text POP UP) */}
-      <div className="relative z-10 flex min-h-[100svh] w-full flex-col items-center justify-center px-4 py-24 sm:py-28 text-center sm:px-6 lg:px-8">
-        <div className="flex max-w-2xl flex-col items-center gap-6 rounded-3xl p-6 sm:p-10 md:p-12 backdrop-blur-md bg-black/50 border border-white/15 shadow-[0_25px_60px_rgba(0,0,0,0.85)] ring-1 ring-white/10 transition-all hover:border-white/25">
+      {/* Center Hero Content (Open, Full-Bleed — Logo, Text, Buttons) */}
+      <div className="relative z-10 flex min-h-[100svh] w-full flex-col items-center justify-center px-4 py-28 text-center sm:px-6 lg:px-8">
+        <div className="flex max-w-3xl flex-col items-center gap-7">
           {/* Main Brand Logo Lockup */}
           <AnimatedReveal delay={0.15}>
-            <div className="flex flex-col items-center drop-shadow-[0_12px_28px_rgba(0,0,0,0.95)] transition-transform hover:scale-[1.02]">
+            <div className="flex flex-col items-center drop-shadow-[0_12px_24px_rgba(0,0,0,0.85)] transition-transform hover:scale-[1.02]">
               <Logo
                 variant="stacked-reverse"
                 height="badge"
                 priority
-                className="h-auto w-[220px] sm:w-[300px] md:w-[360px] lg:w-[400px] max-w-full drop-shadow-[0_4px_16px_rgba(0,0,0,0.9)]"
+                className="h-auto w-[240px] sm:w-[320px] md:w-[380px] lg:w-[420px] max-w-full drop-shadow-[0_4px_16px_rgba(0,0,0,0.8)]"
                 alt="Grill on the Green"
               />
             </div>
@@ -118,30 +118,30 @@ export function Hero({ block, isPrimary = false }: HeroProps): ReactNode {
           {/* Subheading / Tagline from CMS */}
           {block.subheading ? (
             <AnimatedReveal delay={0.25}>
-              <p className="max-w-lg text-balance text-body-sm sm:text-body-lg text-white/90 font-medium tracking-wide drop-shadow-[0_2px_10px_rgba(0,0,0,0.95)] leading-relaxed">
+              <p className="max-w-xl text-balance text-body-sm sm:text-body-lg text-white/95 font-medium tracking-wide drop-shadow-[0_2px_10px_rgba(0,0,0,0.95)] leading-relaxed">
                 {block.subheading}
               </p>
             </AnimatedReveal>
           ) : null}
 
           {/* Elegant Gold/Accent Dividing Line */}
-          <AnimatedReveal delay={0.35}>
-            <div className="flex items-center gap-3 my-0.5">
-              <span className="h-[2px] w-12 bg-accent/90 rounded-full shadow-[0_0_12px_rgba(200,140,50,0.7)]" />
-              <span className="h-2 w-2 rotate-45 border border-accent bg-accent/60 shadow-[0_0_8px_rgba(200,140,50,0.8)]" />
-              <span className="h-[2px] w-12 bg-accent/90 rounded-full shadow-[0_0_12px_rgba(200,140,50,0.7)]" />
+          <AnimatedReveal delay={0.3}>
+            <div className="flex items-center gap-3 my-1">
+              <span className="h-[2px] w-14 bg-accent/90 rounded-full shadow-[0_0_12px_rgba(200,140,50,0.6)]" />
+              <span className="h-2 w-2 rotate-45 border border-accent bg-accent/60 shadow-[0_0_8px_rgba(200,140,50,0.7)]" />
+              <span className="h-[2px] w-14 bg-accent/90 rounded-full shadow-[0_0_12px_rgba(200,140,50,0.6)]" />
             </div>
           </AnimatedReveal>
 
           {/* Action Buttons: View Menu & Call */}
           <AnimatedReveal delay={0.45}>
-            <div className="flex flex-col sm:flex-row items-center justify-center gap-4 pt-1 w-full sm:w-auto">
+            <div className="flex flex-col sm:flex-row items-center justify-center gap-4 pt-2 w-full sm:w-auto">
               <LinkButton
                 href={block.primaryCta.href || '/menu'}
                 variant="primary"
                 size="lg"
                 isExternal={block.primaryCta.isExternal}
-                className="w-full sm:w-auto min-w-[190px] shadow-[0_10px_25px_rgba(0,0,0,0.5)] px-8 text-[15px] font-bold tracking-wider uppercase"
+                className="w-full sm:w-auto min-w-[200px] shadow-[0_10px_25px_rgba(0,0,0,0.5)] px-8 text-[16px] font-bold tracking-wider uppercase"
               >
                 {block.primaryCta.label || 'View Menu'}
               </LinkButton>
@@ -152,7 +152,7 @@ export function Hero({ block, isPrimary = false }: HeroProps): ReactNode {
                   variant="secondary"
                   size="lg"
                   isExternal={block.secondaryCta.isExternal}
-                  className="w-full sm:w-auto min-w-[190px] border-white/80 text-white hover:bg-white/20 hover:border-white shadow-[0_10px_25px_rgba(0,0,0,0.4)] px-8 text-[15px] font-bold tracking-wider uppercase backdrop-blur-sm"
+                  className="w-full sm:w-auto min-w-[200px] border-white/85 text-white hover:bg-white/20 hover:border-white shadow-[0_10px_25px_rgba(0,0,0,0.4)] px-8 text-[16px] font-bold tracking-wider uppercase backdrop-blur-sm"
                 >
                   {block.secondaryCta.label}
                 </LinkButton>
