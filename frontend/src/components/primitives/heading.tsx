@@ -17,6 +17,7 @@ export interface HeadingProps {
   level: 1 | 2 | 3 | 4;
   visualLevel?: 'display' | 'h1' | 'h2' | 'h3' | 'h4';
   id?: string;
+  className?: string;
   children: ReactNode;
 }
 
@@ -56,6 +57,7 @@ export function Heading({
   level,
   visualLevel,
   id,
+  className: extraClassName,
   children,
 }: HeadingProps): ReactNode {
   const visual = visualLevel ?? DEFAULT_VISUAL[level];
@@ -64,6 +66,7 @@ export function Heading({
     VISUAL_FAMILY[visual],
     VISUAL_SIZE[visual],
     VISUAL_WEIGHT[visual],
+    extraClassName,
   );
 
   const Tag = `h${String(level)}` as 'h1' | 'h2' | 'h3' | 'h4';

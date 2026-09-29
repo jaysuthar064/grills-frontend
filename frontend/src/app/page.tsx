@@ -6,7 +6,7 @@ import { PageShell } from '@/components/layout/page-shell';
 import { JsonLd } from '@/components/seo/json-ld';
 import { getHome } from '@/lib/api';
 import { homeJsonLd } from '@/lib/json-ld';
-import { normalizeMediaUrl } from '@/lib/media';
+import { getWpUploadUrl, normalizeMediaUrl } from '@/lib/media';
 import { buildMetadata } from '@/lib/seo';
 
 export const dynamic = 'force-dynamic';
@@ -70,6 +70,9 @@ export default async function HomePage(): Promise<ReactNode> {
           if (item.slug === 'grill-on-the-green-cheeseburger') {
             return {
               ...item,
+              description:
+                item.description ||
+                'Fresh ground double beef patties, melted American cheese, crisp lettuce, vine-ripe tomato, and house secret sauce on a grilled brioche bun with crispy fries.',
               image: {
                 src: '/media/burger-patio.jpg',
                 alt: 'Grill on the Green Double Cheeseburger on the patio',
@@ -78,13 +81,29 @@ export default async function HomePage(): Promise<ReactNode> {
               },
             };
           }
-          // Replace 2KB solid brown placeholder seed image with real smoked brisket photo
           if (item.slug === 'bbq-brisket-plate' || item.image?.src?.includes('brisket-plate.png')) {
             return {
               ...item,
+              description:
+                item.description ||
+                'Prime beef brisket slow-smoked for 14 hours over seasoned California white oak. Hand-carved with rich mahogany bark, house pickles, and Texas-style BBQ sauce.',
               image: {
-                src: 'https://grills.launchpreview.live/wp-content/uploads/2026/09/IMG_2175.JPG.jpeg',
+                src: getWpUploadUrl('IMG_2175.JPG.jpeg'),
                 alt: 'Freshly sliced smoked beef brisket plate',
+                width: 800,
+                height: 600,
+              },
+            };
+          }
+          if (item.slug === 'buffalo-fried-chicken-sandwich' || item.slug.includes('chicken')) {
+            return {
+              ...item,
+              description:
+                item.description ||
+                'Crispy hand-breaded buttermilk chicken breast tossed in zesty buffalo glaze, topped with house slaw and dill pickles on a brioche bun with seasoned fries.',
+              image: {
+                src: getWpUploadUrl('IMG_2185.JPG.jpeg'),
+                alt: 'Crispy Buffalo Fried Chicken Sandwich with seasoned fries',
                 width: 800,
                 height: 600,
               },
@@ -92,6 +111,33 @@ export default async function HomePage(): Promise<ReactNode> {
           }
           return item;
         }),
+      };
+    }
+    if (block.type === 'split_feature' && block.image) {
+      return {
+        ...block,
+        image: {
+          ...block.image,
+          src: normalizeMediaUrl(block.image.src || getWpUploadUrl('IMG_2175.JPG.jpeg')),
+        },
+      };
+    }
+    if (block.type === 'gallery' && block.images) {
+      return {
+        ...block,
+        images: block.images.map((img) => ({
+          ...img,
+          src: normalizeMediaUrl(img.src),
+        })),
+      };
+    }
+    if (block.type === 'cta_band' && block.image) {
+      return {
+        ...block,
+        image: {
+          ...block.image,
+          src: normalizeMediaUrl(block.image.src),
+        },
       };
     }
     return block;

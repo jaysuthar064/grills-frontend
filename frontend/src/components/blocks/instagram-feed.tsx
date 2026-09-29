@@ -240,12 +240,27 @@ export function InstagramFeed({
   }
 
   return (
-    <Section tone={band} ariaLabelledBy={headingId}>
+    <Section tone={band} ariaLabelledBy={headingId} watermark="flag">
       <Container>
-        <div ref={containerRef} className="flex flex-col items-start gap-6">
-          <Heading level={2} id={headingId}>
-            {block.heading}
-          </Heading>
+        <div ref={containerRef} className="flex flex-col gap-8">
+          <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-4 border-b border-border/60 pb-6">
+            <div className="flex flex-col gap-2">
+              <span className="text-overline uppercase tracking-[0.2em] text-brand-primary font-bold">
+                Follow The Smoke · @{block.handle}
+              </span>
+              <Heading level={2} id={headingId} visualLevel="h2">
+                {block.heading || 'From the Grill'}
+              </Heading>
+              <p className="text-body text-ink-muted leading-relaxed max-w-xl">
+                Daily smoker reveals, weekend concert announcements, and life on the 18th hole fairway.
+              </p>
+            </div>
+            <div>
+              <LinkButton href={profileUrl} variant="secondary" size="md" isExternal iconStart="instagram">
+                Follow @{block.handle}
+              </LinkButton>
+            </div>
+          </div>
           {body}
         </div>
       </Container>

@@ -41,18 +41,45 @@ export function FeaturedMenuRow({
   return (
     <Section tone={band} ariaLabelledBy={headingId} watermark="script">
       <Container>
-        <div className="flex flex-col gap-6">
-          <AnimatedReveal>
-            <Heading level={2} id={headingId}>
-              {block.heading}
-            </Heading>
-          </AnimatedReveal>
+        <div className="flex flex-col gap-8">
+          {/* Section Header with Overline, Heading, Subtitle & Action */}
+          <div className="flex flex-col md:flex-row md:items-end justify-between gap-6 border-b border-border/60 pb-6">
+            <div className="flex flex-col gap-2 max-w-2xl">
+              <span className="text-overline uppercase tracking-[0.2em] text-brand-primary font-bold">
+                House Specialties · Wood-Fired Perfection
+              </span>
+              <AnimatedReveal>
+                <Heading level={2} id={headingId} visualLevel="h2">
+                  {block.heading || 'Off the Smoker'}
+                </Heading>
+              </AnimatedReveal>
+              <p className="text-body text-ink-muted leading-relaxed">
+                Slow-smoked over seasoned California white oak and seared hot to order.
+                Prepared fresh from 4:00 AM daily right at the 18th hole fairway.
+              </p>
+            </div>
 
-          {/* A scrollable region must be focusable so keyboard users can scroll it
-              (WCAG 2.1.1); the ARIA group name explains what the stop is. */}
+            <div className="shrink-0">
+              <LinkButton
+                href={block.cta?.href || '/menu'}
+                variant="secondary"
+                size="md"
+                className="hover:border-brand-primary hover:text-brand-primary shadow-xs"
+              >
+                {block.cta?.label || 'Explore Full Menu'} &rarr;
+              </LinkButton>
+            </div>
+          </div>
+
+          {/* Featured Cards Grid / Responsive Scroll */}
           {/* eslint-disable-next-line jsx-a11y/no-noninteractive-tabindex */}
-          <div role="group" aria-label="Featured menu items" tabIndex={0} className="overflow-x-auto pb-2 md:overflow-visible md:pb-0">
-            <ul className="flex snap-x snap-mandatory gap-4 md:grid md:grid-cols-3">
+          <div
+            role="group"
+            aria-label="Featured menu items"
+            tabIndex={0}
+            className="overflow-x-auto pb-2 md:overflow-visible md:pb-0"
+          >
+            <ul className="flex snap-x snap-mandatory gap-6 md:grid md:grid-cols-3">
               {block.items.map((item, index) => (
                 <li
                   key={item.id}
@@ -66,19 +93,21 @@ export function FeaturedMenuRow({
             </ul>
           </div>
 
-          {block.cta ? (
-            <AnimatedReveal delay={0.3}>
-              <div>
-                <LinkButton
-                  href={block.cta.href}
-                  variant="secondary"
-                  isExternal={block.cta.isExternal}
-                >
-                  {block.cta.label}
-                </LinkButton>
-              </div>
-            </AnimatedReveal>
-          ) : null}
+          {/* Craft Guarantee Strip */}
+          <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 pt-2 border-t border-border/40 text-center">
+            <div className="flex items-center justify-center gap-2 py-2 px-3 rounded-lg bg-surface-sunken/40 text-caption font-semibold text-ink-muted">
+              <span>🪵</span>
+              <span>100% California White Oak</span>
+            </div>
+            <div className="flex items-center justify-center gap-2 py-2 px-3 rounded-lg bg-surface-sunken/40 text-caption font-semibold text-ink-muted">
+              <span>🥩</span>
+              <span>Prime Cuts &amp; House Dry Rub</span>
+            </div>
+            <div className="flex items-center justify-center gap-2 py-2 px-3 rounded-lg bg-surface-sunken/40 text-caption font-semibold text-ink-muted">
+              <span>🍳</span>
+              <span>Breakfast, Lunch &amp; Dinner</span>
+            </div>
+          </div>
         </div>
       </Container>
     </Section>

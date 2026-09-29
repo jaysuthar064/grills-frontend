@@ -4,7 +4,6 @@ import { Container } from '@/components/layout/container';
 import { AnimatedReveal } from '@/components/primitives/animated-reveal';
 import { Heading } from '@/components/primitives/heading';
 import { LinkButton } from '@/components/primitives/link-button';
-import { Text } from '@/components/primitives/text';
 import { cn } from '@/lib/cn';
 import { slugId } from '@/lib/slug';
 import type { CtaBandBlock } from '@/types/api';
@@ -29,13 +28,13 @@ export interface CtaBandProps {
 }
 
 const BAND = {
-  brand: 'bg-brand text-ink-inverse',
-  ink: 'bg-surface-inverse text-ink-inverse',
+  brand: 'bg-gradient-to-br from-[#1c1917] via-[#29221d] to-[#1c1917] border-y border-amber-900/30 text-ink-inverse',
+  ink: 'bg-surface-inverse text-ink-inverse border-y border-white/10',
   surface: 'bg-surface-sunken text-ink',
 } as const satisfies Record<CtaBandBlock['style'], string>;
 
 const BUTTON_VARIANT = {
-  brand: 'secondary',
+  brand: 'primary',
   ink: 'primary',
   surface: 'primary',
 } as const satisfies Record<CtaBandBlock['style'], 'primary' | 'secondary'>;
@@ -46,6 +45,8 @@ export function CtaBand({ block }: CtaBandProps): ReactNode {
   const hasImage = Boolean(imageSrc);
   const isInverse = block.style !== 'surface' || hasImage;
   const style: CSSProperties = { paddingBlock: 'var(--section-y)' };
+
+  const isComeHungry = block.heading.toLowerCase().includes('come hungry');
 
   return (
     <section
@@ -58,45 +59,91 @@ export function CtaBand({ block }: CtaBandProps): ReactNode {
           <img
             src={imageSrc}
             alt={block.image?.alt || block.heading}
-            className="w-full h-full object-cover opacity-45"
+            className="w-full h-full object-cover opacity-35 scale-105"
           />
-          <div className="absolute inset-0 bg-gradient-to-t from-black/75 via-black/45 to-black/75" />
+          <div className="absolute inset-0 bg-gradient-to-t from-black/85 via-black/55 to-black/85" />
         </div>
-      ) : null}
+      ) : (
+        <div
+          aria-hidden="true"
+          className="absolute inset-0 bg-[radial-gradient(ellipse_at_top,rgba(194,65,12,0.15)_0%,transparent_70%)] pointer-events-none"
+        />
+      )}
 
       <Container className="relative z-10">
         <AnimatedReveal>
           <div
-            className="mx-auto flex flex-col items-center gap-5 text-center"
+            className="mx-auto flex flex-col items-center gap-6 text-center"
             style={{ maxWidth: 'var(--measure-narrow)' }}
           >
-            <Heading level={2} id={headingId}>
+            {/* Top Eyebrow Badge */}
+            <div className="inline-flex items-center gap-2 rounded-full border border-accent/40 bg-black/60 px-4 py-1 text-[11px] font-bold uppercase tracking-widest text-accent backdrop-blur-md shadow-md">
+              <span className="h-1.5 w-1.5 rounded-full bg-accent animate-pulse" />
+              <span>
+                {isComeHungry
+                  ? 'Open Daily 6 AM – 9 PM · 18th Hole Fairway'
+                  : 'Walk-Ins & Large Parties Welcome'}
+              </span>
+            </div>
+
+            <Heading level={2} id={headingId} visualLevel="h2">
               {isInverse ? (
-                <span className="text-ink-inverse drop-shadow-sm">{block.heading}</span>
+                <span className="text-white drop-shadow-md font-display font-bold">
+                  {block.heading}
+                </span>
               ) : (
                 block.heading
               )}
             </Heading>
 
             {block.body !== undefined && block.body !== '' ? (
-              <Text
-                size="body-lg"
-                tone={isInverse ? 'inverse-muted' : 'muted'}
-                className={isInverse ? 'drop-shadow-sm' : undefined}
+              <p
+                className={cn(
+                  'text-body sm:text-body-lg max-w-xl leading-relaxed',
+                  isInverse ? 'text-white/90 drop-shadow-xs' : 'text-ink-muted'
+                )}
               >
                 {block.body}
-              </Text>
+              </p>
             ) : null}
 
-            <LinkButton
-              href={block.cta.href}
-              variant={BUTTON_VARIANT[block.style]}
-              size="lg"
-              isExternal={block.cta.isExternal}
-              className="shadow-lg hover:shadow-xl transition-all"
-            >
-              {block.cta.label}
-            </LinkButton>
+            {/* Action Buttons */}
+            <div className="flex flex-col sm:flex-row items-center justify-center gap-4 w-full sm:w-auto pt-2">
+              <LinkButton
+                href={block.cta.href}
+                variant={BUTTON_VARIANT[block.style]}
+                size="lg"
+                isExternal={block.cta.isExternal}
+                className="w-full sm:w-auto shadow-xl hover:shadow-2xl transition-all font-bold uppercase tracking-wider text-[14px]"
+              >
+                {block.cta.label}
+              </LinkButton>
+
+              {isComeHungry ? (
+                <LinkButton
+                  href="tel:+18058422947"
+                  variant="secondary"
+                  size="lg"
+                  isExternal
+                  className="w-full sm:w-auto border-white/80 text-white hover:bg-white/20 backdrop-blur-sm shadow-lg font-bold uppercase tracking-wider text-[14px]"
+                >
+                  Call: 805-842-2947
+                </LinkButton>
+              ) : null}
+            </div>
+
+            {/* Location & Details Strip */}
+            <div className="flex flex-wrap items-center justify-center gap-x-6 gap-y-2 pt-4 border-t border-white/15 text-[12px] text-white/70">
+              <span className="inline-flex items-center gap-1.5">
+                <span>📍</span> Simi Hills Golf Course (5031 Alamo St)
+              </span>
+              <span className="inline-flex items-center gap-1.5">
+                <span>⏰</span> Open 7 Days · 6:00 AM – 9:00 PM
+              </span>
+              <span className="inline-flex items-center gap-1.5">
+                <span>⛳</span> Free Parking in Clubhouse Lot
+              </span>
+            </div>
           </div>
         </AnimatedReveal>
       </Container>
