@@ -1,5 +1,6 @@
 import type { ReactNode } from 'react';
 
+import { CinematicVideo } from '@/components/blocks/cinematic-video';
 import { Image } from '@/components/primitives/image';
 import { RichText } from '@/components/blocks/rich-text';
 import { Container } from '@/components/layout/container';
@@ -105,18 +106,11 @@ export function TextSection({
           {/* Cinematic Photo or Video Showcase */}
           {block.videoUrl ? (
             <AnimatedReveal delay={0.25} className="w-full">
-              <div className="w-full max-w-4xl mx-auto aspect-4-3 sm:aspect-16-9 md:aspect-21-9 rounded-2xl md:rounded-3xl overflow-hidden shadow-2xl border border-border/50 relative bg-black">
-                <video
-                  autoPlay
-                  loop
-                  muted
-                  playsInline
-                  poster={block.image?.src}
-                  className="w-full h-full object-cover opacity-90"
-                >
-                  <source src={block.videoUrl} type="video/mp4" />
-                </video>
-              </div>
+              <CinematicVideo
+                videoUrl={block.videoUrl}
+                poster={block.image?.src || '/media/brisket-sandwich.jpg'}
+                label="Life on the 18th Hole · Simi Hills"
+              />
             </AnimatedReveal>
           ) : block.image ? (
             <AnimatedReveal delay={0.25} className="w-full">

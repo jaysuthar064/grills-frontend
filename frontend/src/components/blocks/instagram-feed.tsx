@@ -105,8 +105,8 @@ const DEFAULT_POSTS: InstagramPost[] = [
     id: 'post-6',
     permalink: 'https://www.instagram.com/grillonthegreen_simi/',
     image: {
-      src: getWpUploadUrl('IMG_2180.JPG.jpeg'),
-      alt: 'Firing up the oak wood smoker at dawn',
+      src: getWpUploadUrl('IMG_2172.JPG.jpeg'),
+      alt: 'Crisp BBQ chopped salad with grilled chicken and fresh greens',
       width: 800,
       height: 800,
     },

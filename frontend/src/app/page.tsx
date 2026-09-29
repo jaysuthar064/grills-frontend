@@ -65,6 +65,26 @@ export default async function HomePage(): Promise<ReactNode> {
         return {
           ...block,
           videoUrl,
+          image: {
+            src: '/media/brisket-sandwich.jpg',
+            alt: 'Grill on the Green 18th Hole Fairway Dining',
+            width: 1200,
+            height: 800,
+          },
+        };
+      }
+      if (block.type === 'text') {
+        // Fast-loading local b-roll hosted on Vercel CDN + client fairway photo poster
+        // Completely eliminates the unappealing paper menu photo (IMG_2180)
+        return {
+          ...block,
+          videoUrl: '/media/hero-broll.mp4',
+          image: {
+            src: '/media/brisket-sandwich.jpg',
+            alt: 'Grill on the Green fairway dining and pit smokehouse',
+            width: 1200,
+            height: 800,
+          },
         };
       }
       if (block.type === 'featured_items') {
@@ -180,8 +200,8 @@ export default async function HomePage(): Promise<ReactNode> {
             height: 800,
           },
           {
-            src: getWpUploadUrl('IMG_2180.JPG.jpeg'),
-            alt: 'Firing up the oak wood pit smoker at dawn',
+            src: getWpUploadUrl('IMG_2172.JPG.jpeg'),
+            alt: 'Crisp BBQ chopped salad with grilled chicken and fresh greens',
             width: 800,
             height: 800,
           },
