@@ -115,6 +115,50 @@ export function getContact(): Promise<ContactResponse> {
   return fetchEndpoint<ContactResponse>(ENDPOINTS.contact);
 }
 
-export function getCatering(): Promise<CateringResponse> {
-  return fetchEndpoint<CateringResponse>(ENDPOINTS.catering);
+export async function getCatering(): Promise<CateringResponse> {
+  try {
+    return await fetchEndpoint<CateringResponse>(ENDPOINTS.catering);
+  } catch (error) {
+    if (process.env.NODE_ENV !== 'production') {
+      console.warn('gotg/v1/catering endpoint unavailable, using live fallback catering data', error);
+    }
+    const home = await getHome();
+    return {
+      _global: home._global,
+      seo: {
+        title: 'Catering & Private Events | Grill On the Green',
+        description:
+          'BBQ catering for weddings, golf tournaments, corporate events, and parties in Simi Valley. Smoked brisket, ribs, and sides for 10 to 500+ guests.',
+        noindex: false,
+      },
+      title: 'Catering & Private Events',
+      blocks: [
+        {
+          type: 'hero',
+          overlay: 45,
+          eyebrow: 'Wood. Smoke. Fire.',
+          heading: 'Catering & Private Events',
+          subheading:
+            'Slow-smoked Texas brisket, baby back ribs, and fresh golf-side classics for your next event. From intimate family feasts to 500-person tournament banquets.',
+          primaryCta: {
+            label: 'Request Catering Quote',
+            href: '#catering-form',
+            isExternal: false,
+          },
+          secondaryCta: {
+            label: 'Call Catering: 805-842-2947',
+            href: 'tel:+18058422947',
+            isExternal: true,
+          },
+          videoUrl: 'https://grills.launchpreview.live/wp-content/uploads/2026/09/IMG_2207.mp4',
+          image: {
+            src: 'https://grills.launchpreview.live/wp-content/uploads/2026/09/IMG_2175.JPG.jpeg',
+            alt: 'Smoked meats buffet catering setup',
+            width: 1536,
+            height: 2048,
+          },
+        },
+      ],
+    };
+  }
 }
