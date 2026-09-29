@@ -3,6 +3,7 @@ import 'server-only';
 import type {
   AboutResponse,
   ApiError,
+  CateringResponse,
   ContactResponse,
   EventsResponse,
   HomeResponse,
@@ -34,6 +35,7 @@ const ENDPOINTS = {
   events: { path: 'events', tag: 'events', revalidate: 900 },
   about: { path: 'about', tag: 'about', revalidate: 86400 },
   contact: { path: 'contact', tag: 'contact', revalidate: 86400 },
+  catering: { path: 'catering', tag: 'catering', revalidate: 3600 },
 } as const satisfies Record<string, EndpointConfig>;
 
 /**
@@ -111,4 +113,8 @@ export function getAbout(): Promise<AboutResponse> {
 
 export function getContact(): Promise<ContactResponse> {
   return fetchEndpoint<ContactResponse>(ENDPOINTS.contact);
+}
+
+export function getCatering(): Promise<CateringResponse> {
+  return fetchEndpoint<CateringResponse>(ENDPOINTS.catering);
 }

@@ -44,6 +44,7 @@ require_once GOTG_CORE_PATH . 'rest/endpoint-about.php';
 require_once GOTG_CORE_PATH . 'rest/endpoint-menu.php';
 require_once GOTG_CORE_PATH . 'rest/endpoint-events.php';
 require_once GOTG_CORE_PATH . 'rest/endpoint-contact.php';
+require_once GOTG_CORE_PATH . 'rest/endpoint-catering.php';
 
 // Admin edit-screen UI. Only loaded in the admin; the framework loads before
 // the box files that call it.

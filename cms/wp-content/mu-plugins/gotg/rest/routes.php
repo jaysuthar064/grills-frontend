@@ -20,8 +20,9 @@ function gotg_register_rest_routes() {
 		'home'    => 'gotg_rest_home',
 		'menu'    => 'gotg_rest_menu',
 		'events'  => 'gotg_rest_events',
-		'about'   => 'gotg_rest_about',
-		'contact' => 'gotg_rest_contact',
+		'about'    => 'gotg_rest_about',
+		'contact'  => 'gotg_rest_contact',
+		'catering' => 'gotg_rest_catering',
 	);
 
 	foreach ( $routes as $slug => $callback ) {

@@ -357,6 +357,13 @@ export interface AboutResponse {
   blocks: PageBlock[];
 }
 
+export interface CateringResponse {
+  _global: GlobalData;
+  seo: SeoFields;
+  title: string;
+  blocks: PageBlock[];
+}
+
 export interface ContactResponse {
   _global: GlobalData;
   seo: SeoFields;

@@ -84,8 +84,9 @@ function gotg_register_admin_menu() {
 		'home'    => __( '🏠 Home Page', 'gotg' ),
 		'about'   => __( '⛳ About Page', 'gotg' ),
 		'contact' => __( '📞 Contact Page', 'gotg' ),
-		'menu'    => __( '🍽️ Menu Page', 'gotg' ),
-		'events'  => __( '📅 Events Page', 'gotg' ),
+		'menu'     => __( '🍽️ Menu Page', 'gotg' ),
+		'events'   => __( '📅 Events Page', 'gotg' ),
+		'catering' => __( '🍖 Catering Page', 'gotg' ),
 	);
 
 	foreach ( $pages_map as $slug => $title ) {
@@ -226,6 +227,11 @@ function gotg_render_dashboard_page() {
 				<h3 style="margin-top:0;">📞 Contact Page</h3>
 				<p style="color:#50575e; font-size:13px;">Edit inquiry text, booking details, and re-usable location blocks.</p>
 				<a href="<?php echo esc_url( admin_url( 'admin.php?page=gotg-page-editor&page_slug=contact' ) ); ?>" class="button button-primary">Edit Contact Content &amp; Media</a>
+			</div>
+			<div class="card" style="padding:1.25rem; border-top:3px solid #f56e28;">
+				<h3 style="margin-top:0;">🍖 Catering Page</h3>
+				<p style="color:#50575e; font-size:13px;">Edit hero video, poster image, catering packages, and event inquiry details.</p>
+				<a href="<?php echo esc_url( admin_url( 'admin.php?page=gotg-page-editor&page_slug=catering' ) ); ?>" class="button button-primary">Edit Catering Content &amp; Media</a>
 			</div>
 		</div>
 

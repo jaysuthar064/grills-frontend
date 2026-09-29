@@ -9,26 +9,34 @@ import { Heading } from '@/components/primitives/heading';
 import { LinkButton } from '@/components/primitives/link-button';
 import { Text } from '@/components/primitives/text';
 import { JsonLd } from '@/components/seo/json-ld';
-import { getAbout } from '@/lib/api';
-import { getWpUploadUrl, PUBLIC_WP_URL } from '@/lib/media';
+import { getCatering } from '@/lib/api';
+import { getWpUploadUrl, normalizeMediaUrl, PUBLIC_WP_URL } from '@/lib/media';
 import { buildMetadata } from '@/lib/seo';
+import type { PageBlock } from '@/types/api';
 
 export const dynamic = 'force-dynamic';
 
 export async function generateMetadata(): Promise<Metadata> {
-  const data = await getAbout();
-  const cateringSeo = {
-    title: 'Catering & Private Events | Grill On the Green',
-    description:
-      'BBQ catering for weddings, golf tournaments, corporate events, and parties in Simi Valley. Smoked brisket, ribs, and sides for 10 to 500+ guests.',
-    noindex: false,
-  };
-  return buildMetadata(cateringSeo, data._global, '/catering');
+  const data = await getCatering();
+  return buildMetadata(data.seo, data._global, '/catering');
 }
 
 export default async function CateringPage(): Promise<ReactNode> {
-  const data = await getAbout();
-  const { _global } = data;
+  const data = await getCatering();
+  const { _global, blocks } = data;
+
+  const heroBlock = blocks?.find((b): b is Extract<PageBlock, { type: 'hero' }> => b.type === 'hero');
+  const heroEyebrow = heroBlock?.eyebrow || 'Wood. Smoke. Fire.';
+  const heroHeading = heroBlock?.heading || 'Catering & Private Events';
+  const heroSubheading =
+    heroBlock?.subheading ||
+    'Slow-smoked Texas brisket, baby back ribs, and fresh golf-side classics for your next event. From intimate family feasts to 500-person tournament banquets.';
+  const heroPrimaryLabel = heroBlock?.primaryCta?.label || 'Request Catering Quote';
+  const heroPrimaryUrl = heroBlock?.primaryCta?.href || '#catering-form';
+  const heroSecondaryLabel = heroBlock?.secondaryCta?.label || 'Call Catering: 805-842-2947';
+  const heroSecondaryUrl = heroBlock?.secondaryCta?.href || 'tel:+18058422947';
+  const heroVideo = heroBlock?.videoUrl ? normalizeMediaUrl(heroBlock.videoUrl) : getWpUploadUrl('IMG_2207.mp4');
+  const heroPoster = heroBlock?.image?.src ? normalizeMediaUrl(heroBlock.image.src) : getWpUploadUrl('IMG_2175.JPG.jpeg');
 
   const packages = [
     {
@@ -73,25 +81,25 @@ export default async function CateringPage(): Promise<ReactNode> {
         }}
       />
       <PageShell global={_global} currentPath="/catering">
-        {/* Catering Hero */}
+        {/* Catering Hero (Synchronized dynamically with WordPress Headless CMS) */}
         <section className="relative overflow-hidden bg-black text-ink-inverse py-20 md:py-28 min-h-[60vh] flex items-center">
           <div className="absolute inset-0 z-0">
             {/* Poster image fallback immediately visible */}
             <img
-              src={getWpUploadUrl('IMG_2175.JPG.jpeg')}
-              alt="Catering & Private Events BBQ Feast"
+              src={heroPoster}
+              alt={heroHeading}
               className="absolute inset-0 h-full w-full object-cover opacity-80"
             />
-            {/* High definition local video */}
+            {/* High definition video banner */}
             <video
               autoPlay
               loop
               muted
               playsInline
-              poster={getWpUploadUrl('IMG_2175.JPG.jpeg')}
+              poster={heroPoster}
               className="absolute inset-0 h-full w-full object-cover opacity-85"
             >
-              <source src={getWpUploadUrl('IMG_2207.mp4')} type="video/mp4" />
+              <source src={heroVideo} type="video/mp4" />
             </video>
             <div className="absolute inset-0 bg-black/20 bg-gradient-to-b from-black/55 via-black/20 to-black/60" />
           </div>
@@ -99,20 +107,20 @@ export default async function CateringPage(): Promise<ReactNode> {
             <AnimatedReveal>
               <div className="relative z-10 max-w-3xl mx-auto flex flex-col items-center text-center gap-6 drop-shadow-md">
                 <span className="font-script text-h2 text-brand-accent-subtle">
-                  Wood. Smoke. Fire.
+                  {heroEyebrow}
                 </span>
                 <Heading level={1} visualLevel="display">
-                  <span className="text-white">Catering & Private Events</span>
+                  <span className="text-white">{heroHeading}</span>
                 </Heading>
                 <Text size="body-lg" tone="inverse" className="max-w-2xl mx-auto">
-                  Slow-smoked Texas brisket, baby back ribs, and fresh golf-side classics for your next event. From intimate family feasts to 500-person tournament banquets.
+                  {heroSubheading}
                 </Text>
                 <div className="flex flex-wrap justify-center gap-4 pt-2">
-                  <LinkButton href="#catering-form" variant="primary" size="lg">
-                    Request Catering Quote
+                  <LinkButton href={heroPrimaryUrl} variant="primary" size="lg">
+                    {heroPrimaryLabel}
                   </LinkButton>
-                  <LinkButton href="tel:+18058422947" variant="secondary" size="lg" isExternal>
-                    Call Catering: 805-842-2947
+                  <LinkButton href={heroSecondaryUrl} variant="secondary" size="lg" isExternal={heroSecondaryUrl.startsWith('tel:') || heroSecondaryUrl.startsWith('http')}>
+                    {heroSecondaryLabel}
                   </LinkButton>
                 </div>
               </div>

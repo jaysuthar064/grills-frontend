@@ -50,13 +50,21 @@ function gotg_get_editor_pages_map() {
 			'icon'       => 'dashicons-food',
 			'desc'       => __( 'Menu disclaimer, dietary info, and general menu presentation.', 'gotg' ),
 		),
-		'events'  => array(
+		'events'   => array(
 			'title'      => __( 'Events Page', 'gotg' ),
 			'menu_title' => __( '📅 Events Page', 'gotg' ),
 			'default_id' => 14,
 			'path'       => '/events',
 			'icon'       => 'dashicons-calendar-alt',
 			'desc'       => __( 'Events header, recurring specials, and upcoming event schedules.', 'gotg' ),
+		),
+		'catering' => array(
+			'title'      => __( 'Catering Page', 'gotg' ),
+			'menu_title' => __( '🍖 Catering Page', 'gotg' ),
+			'default_id' => 17,
+			'path'       => '/catering',
+			'icon'       => 'dashicons-groups',
+			'desc'       => __( 'Hero video banner & poster, catering buffet packages, smoker gallery, and inquiries.', 'gotg' ),
 		),
 	);
 }
