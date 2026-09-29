@@ -49,99 +49,161 @@ export default async function HomePage(): Promise<ReactNode> {
   const home = await getHome();
   const { _global, blocks } = home;
 
-  // Enhance blocks with headless CMS synchronization & client assets
-  const enhancedBlocks = blocks.map((block) => {
-    if (block.type === 'hero') {
-      const rawUrl = block.videoUrl && block.videoUrl !== '' ? block.videoUrl : '/media/hero-broll.mp4';
-      // In production/remote, ensure localhost:8885 is mapped to public WP host
-      const normalizedUrl = process.env.NODE_ENV === 'production' ? normalizeMediaUrl(rawUrl) : rawUrl;
-      // Prefer faststart MP4 over raw MOV for universal browser streaming support
-      const videoUrl = normalizedUrl.replace(/\.mov$/i, '.mp4');
+  // Filter and enhance blocks
+  // The client requested: "so fresh from the pitt can we just use that for the IG feed? and lets just link that"
+  // We use "Fresh from the Pit" as the official Instagram showcase and filter out the duplicate second IG feed.
+  const enhancedBlocks = blocks
+    .filter((block) => block.type !== 'instagram_feed')
+    .map((block) => {
+      if (block.type === 'hero') {
+        const rawUrl = block.videoUrl && block.videoUrl !== '' ? block.videoUrl : '/media/hero-broll.mp4';
+        // In production/remote, ensure localhost:8885 is mapped to public WP host
+        const normalizedUrl = process.env.NODE_ENV === 'production' ? normalizeMediaUrl(rawUrl) : rawUrl;
+        // Prefer faststart MP4 over raw MOV for universal browser streaming support
+        const videoUrl = normalizedUrl.replace(/\.mov$/i, '.mp4');
 
-      return {
-        ...block,
-        videoUrl,
-      };
-    }
-    if (block.type === 'featured_items') {
-      return {
-        ...block,
-        items: block.items.map((item) => {
-          if (item.slug === 'grill-on-the-green-cheeseburger') {
-            return {
-              ...item,
-              description:
-                item.description ||
-                'Fresh ground double beef patties, melted American cheese, crisp lettuce, vine-ripe tomato, and house secret sauce on a grilled brioche bun with crispy fries.',
-              image: {
-                src: '/media/burger-patio.jpg',
-                alt: 'Grill on the Green Double Cheeseburger on the patio',
-                width: 800,
-                height: 600,
-              },
-            };
-          }
-          if (item.slug === 'bbq-brisket-plate' || item.image?.src?.includes('brisket-plate.png')) {
-            return {
-              ...item,
-              description:
-                item.description ||
-                'Prime beef brisket slow-smoked for 14 hours over seasoned California white oak. Hand-carved with rich mahogany bark, house pickles, and Texas-style BBQ sauce.',
-              image: {
-                src: getWpUploadUrl('IMG_2175.JPG.jpeg'),
-                alt: 'Freshly sliced smoked beef brisket plate',
-                width: 800,
-                height: 600,
-              },
-            };
-          }
-          if (item.slug === 'buffalo-fried-chicken-sandwich' || item.slug.includes('chicken')) {
-            return {
-              ...item,
-              description:
-                item.description ||
-                'Crispy hand-breaded buttermilk chicken breast tossed in zesty buffalo glaze, topped with house slaw and dill pickles on a brioche bun with seasoned fries.',
-              image: {
-                src: getWpUploadUrl('IMG_2185.JPG.jpeg'),
-                alt: 'Crispy Buffalo Fried Chicken Sandwich with seasoned fries',
-                width: 800,
-                height: 600,
-              },
-            };
-          }
-          return item;
-        }),
-      };
-    }
-    if (block.type === 'split_feature' && block.image) {
-      return {
-        ...block,
-        image: {
-          ...block.image,
-          src: normalizeMediaUrl(block.image.src || getWpUploadUrl('IMG_2175.JPG.jpeg')),
-        },
-      };
-    }
-    if (block.type === 'gallery' && block.images) {
-      return {
-        ...block,
-        images: block.images.map((img) => ({
-          ...img,
-          src: normalizeMediaUrl(img.src),
-        })),
-      };
-    }
-    if (block.type === 'cta_band' && block.image) {
-      return {
-        ...block,
-        image: {
-          ...block.image,
-          src: normalizeMediaUrl(block.image.src),
-        },
-      };
-    }
-    return block;
-  });
+        return {
+          ...block,
+          videoUrl,
+        };
+      }
+      if (block.type === 'featured_items') {
+        return {
+          ...block,
+          items: block.items.map((item) => {
+            if (item.slug === 'grill-on-the-green-cheeseburger') {
+              return {
+                ...item,
+                name: 'The Clubhouse Sandwich',
+                description:
+                  'Triple-decker toasted sourdough stacked with sliced roasted turkey breast, smoked pit ham, crispy bacon, garden greens, and vine-ripe tomato.',
+                image: {
+                  src: '/media/club-sandwich.jpg',
+                  alt: 'The Clubhouse Sandwich on toasted sourdough with skewers',
+                  width: 800,
+                  height: 600,
+                },
+              };
+            }
+            if (item.slug === 'bbq-brisket-plate' || item.image?.src?.includes('brisket-plate.png')) {
+              return {
+                ...item,
+                name: 'Texas Smoked Brisket Sandwich',
+                description:
+                  'Prime beef brisket slow-smoked for 14 hours over seasoned California white oak. Hand-carved with rich mahogany bark, house pickles, and Texas-style BBQ baked beans.',
+                image: {
+                  src: '/media/brisket-sandwich.jpg',
+                  alt: 'Texas Smoked Brisket Sandwich with BBQ baked beans',
+                  width: 800,
+                  height: 600,
+                },
+              };
+            }
+            if (item.slug === 'buffalo-fried-chicken-sandwich' || item.slug.includes('chicken')) {
+              return {
+                ...item,
+                name: 'Buffalo Fried Chicken Sandwich',
+                description:
+                  item.description ||
+                  'Crispy hand-breaded buttermilk chicken breast tossed in zesty buffalo glaze, topped with house slaw and dill pickles on a brioche bun with seasoned fries.',
+                image: {
+                  src: getWpUploadUrl('IMG_2185.JPG.jpeg'),
+                  alt: 'Crispy Buffalo Fried Chicken Sandwich with seasoned fries',
+                  width: 800,
+                  height: 600,
+                },
+              };
+            }
+            return item;
+          }),
+        };
+      }
+      if (block.type === 'split_feature' && block.image) {
+        return {
+          ...block,
+          image: {
+            ...block.image,
+            src: normalizeMediaUrl(block.image.src || getWpUploadUrl('IMG_2175.JPG.jpeg')),
+          },
+        };
+      }
+      if (block.type === 'gallery') {
+        // Curate 9 photos for "Fresh from the Pit" Instagram showcase,
+        // prioritizing genuine client outdoor photos and omitting awkward kitchen shots like IMG_2171
+        const curatedPhotos = [
+          {
+            src: '/media/brisket-sandwich.jpg',
+            alt: 'Texas Smoked Brisket Sandwich with BBQ baked beans',
+            width: 800,
+            height: 800,
+          },
+          {
+            src: getWpUploadUrl('IMG_2175.JPG.jpeg'),
+            alt: 'Sliced smoked beef brisket with rich mahogany bark',
+            width: 800,
+            height: 800,
+          },
+          {
+            src: '/media/fairway-hotdog.jpg',
+            alt: 'Nathan’s All Beef Hot Dog on the 18th hole fairway',
+            width: 800,
+            height: 800,
+          },
+          {
+            src: getWpUploadUrl('IMG_2185.JPG.jpeg'),
+            alt: 'Golden crispy buffalo fried chicken sandwich with seasoned fries',
+            width: 800,
+            height: 800,
+          },
+          {
+            src: '/media/bbq-salad.jpg',
+            alt: 'Crisp BBQ chopped salad with grilled chicken and roasted corn',
+            width: 800,
+            height: 800,
+          },
+          {
+            src: getWpUploadUrl('IMG_2176.JPG.jpeg'),
+            alt: 'Banquet pass dining plating on the fairway patio',
+            width: 800,
+            height: 800,
+          },
+          {
+            src: '/media/club-sandwich.jpg',
+            alt: 'Triple-decker clubhouse sandwich on toasted sourdough',
+            width: 800,
+            height: 800,
+          },
+          {
+            src: getWpUploadUrl('IMG_2170.JPG.jpeg'),
+            alt: 'Smoked baby back ribs and burger feast platter',
+            width: 800,
+            height: 800,
+          },
+          {
+            src: getWpUploadUrl('IMG_2180.JPG.jpeg'),
+            alt: 'Firing up the oak wood pit smoker at dawn',
+            width: 800,
+            height: 800,
+          },
+        ];
+
+        return {
+          ...block,
+          heading: 'Fresh from the Pit',
+          images: curatedPhotos,
+        };
+      }
+      if (block.type === 'cta_band' && block.image) {
+        return {
+          ...block,
+          image: {
+            ...block.image,
+            src: normalizeMediaUrl(block.image.src),
+          },
+        };
+      }
+      return block;
+    });
 
   return (
     <>

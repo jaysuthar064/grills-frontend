@@ -42,11 +42,11 @@ export async function generateMetadata(): Promise<Metadata> {
 
 const SIGNATURE_ITEMS = [
   {
-    title: 'Grill on the Green Cheeseburger',
-    price: '$14.95',
-    tag: 'Patio Favorite',
-    image: '/media/burger-patio.jpg',
-    description: 'Double smash patty, melted sharp cheddar, house secret sauce, crisp lettuce & tomatoes with golden fries.',
+    title: 'Texas Smoked Brisket Sandwich',
+    price: '$16.95',
+    tag: '14-Hour Oak Smoked',
+    image: '/media/brisket-sandwich.jpg',
+    description: 'Prime brisket smoked over California white oak, hand-carved with Texas BBQ beans and sweet house pickles.',
     href: '#sandwiches-burgers',
   },
   {

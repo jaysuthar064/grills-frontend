@@ -5,17 +5,9 @@ import { Container } from '@/components/layout/container';
 import { Section } from '@/components/layout/section';
 import { Heading } from '@/components/primitives/heading';
 import { Image } from '@/components/primitives/image';
+import { LinkButton } from '@/components/primitives/link-button';
 import { slugId } from '@/lib/slug';
 import type { GalleryBlock } from '@/types/api';
-
-/*
- * Gallery — 06-COMPONENT-SPEC.md §Gallery. Server Component that dispatches on
- * layout: `grid` renders a static Grid (2 columns at sm, 3 at lg); `carousel`
- * hands off to the Client GalleryCarousel.
- *
- * The API omits empty gallery blocks (04-API-CONTRACT.md §4), but this still
- * returns null on an empty array rather than rendering an empty region.
- */
 
 export interface GalleryProps {
   band?: 'surface' | 'sunken';
@@ -31,22 +23,26 @@ export function Gallery({
     return null;
   }
 
-  const hasHeading = block.heading !== undefined && block.heading !== '';
-  const headingId = hasHeading ? slugId('gallery', block.heading ?? '') : undefined;
-  const label = block.heading ?? 'Photo gallery';
+  const headingId = slugId('gallery', block.heading ?? 'fresh-from-the-pit');
+  const instagramUrl = 'https://www.instagram.com/grillonthegreen_simi/';
+  const instagramHandle = 'grillonthegreen_simi';
 
   // Display a curated selection of 6 to 9 photos for clean visual balance
   const displayedImages = images.slice(0, 9);
 
   const body =
     block.layout === 'carousel' ? (
-      <GalleryCarousel images={images} label={label} />
+      <GalleryCarousel images={images} label={block.heading ?? 'Fresh from the Pit'} />
     ) : (
       <div className="grid grid-cols-2 md:grid-cols-3 gap-4 md:gap-6">
         {displayedImages.map((image, index) => (
-          <div
+          <a
             key={image.src || index}
-            className="group relative overflow-hidden rounded-2xl md:rounded-3xl border border-border/80 bg-surface-sunken shadow-sm transition-all duration-500 hover:-translate-y-1 hover:shadow-2xl hover:border-brand-primary/50"
+            href={instagramUrl}
+            target="_blank"
+            rel="noopener noreferrer"
+            aria-label="View on Instagram"
+            className="group relative block aspect-square overflow-hidden rounded-2xl md:rounded-3xl border border-border/80 bg-surface-sunken shadow-sm transition-all duration-500 hover:-translate-y-1 hover:shadow-2xl hover:border-brand-primary/50"
           >
             <div className="aspect-square w-full h-full transition-transform duration-700 ease-out group-hover:scale-105">
               <Image
@@ -56,13 +52,18 @@ export function Gallery({
                 sizes="(min-width: 1024px) 33vw, (min-width: 640px) 50vw, 100vw"
               />
             </div>
-            {/* Subtle bottom vignette overlay */}
-            <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-end p-4 pointer-events-none">
-              <span className="text-[12px] font-bold uppercase tracking-wider text-white drop-shadow">
-                ★ Fairway Dining &amp; BBQ
-              </span>
+            {/* Dark vignette overlay with Instagram badge on hover */}
+            <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/30 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex flex-col justify-end p-4">
+              <div className="flex items-center justify-between text-white">
+                <span className="inline-flex items-center gap-1.5 text-[12px] font-bold uppercase tracking-wider text-accent drop-shadow">
+                  <span>📸</span> View on Instagram
+                </span>
+                <span className="text-[11px] font-medium text-white/80">
+                  @{instagramHandle} ↗
+                </span>
+              </div>
             </div>
-          </div>
+          </a>
         ))}
       </div>
     );
@@ -75,30 +76,50 @@ export function Gallery({
     >
       <Container>
         <div className="flex flex-col gap-8">
-          <div className="flex flex-col items-center text-center gap-2 max-w-2xl mx-auto">
-            <span className="text-overline uppercase tracking-[0.2em] text-brand-primary font-bold">
-              Atmosphere &amp; Kitchen Craft
-            </span>
-            {hasHeading ? (
-              <Heading
-                level={2}
-                visualLevel="h2"
-                {...(headingId !== undefined ? { id: headingId } : {})}
-              >
-                {block.heading}
+          <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-4 border-b border-border/60 pb-6">
+            <div className="flex flex-col gap-2 max-w-xl">
+              <span className="text-overline uppercase tracking-[0.2em] text-brand-primary font-bold inline-flex items-center gap-2">
+                <span>📸</span> Live On Instagram · @{instagramHandle}
+              </span>
+              <Heading level={2} id={headingId} visualLevel="h2">
+                {block.heading || 'Fresh from the Pit'}
               </Heading>
-            ) : null}
-            <p className="text-body text-ink-muted leading-relaxed">
-              From 4 AM California oak fires and slow-smoked brisket carving to golden sunset drinks on the 18th hole patio.
-            </p>
+              <p className="text-body text-ink-muted leading-relaxed">
+                Daily smoker reveals, weekend concert announcements, and life on the 18th hole fairway. Follow along and tag{' '}
+                <strong className="text-ink font-semibold">#GrillOnTheGreen</strong>.
+              </p>
+            </div>
+
+            <div className="shrink-0">
+              <LinkButton
+                href={instagramUrl}
+                variant="secondary"
+                size="md"
+                isExternal
+                iconStart="instagram"
+                className="hover:border-brand-primary hover:text-brand-primary shadow-xs"
+              >
+                Follow @{instagramHandle} &rarr;
+              </LinkButton>
+            </div>
           </div>
 
           {body}
 
-          <div className="text-center pt-2">
-            <p className="text-caption text-ink-muted">
-              Come experience it in person · Open daily 6:00 AM – 9:00 PM at Simi Hills Golf Course
+          <div className="flex flex-col sm:flex-row items-center justify-between gap-4 pt-2 border-t border-border/40 text-center sm:text-left">
+            <p className="text-body-sm text-ink-muted">
+              Tag <strong className="text-brand-primary font-semibold">@{instagramHandle}</strong> or{' '}
+              <strong className="text-brand-primary font-semibold">#GrillOnTheGreen</strong> on Instagram to be featured!
             </p>
+            <LinkButton
+              href={instagramUrl}
+              variant="secondary"
+              size="sm"
+              isExternal
+              iconStart="instagram"
+            >
+              Visit @{instagramHandle}
+            </LinkButton>
           </div>
         </div>
       </Container>

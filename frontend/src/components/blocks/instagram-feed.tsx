@@ -55,8 +55,8 @@ const DEFAULT_POSTS: InstagramPost[] = [
     id: 'post-1',
     permalink: 'https://www.instagram.com/grillonthegreen_simi/',
     image: {
-      src: '/media/burger-patio.jpg',
-      alt: 'Grill on the Green Double Cheeseburger served on the patio',
+      src: '/media/brisket-sandwich.jpg',
+      alt: 'Texas Smoked Brisket Sandwich with BBQ baked beans',
       width: 800,
       height: 800,
     },
