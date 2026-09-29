@@ -43,8 +43,6 @@ export function MenuCard({
   variant = 'default',
   headingLevel = 4,
 }: MenuCardProps): ReactNode {
-  const hasImage = Boolean(item.image?.src);
-
   return (
     <article
       className={cn(
@@ -55,7 +53,7 @@ export function MenuCard({
       )}
     >
       {/* Featured Variant: Full top banner image */}
-      {variant === 'featured' && hasImage && item.image ? (
+      {variant === 'featured' && Boolean(item.image?.src) && item.image ? (
         <div className="relative aspect-16-9 w-full overflow-hidden rounded-lg bg-surface-sunken shadow-xs">
           <Image
             image={item.image}
@@ -70,12 +68,7 @@ export function MenuCard({
         </div>
       ) : null}
 
-      <div
-        className={cn(
-          'flex flex-1 gap-4',
-          variant === 'default' && hasImage ? 'items-start justify-between' : 'flex-col justify-between'
-        )}
-      >
+      <div className="flex flex-1 flex-col justify-between gap-2">
         <div className="flex-1 min-w-0">
           <div className="flex flex-wrap items-baseline justify-between gap-x-4 gap-y-1">
             <div className="flex items-center gap-2">
@@ -121,17 +114,6 @@ export function MenuCard({
             </ul>
           ) : null}
         </div>
-
-        {/* Default Variant: Side thumbnail when image exists */}
-        {variant === 'default' && hasImage && item.image ? (
-          <div className="relative shrink-0 w-24 h-24 sm:w-28 sm:h-28 overflow-hidden rounded-lg bg-surface-sunken border border-border shadow-xs transition-transform duration-300 group-hover:scale-105">
-            <Image
-              image={item.image}
-              fill
-              sizes="(min-width: 640px) 112px, 96px"
-            />
-          </div>
-        ) : null}
       </div>
     </article>
   );

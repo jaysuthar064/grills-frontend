@@ -40,29 +40,6 @@ export async function generateMetadata(): Promise<Metadata> {
  * so nothing is silently dropped.
  */
 
-const ENRICHED_PHOTOS: Record<string, { src: string; alt: string }> = {
-  'all-beef-nathans-hot-dog': {
-    src: '/media/fairway-hotdog.jpg',
-    alt: 'Nathan’s All Beef Hot Dog on the 18th hole fairway',
-  },
-  'bbq-chopped-salad': {
-    src: '/media/bbq-salad.jpg',
-    alt: 'Fresh BBQ Chopped Salad loaded with chicken and house dressing',
-  },
-  'grill-on-the-green-cheeseburger': {
-    src: '/media/burger-patio.jpg',
-    alt: 'Grill on the Green Double Cheeseburger served on the patio',
-  },
-  'bbq-bacon-cheeseburger': {
-    src: '/media/burger-patio.jpg',
-    alt: 'BBQ Bacon Cheeseburger with smoked bacon and sharp cheddar',
-  },
-  'tri-tip-sandwich': {
-    src: '/media/club-sandwich.jpg',
-    alt: 'Classic Skewered Clubhouse Sandwich with roasted meats and bacon',
-  },
-};
-
 const SIGNATURE_ITEMS = [
   {
     title: 'Grill on the Green Cheeseburger',
@@ -111,38 +88,18 @@ export default async function MenuPage(): Promise<ReactNode> {
 
   const showLegend = showDietaryLegend && dietaryTags.length > 0;
 
-  // Enrich menu sections with the client's high-quality food photography
-  const enrichedSections = sections.map((sec) => ({
-    ...sec,
-    items: sec.items.map((item) => {
-      const photo = ENRICHED_PHOTOS[item.slug];
-      if (photo) {
-        return {
-          ...item,
-          image: {
-            src: photo.src,
-            alt: photo.alt,
-            width: 800,
-            height: 600,
-          },
-        };
-      }
-      return item;
-    }),
-  }));
-
   return (
     <PageShell global={_global} currentPath="/menu">
-      <JsonLd data={menuJsonLd(_global, enrichedSections)} />
+      <JsonLd data={menuJsonLd(_global, sections)} />
       <PageHeader title={title} />
 
       {/* Quick Category Navigation & Action Bar */}
-      {enrichedSections.length > 0 ? (
+      {sections.length > 0 ? (
         <nav aria-label="Menu sections" className="sticky top-[var(--header-height)] z-20 border-y border-border/80 bg-surface/95 backdrop-blur-md py-3 shadow-xs">
           <Container>
             <div className="flex items-center justify-between gap-4 overflow-x-auto no-scrollbar">
               <ul className="flex items-center gap-2 sm:gap-3 shrink-0">
-                {enrichedSections.map((section) => (
+                {sections.map((section) => (
                   <li key={section.slug}>
                     <a
                       href={`#${section.slug}`}
@@ -236,13 +193,13 @@ export default async function MenuPage(): Promise<ReactNode> {
 
       <Section>
         <Container>
-          {enrichedSections.length === 0 ? (
+          {sections.length === 0 ? (
             <Text tone="muted">
               Our menu is being updated. Please call {_global.location.phone}.
             </Text>
           ) : (
             <div className="flex flex-col gap-16">
-              {enrichedSections.map((section, index) => (
+              {sections.map((section, index) => (
                 <Fragment key={section.slug}>
                   {/* A flag divider between sections, never above the first */}
                   {index > 0 ? <SectionDivider /> : null}

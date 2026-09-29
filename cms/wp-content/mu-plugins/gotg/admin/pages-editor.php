@@ -188,6 +188,123 @@ function gotg_render_custom_page_editor() {
 			</div>
 		<?php endif; ?>
 
+		<?php if ( 'menu' === $current_slug ) : 
+			$items_count    = wp_count_posts( 'gotg_menu_item' )->publish ?? 0;
+			$sections_count = wp_count_terms( array( 'taxonomy' => 'gotg_menu_section' ) );
+			if ( is_wp_error( $sections_count ) ) {
+				$sections_count = 0;
+			}
+			$dietary_count  = wp_count_terms( array( 'taxonomy' => 'gotg_dietary' ) );
+			if ( is_wp_error( $dietary_count ) ) {
+				$dietary_count = 0;
+			}
+		?>
+			<div style="background:#fff; border:1px solid #c3c4c7; border-left:4px solid #2271b1; padding:20px; border-radius:6px; margin-bottom:24px; box-shadow:0 1px 3px rgba(0,0,0,0.05);">
+				<div style="display:flex; justify-content:space-between; align-items:flex-start; margin-bottom:16px; flex-wrap:wrap; gap:16px;">
+					<div>
+						<h2 style="margin:0 0 6px 0; font-size:16px; color:#1d2327; display:flex; align-items:center; gap:8px;">
+							<span>🍽️ Restaurant Menu Management Hub</span>
+							<span style="font-size:12px; font-weight:600; background:#e7f3ff; color:#0969da; padding:2px 8px; border-radius:10px;">Dynamic Menu Catalog</span>
+						</h2>
+						<p style="margin:0; color:#50575e; font-size:13px; max-width:750px; line-height:1.5;">
+							Dishes, pricing variants, descriptions, and dietary options are managed directly in the <strong>Menu Items</strong> catalog. Updates made there instantly reflect across the live website.
+						</p>
+					</div>
+					<div style="display:flex; gap:16px; background:#f6f7f7; padding:10px 16px; border-radius:6px; text-align:center;">
+						<div>
+							<strong style="display:block; font-size:18px; color:#2271b1;"><?php echo esc_html( (string) $items_count ); ?></strong>
+							<span style="font-size:11px; color:#646970; text-transform:uppercase;">Dishes</span>
+						</div>
+						<div style="border-left:1px solid #dcdcde; padding-left:16px;">
+							<strong style="display:block; font-size:18px; color:#2271b1;"><?php echo esc_html( (string) $sections_count ); ?></strong>
+							<span style="font-size:11px; color:#646970; text-transform:uppercase;">Sections</span>
+						</div>
+						<div style="border-left:1px solid #dcdcde; padding-left:16px;">
+							<strong style="display:block; font-size:18px; color:#2271b1;"><?php echo esc_html( (string) $dietary_count ); ?></strong>
+							<span style="font-size:11px; color:#646970; text-transform:uppercase;">Dietary</span>
+						</div>
+					</div>
+				</div>
+
+				<div style="display:grid; grid-template-columns:repeat(auto-fit, minmax(220px, 1fr)); gap:12px; margin-top:16px; padding-top:14px; border-top:1px solid #f0f0f1;">
+					<a href="<?php echo esc_url( admin_url( 'edit.php?post_type=gotg_menu_item' ) ); ?>" class="button button-primary" style="display:flex; align-items:center; justify-content:center; gap:6px; height:36px; font-weight:600;">
+						<span class="dashicons dashicons-food" style="font-size:16px; line-height:34px;"></span>
+						<span>Manage All Dishes &amp; Prices</span>
+					</a>
+					<a href="<?php echo esc_url( admin_url( 'post-new.php?post_type=gotg_menu_item' ) ); ?>" class="button" style="display:flex; align-items:center; justify-content:center; gap:6px; height:36px; font-weight:600;">
+						<span class="dashicons dashicons-plus-alt2" style="font-size:16px; line-height:34px;"></span>
+						<span>Add New Dish / Drink</span>
+					</a>
+					<a href="<?php echo esc_url( admin_url( 'edit-tags.php?taxonomy=gotg_menu_section&post_type=gotg_menu_item' ) ); ?>" class="button" style="display:flex; align-items:center; justify-content:center; gap:6px; height:36px;">
+						<span class="dashicons dashicons-category" style="font-size:16px; line-height:34px;"></span>
+						<span>Categories &amp; Sort Order</span>
+					</a>
+					<a href="<?php echo esc_url( admin_url( 'admin.php?page=gotg-settings' ) ); ?>" class="button" style="display:flex; align-items:center; justify-content:center; gap:6px; height:36px;">
+						<span class="dashicons dashicons-admin-settings" style="font-size:16px; line-height:34px;"></span>
+						<span>Menu Disclaimer &amp; Settings</span>
+					</a>
+				</div>
+			</div>
+		<?php elseif ( 'events' === $current_slug ) : 
+			$events_count = wp_count_posts( 'gotg_event' )->publish ?? 0;
+		?>
+			<div style="background:#fff; border:1px solid #c3c4c7; border-left:4px solid #2271b1; padding:20px; border-radius:6px; margin-bottom:24px; box-shadow:0 1px 3px rgba(0,0,0,0.05);">
+				<div style="display:flex; justify-content:space-between; align-items:flex-start; margin-bottom:16px; flex-wrap:wrap; gap:16px;">
+					<div>
+						<h2 style="margin:0 0 6px 0; font-size:16px; color:#1d2327; display:flex; align-items:center; gap:8px;">
+							<span>📅 Events &amp; Live Music Hub</span>
+							<span style="font-size:12px; font-weight:600; background:#e7f3ff; color:#0969da; padding:2px 8px; border-radius:10px;">Schedule Management</span>
+						</h2>
+						<p style="margin:0; color:#50575e; font-size:13px; max-width:750px; line-height:1.5;">
+							Live music performances, event dates, performer links, summaries, and cover charges are managed in the <strong>Events</strong> catalog and <strong>Event Calendar</strong>.
+						</p>
+					</div>
+					<div style="background:#f6f7f7; padding:10px 20px; border-radius:6px; text-align:center;">
+						<strong style="display:block; font-size:18px; color:#2271b1;"><?php echo esc_html( (string) $events_count ); ?></strong>
+						<span style="font-size:11px; color:#646970; text-transform:uppercase;">Scheduled Events</span>
+					</div>
+				</div>
+
+				<div style="display:grid; grid-template-columns:repeat(auto-fit, minmax(220px, 1fr)); gap:12px; margin-top:16px; padding-top:14px; border-top:1px solid #f0f0f1;">
+					<a href="<?php echo esc_url( admin_url( 'admin.php?page=gotg-event-calendar' ) ); ?>" class="button button-primary" style="display:flex; align-items:center; justify-content:center; gap:6px; height:36px; font-weight:600;">
+						<span class="dashicons dashicons-calendar-alt" style="font-size:16px; line-height:34px;"></span>
+						<span>Open Visual Event Calendar</span>
+					</a>
+					<a href="<?php echo esc_url( admin_url( 'edit.php?post_type=gotg_event' ) ); ?>" class="button" style="display:flex; align-items:center; justify-content:center; gap:6px; height:36px; font-weight:600;">
+						<span class="dashicons dashicons-list-view" style="font-size:16px; line-height:34px;"></span>
+						<span>Manage All Events &amp; Bands</span>
+					</a>
+					<a href="<?php echo esc_url( admin_url( 'post-new.php?post_type=gotg_event' ) ); ?>" class="button" style="display:flex; align-items:center; justify-content:center; gap:6px; height:36px;">
+						<span class="dashicons dashicons-plus-alt2" style="font-size:16px; line-height:34px;"></span>
+						<span>Schedule New Event</span>
+					</a>
+				</div>
+			</div>
+		<?php elseif ( 'contact' === $current_slug ) : ?>
+			<div style="background:#fff; border:1px solid #c3c4c7; border-left:4px solid #2271b1; padding:20px; border-radius:6px; margin-bottom:24px; box-shadow:0 1px 3px rgba(0,0,0,0.05);">
+				<div style="margin-bottom:12px;">
+					<h2 style="margin:0 0 6px 0; font-size:16px; color:#1d2327; display:flex; align-items:center; gap:8px;">
+						<span>📞 Restaurant Location, Phone &amp; Hours Hub</span>
+						<span style="font-size:12px; font-weight:600; background:#e7f3ff; color:#0969da; padding:2px 8px; border-radius:10px;">Contact &amp; Map Data</span>
+					</h2>
+					<p style="margin:0; color:#50575e; font-size:13px; max-width:750px; line-height:1.5;">
+						Restaurant address, phone number, operating hours, and Google Maps pin are managed in the <strong>Locations</strong> directory. The contact inquiry text blocks below can also be customized directly.
+					</p>
+				</div>
+
+				<div style="display:grid; grid-template-columns:repeat(auto-fit, minmax(220px, 1fr)); gap:12px; margin-top:14px; padding-top:14px; border-top:1px solid #f0f0f1;">
+					<a href="<?php echo esc_url( admin_url( 'edit.php?post_type=gotg_location' ) ); ?>" class="button button-primary" style="display:flex; align-items:center; justify-content:center; gap:6px; height:36px; font-weight:600;">
+						<span class="dashicons dashicons-location" style="font-size:16px; line-height:34px;"></span>
+						<span>Edit Address, Phone &amp; Hours</span>
+					</a>
+					<a href="<?php echo esc_url( admin_url( 'admin.php?page=gotg-settings' ) ); ?>" class="button" style="display:flex; align-items:center; justify-content:center; gap:6px; height:36px;">
+						<span class="dashicons dashicons-email-alt" style="font-size:16px; line-height:34px;"></span>
+						<span>Configure Form Inquiries &amp; Email</span>
+					</a>
+				</div>
+			</div>
+		<?php endif; ?>
+
 		<form method="post" action="<?php echo esc_url( admin_url( 'admin.php?page=gotg-page-editor&page_slug=' . $current_slug ) ); ?>">
 			<?php wp_nonce_field( 'gotg_custom_page_editor_nonce', 'gotg_custom_page_editor_nonce' ); ?>
 			<input type="hidden" name="gotg_save_custom_page_action" value="1" />
@@ -199,15 +316,26 @@ function gotg_render_custom_page_editor() {
 				<div style="color:#50575e; font-size:13px;">
 					Editing <strong><?php echo esc_html( (string) count( $blocks ) ); ?> section blocks</strong> on this page.
 				</div>
-				<button type="submit" class="button button-primary button-hero" style="height:38px; line-height:36px; padding:0 24px; font-weight:600;">
-					Save &amp; Publish Live
-				</button>
+				<?php if ( ! empty( $blocks ) ) : ?>
+					<button type="submit" class="button button-primary button-hero" style="height:38px; line-height:36px; padding:0 24px; font-weight:600;">
+						Save &amp; Publish Live
+					</button>
+				<?php endif; ?>
 			</div>
 
 			<!-- Sections List -->
 			<?php if ( empty( $blocks ) ) : ?>
-				<div style="background:#fff; border:1px dashed #c3c4c7; padding:40px; text-align:center; border-radius:6px;">
-					<p style="color:#646970; font-size:15px; margin-bottom:12px;">No custom section blocks configured for this page yet.</p>
+				<div style="background:#fff; border:1px dashed #c3c4c7; padding:35px 25px; text-align:center; border-radius:6px;">
+					<?php if ( 'menu' === $current_slug || 'events' === $current_slug ) : ?>
+						<p style="color:#1d2327; font-size:15px; font-weight:600; margin-bottom:6px;">
+							This page is powered by the dynamic <?php echo 'menu' === $current_slug ? 'Menu Items catalog' : 'Events schedule'; ?> above.
+						</p>
+						<p style="color:#646970; font-size:13px; margin:0;">
+							Use the quick-action buttons above to add, edit, and organize your <?php echo 'menu' === $current_slug ? 'dishes and prices' : 'live music dates'; ?>.
+						</p>
+					<?php else : ?>
+						<p style="color:#646970; font-size:15px; margin-bottom:12px;">No custom section blocks configured for this page yet.</p>
+					<?php endif; ?>
 				</div>
 			<?php else : ?>
 				<div class="gotg-blocks-list" style="display:flex; flex-direction:column; gap:20px;">
