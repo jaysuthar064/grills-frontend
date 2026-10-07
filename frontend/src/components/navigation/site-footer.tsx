@@ -57,7 +57,7 @@ export function SiteFooter({ global }: SiteFooterProps): ReactNode {
   const hoursSummary = uniformHours(hours.regular);
 
   return (
-    <footer className="bg-surface-inverse text-ink-inverse border-t-[4px] border-accent">
+    <footer className="bg-surface-inverse text-ink-inverse border-t-2 border-brand-primary">
       <Container as="div">
         <div className="grid grid-cols-1 gap-8 py-12 lg:grid-cols-4">
           <div className="flex flex-col gap-2">
@@ -66,15 +66,16 @@ export function SiteFooter({ global }: SiteFooterProps): ReactNode {
                 reverse variant is the only one that holds up here. The name is
                 still in the DOM for assistive tech via the visually-hidden
                 heading below. */}
-            <div className="inline-flex shrink-0 items-start max-w-[200px]">
+            <Link
+              href="/"
+              aria-label="Grill on the Green home"
+              className="inline-flex shrink-0 items-start max-w-[200px] transition-opacity hover:opacity-85 focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-accent"
+            >
               <Logo variant="reverse" height="footer" />
-            </div>
+            </Link>
             <VisuallyHidden>{site.name}</VisuallyHidden>
             <Text tone="inverse-muted" size="body-sm">
-              {site.tagline}
-            </Text>
-            <Text tone="inverse-muted" size="body-sm">
-              {site.description}
+              {site.description || site.tagline}
             </Text>
           </div>
 

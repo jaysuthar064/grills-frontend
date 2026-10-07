@@ -577,10 +577,10 @@ class Gotg_Seed_Command {
 		if ( isset( $block['people'] ) && is_array( $block['people'] ) ) {
 			$block['people'] = array_map(
 				function ( $person ) {
-					if ( isset( $person['photo'] ) ) {
+					if ( isset( $person['photo'] ) && '' !== $person['photo'] ) {
 						$person['photo_id'] = $this->image_id( $person['photo'] );
-						unset( $person['photo'] );
 					}
+					unset( $person['photo'] );
 
 					return $person;
 				},

@@ -53,6 +53,9 @@ function wordpressRemotePatterns(): NonNullable<
 
 const nextConfig = {
   reactStrictMode: true,
+  experimental: {
+    cpus: 1,
+  },
   images: {
     dangerouslyAllowLocalIP: true,
     qualities: [75, 90],

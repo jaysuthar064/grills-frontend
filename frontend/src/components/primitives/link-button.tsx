@@ -35,7 +35,7 @@ export interface LinkButtonProps {
 
 const VARIANT = {
   primary:
-    'bg-accent text-ink-inverse hover:bg-opacity-90 active:bg-opacity-80',
+    'bg-brand-primary text-white hover:bg-brand-primary-hover active:bg-brand-primary-active shadow-xs',
   secondary:
     'bg-transparent text-inherit border border-current hover:bg-black/10 hover:shadow-inner',
   ghost: 'text-ink hover:bg-surface-sunken',

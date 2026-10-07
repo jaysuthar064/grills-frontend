@@ -43,7 +43,13 @@ export function buildMetadata(
   const canonical = seo.canonical ?? canonicalUrl(pathname);
   const description = seo.description || global.seoDefaults.description;
   const title = resolveTitle(seo, global, pathname);
-  const image = seo.ogImage ?? global.seoDefaults.ogImage;
+  const defaultOgImage = {
+    src: '/media/brisket-sandwich.jpg',
+    width: 1200,
+    height: 630,
+    alt: 'Grill on the Green - Fresh Smoked Fairway Dining & Texas Barbecue',
+  };
+  const image = seo.ogImage ?? global.seoDefaults.ogImage ?? defaultOgImage;
   const shouldIndex = IS_PRODUCTION && !seo.noindex;
 
   const metadata: Metadata = {

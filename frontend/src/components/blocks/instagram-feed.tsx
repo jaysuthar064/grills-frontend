@@ -12,24 +12,18 @@ import { LinkButton } from '@/components/primitives/link-button';
 import { Skeleton } from '@/components/primitives/skeleton';
 import { Text } from '@/components/primitives/text';
 import { slugId } from '@/lib/slug';
-import { getWpUploadUrl } from '@/lib/media';
 import type { ImageObject, InstagramFeedBlock } from '@/types/api';
 
 /*
- * InstagramFeed — 06-COMPONENT-SPEC.md §InstagramFeed. Client Component
- * (register §0: third-party fetch after hydration).
+ * InstagramFeed — Client Component (third-party fetch after hydration).
  *
  * Loading is deferred until the section scrolls into view (IntersectionObserver)
- * so the feed never joins the initial JS payload or contributes to LCP. States:
- * loading → loaded | error | empty, where empty renders as error (zero posts is
- * indistinguishable from a failure). The component never throws: a rejection, a
- * 5s timeout, or a malformed response all resolve to the error state.
+ * so the feed never joins the initial JS payload or contributes to LCP.
  *
- * The vendor fetch is defined in 09-INTEGRATIONS.md and is not yet wired, so
- * `loadPosts` reports "unconfigured" and the component degrades to its
- * documented error/fallback state. `InstagramPost` is a provisional local shape
- * for the loaded branch until that integration lands; it is intentionally not in
- * the API contract types.
+ * Pulling live posts:
+ * Connects to Behold JSON API (https://behold.so) when NEXT_PUBLIC_BEHOLD_FEED_ID
+ * is configured in .env.local. If unconfigured or offline, gracefully falls back
+ * to authentic high-resolution local food photography from the course.
  */
 
 export interface InstagramFeedProps {
@@ -55,8 +49,8 @@ const DEFAULT_POSTS: InstagramPost[] = [
     id: 'post-1',
     permalink: 'https://www.instagram.com/grillonthegreen_simi/',
     image: {
-      src: '/media/brisket-sandwich.jpg',
-      alt: 'Texas Smoked Brisket Sandwich with BBQ baked beans',
+      src: '/media/instagram/post-1.jpg',
+      alt: 'Texas Smoked Brisket Sandwich with BBQ baked beans on the fairway',
       width: 800,
       height: 800,
     },
@@ -65,8 +59,8 @@ const DEFAULT_POSTS: InstagramPost[] = [
     id: 'post-2',
     permalink: 'https://www.instagram.com/grillonthegreen_simi/',
     image: {
-      src: '/media/bbq-salad.jpg',
-      alt: 'BBQ Chopped Salad loaded with chicken and fresh greens',
+      src: '/media/instagram/post-2.jpg',
+      alt: 'Juicy craft burger on the fairway patio with mountain views',
       width: 800,
       height: 800,
     },
@@ -75,7 +69,7 @@ const DEFAULT_POSTS: InstagramPost[] = [
     id: 'post-3',
     permalink: 'https://www.instagram.com/grillonthegreen_simi/',
     image: {
-      src: '/media/fairway-hotdog.jpg',
+      src: '/media/instagram/post-3.jpg',
       alt: 'Nathan’s All Beef Hot Dog on the 18th hole fairway',
       width: 800,
       height: 800,
@@ -85,8 +79,8 @@ const DEFAULT_POSTS: InstagramPost[] = [
     id: 'post-4',
     permalink: 'https://www.instagram.com/grillonthegreen_simi/',
     image: {
-      src: '/media/club-sandwich.jpg',
-      alt: 'Clubhouse Sandwich with roasted turkey, ham and bacon',
+      src: '/media/instagram/post-4.jpg',
+      alt: 'Clubhouse Sandwich with roasted turkey, ham and crispy bacon',
       width: 800,
       height: 800,
     },
@@ -95,8 +89,8 @@ const DEFAULT_POSTS: InstagramPost[] = [
     id: 'post-5',
     permalink: 'https://www.instagram.com/grillonthegreen_simi/',
     image: {
-      src: getWpUploadUrl('IMG_2175.JPG.jpeg'),
-      alt: 'Fresh brisket sliced straight off the smoker',
+      src: '/media/instagram/post-5.jpg',
+      alt: 'Crispy Southern Fried Chicken Sandwich with golden fries',
       width: 800,
       height: 800,
     },
@@ -105,8 +99,8 @@ const DEFAULT_POSTS: InstagramPost[] = [
     id: 'post-6',
     permalink: 'https://www.instagram.com/grillonthegreen_simi/',
     image: {
-      src: getWpUploadUrl('IMG_2172.JPG.jpeg'),
-      alt: 'Crisp BBQ chopped salad with grilled chicken and fresh greens',
+      src: '/media/instagram/post-6.jpg',
+      alt: 'Crisp BBQ chopped salad with grilled chicken and roasted corn',
       width: 800,
       height: 800,
     },
@@ -114,9 +108,40 @@ const DEFAULT_POSTS: InstagramPost[] = [
 ];
 
 async function loadPosts(
-  _handle: string,
+  handle: string,
   count: number,
 ): Promise<InstagramPost[]> {
+  const feedId = process.env.NEXT_PUBLIC_BEHOLD_FEED_ID;
+  if (feedId && feedId.trim() !== '') {
+    try {
+      const res = await fetch(`https://feeds.behold.so/${feedId}`);
+      if (res.ok) {
+        const data = await res.json();
+        if (Array.isArray(data) && data.length > 0) {
+          return data.slice(0, count || 6).map((item: {
+            id: string;
+            permalink?: string;
+            mediaUrl?: string;
+            sizes?: { medium?: { mediaUrl?: string }; large?: { mediaUrl?: string } };
+            prunedCaption?: string;
+            caption?: string;
+          }) => ({
+            id: item.id,
+            permalink: item.permalink || `https://www.instagram.com/${handle}/`,
+            image: {
+              src: item.sizes?.medium?.mediaUrl || item.mediaUrl || '/media/brisket-sandwich.jpg',
+              alt: item.prunedCaption || item.caption || 'Grill on the Green Instagram update',
+              width: 800,
+              height: 800,
+            },
+          }));
+        }
+      }
+    } catch (e) {
+      console.warn('Could not fetch live Instagram feed from Behold, using curated posts:', e);
+    }
+  }
+
   return Promise.resolve(DEFAULT_POSTS.slice(0, count || 6));
 }
 

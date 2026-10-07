@@ -9,20 +9,6 @@ import { LinkButton } from '@/components/primitives/link-button';
 import { slugId } from '@/lib/slug';
 import type { FeaturedItemsBlock } from '@/types/api';
 
-/*
- * FeaturedMenuRow — 06-COMPONENT-SPEC.md §FeaturedMenuRow. Section > Container >
- * heading > item row > optional LinkButton to /menu.
- *
- * Below md the row is a horizontal scroll-snap strip showing ~1.2 cards to
- * signal overflow; at md+ it is a three-column grid. The scroll strip is
- * `tabindex=0` with `role="group"` and an accessible name so keyboard users can
- * scroll it; the cards themselves are not interactive. Max six items, enforced
- * server-side.
- *
- * The block is omitted from the payload when nothing is featured; the empty
- * guard here is defensive.
- */
-
 export interface FeaturedMenuRowProps {
   band?: 'surface' | 'sunken';
   block: FeaturedItemsBlock;
@@ -42,29 +28,39 @@ export function FeaturedMenuRow({
     <Section tone={band} ariaLabelledBy={headingId} watermark="script">
       <Container>
         <div className="flex flex-col gap-8">
-          {/* Section Header with Overline, Heading, Subtitle & Action */}
+          {/* Section Header with Clear Menu Label & PDF Button */}
           <div className="flex flex-col md:flex-row md:items-end justify-between gap-6 border-b border-border/60 pb-6">
             <div className="flex flex-col gap-2 max-w-2xl">
-              <span className="text-overline uppercase tracking-[0.2em] text-brand-primary font-bold">
-                House Specialties · Wood-Fired Perfection
+              <span className="text-sm uppercase tracking-[0.2em] text-brand-primary font-bold">
+                Menu &middot; House Specialties
               </span>
               <AnimatedReveal>
-                <Heading level={2} id={headingId} visualLevel="h2">
-                  {block.heading || 'Off the Smoker'}
+                <Heading level={2} id={headingId} visualLevel="h2" className="text-3xl sm:text-4xl font-display font-bold text-ink">
+                  {block.heading && !block.heading.toLowerCase().includes('menu') ? `Our Menu: ${block.heading}` : (block.heading || 'Our Menu')}
                 </Heading>
               </AnimatedReveal>
-              <p className="text-body text-ink-muted leading-relaxed">
+              <p className="text-base sm:text-lg text-ink-muted leading-relaxed">
                 Slow-smoked over seasoned California white oak and seared hot to order.
                 Prepared fresh from 4:00 AM daily right at the 18th hole fairway.
               </p>
             </div>
 
-            <div className="shrink-0">
+            {/* Clear Action Buttons: View PDF Menu & Explore Interactive Menu */}
+            <div className="flex flex-wrap items-center gap-3 shrink-0">
+              <LinkButton
+                href="/media/grill-on-the-green-menu.pdf"
+                variant="primary"
+                size="md"
+                isExternal
+                className="font-bold tracking-wider"
+              >
+                View PDF Menu
+              </LinkButton>
               <LinkButton
                 href={block.cta?.href || '/menu'}
                 variant="secondary"
                 size="md"
-                className="hover:border-brand-primary hover:text-brand-primary shadow-xs"
+                className="hover:border-brand-primary hover:text-brand-primary font-bold tracking-wider shadow-xs"
               >
                 {block.cta?.label || 'Explore Full Menu'} &rarr;
               </LinkButton>
@@ -91,22 +87,6 @@ export function FeaturedMenuRow({
                 </li>
               ))}
             </ul>
-          </div>
-
-          {/* Craft Guarantee Strip */}
-          <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 pt-2 border-t border-border/40 text-center">
-            <div className="flex items-center justify-center gap-2 py-2 px-3 rounded-lg bg-surface-sunken/40 text-caption font-semibold text-ink-muted">
-              <span>🪵</span>
-              <span>100% California White Oak</span>
-            </div>
-            <div className="flex items-center justify-center gap-2 py-2 px-3 rounded-lg bg-surface-sunken/40 text-caption font-semibold text-ink-muted">
-              <span>🥩</span>
-              <span>Prime Cuts &amp; House Dry Rub</span>
-            </div>
-            <div className="flex items-center justify-center gap-2 py-2 px-3 rounded-lg bg-surface-sunken/40 text-caption font-semibold text-ink-muted">
-              <span>🍳</span>
-              <span>Breakfast, Lunch &amp; Dinner</span>
-            </div>
           </div>
         </div>
       </Container>

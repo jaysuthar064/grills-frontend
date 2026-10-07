@@ -127,7 +127,7 @@ export function PrimaryNav({ items, currentPath }: PrimaryNavProps): ReactNode {
           <div className="h-full w-full rounded-full bg-black/[0.06] group-[.header-transparent-mode]:bg-white/20 backdrop-blur-xs shadow-xs border border-black/[0.03] group-[.header-transparent-mode]:border-white/20" />
 
           {/* Glowing Center Accent Pip Underneath */}
-          <div className="absolute -bottom-1.5 left-1/2 -translate-x-1/2 h-[3px] w-3.5 rounded-full bg-brand-primary group-[.header-transparent-mode]:bg-accent shadow-[0_0_8px_rgba(211,84,0,0.6)] group-[.header-transparent-mode]:shadow-[0_0_10px_rgba(230,175,46,0.9)]" />
+          <div className="absolute -bottom-1.5 left-1/2 -translate-x-1/2 h-[3px] w-3.5 rounded-full bg-brand-primary group-[.header-transparent-mode]:bg-white shadow-xs" />
         </div>
 
         {items.map((item) => {

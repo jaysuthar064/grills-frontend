@@ -146,21 +146,12 @@ export default async function CateringPage(): Promise<ReactNode> {
               {packages.map((pkg, index) => (
                 <AnimatedReveal key={pkg.title} delay={index * 0.15}>
                   <div className="flex flex-col justify-between h-full bg-surface-raised rounded-2xl overflow-hidden border border-border shadow-sm hover:shadow-lg transition-all duration-300">
-                    {/* Package Image Banner */}
-                    <div className="relative h-52 w-full overflow-hidden bg-surface-sunken">
-                      <img
-                        src={pkg.image}
-                        alt={pkg.title}
-                        className="h-full w-full object-cover transition-transform duration-500 hover:scale-105"
-                      />
-                      <div className="absolute top-4 left-4">
-                        <span className="text-overline uppercase tracking-widest text-white font-bold bg-black/65 backdrop-blur-md px-3 py-1 rounded-full border border-white/20">
+                    <div className="flex flex-col justify-between flex-1 p-6 sm:p-8">
+                      <div className="mb-2">
+                        <span className="inline-block text-xs font-bold uppercase tracking-wider text-brand-primary bg-brand-primary-subtle/40 px-3 py-1 rounded-full border border-brand-primary/20">
                           {pkg.tag}
                         </span>
                       </div>
-                    </div>
-
-                    <div className="flex flex-col justify-between flex-1 p-6 sm:p-8">
                       <div className="flex flex-col gap-3">
                         <div className="flex items-center justify-between">
                           <Heading level={3} visualLevel="h3">
@@ -199,73 +190,6 @@ export default async function CateringPage(): Promise<ReactNode> {
                 </AnimatedReveal>
               ))}
             </div>
-          </Container>
-        </Section>
-
-        {/* Catering In Action Visual Gallery */}
-        <Section tone="surface">
-          <Container>
-            <AnimatedReveal>
-              <div className="flex flex-col md:flex-row items-start md:items-end justify-between gap-4 mb-10">
-                <div>
-                  <span className="text-overline uppercase tracking-widest text-brand-primary font-bold">
-                    Real Events · Real Food
-                  </span>
-                  <Heading level={2} visualLevel="h1">
-                    Catering from the Smoker
-                  </Heading>
-                </div>
-                <p className="text-body-sm text-ink-muted max-w-md">
-                  Every order is smoked fresh on-site with oak and hickory wood, carved to order, and presented with pride.
-                </p>
-              </div>
-
-              <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-                <div className="group relative overflow-hidden rounded-xl aspect-4-3 shadow-sm border border-border">
-                  <img
-                    src={getWpUploadUrl('IMG_2175.JPG.jpeg')}
-                    alt="Smoked meat carving"
-                    className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
-                  />
-                  <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-transparent to-transparent flex items-end p-3">
-                    <span className="text-caption font-bold text-white">Full Buffet Service</span>
-                  </div>
-                </div>
-
-                <div className="group relative overflow-hidden rounded-xl aspect-4-3 shadow-sm border border-border">
-                  <img
-                    src={getWpUploadUrl('IMG_2176.JPG.jpeg')}
-                    alt="Kitchen pass plating"
-                    className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
-                  />
-                  <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-transparent to-transparent flex items-end p-3">
-                    <span className="text-caption font-bold text-white">Banquet Plating</span>
-                  </div>
-                </div>
-
-                <div className="group relative overflow-hidden rounded-xl aspect-4-3 shadow-sm border border-border">
-                  <img
-                    src={getWpUploadUrl('IMG_2170.JPG.jpeg')}
-                    alt="Burger and ribs feast"
-                    className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
-                  />
-                  <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-transparent to-transparent flex items-end p-3">
-                    <span className="text-caption font-bold text-white">Smoked BBQ Platters</span>
-                  </div>
-                </div>
-
-                <div className="group relative overflow-hidden rounded-xl aspect-4-3 shadow-sm border border-border">
-                  <img
-                    src={getWpUploadUrl('IMG_2185.JPG.jpeg')}
-                    alt="Fried chicken and sandwiches"
-                    className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
-                  />
-                  <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-transparent to-transparent flex items-end p-3">
-                    <span className="text-caption font-bold text-white">Signature Sandwiches</span>
-                  </div>
-                </div>
-              </div>
-            </AnimatedReveal>
           </Container>
         </Section>
 

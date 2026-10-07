@@ -72,7 +72,7 @@ export function MenuCard({
             />
           </div>
           <div className="absolute top-3 left-3 z-10">
-            <span className="inline-flex items-center gap-1.5 rounded-full bg-black/80 px-3 py-1 text-[11px] font-bold uppercase tracking-wider text-accent backdrop-blur-md border border-accent/40 shadow-md">
+            <span className="inline-flex items-center gap-1.5 rounded-full bg-black/80 px-3 py-1 text-[11px] font-bold uppercase tracking-wider text-white backdrop-blur-md border border-white/20 shadow-md">
               {signatureLabel}
             </span>
           </div>
@@ -129,7 +129,7 @@ export function MenuCard({
         {variant === 'featured' ? (
           <div className="flex items-center justify-between pt-3 border-t border-border/50 text-caption font-medium text-ink-muted">
             <span className="inline-flex items-center gap-1.5 text-accent">
-              <span className="h-1.5 w-1.5 rounded-full bg-accent animate-pulse" />
+              <span className="h-1.5 w-1.5 rounded-full bg-brand-primary animate-pulse" />
               Smoked Fresh Daily
             </span>
             <span className="text-brand-primary font-semibold group-hover:translate-x-1 transition-transform inline-flex items-center gap-0.5">

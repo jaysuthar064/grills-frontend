@@ -11,17 +11,17 @@
 
 :root {
   /* Colour — brand and surface */
-  --color-brand-primary: #1c1917;
-  --color-brand-primary-hover: #292524;
-  --color-brand-primary-active: #0c0a09;
-  --color-brand-primary-subtle: #f5f5f4;
+  --color-brand-primary: #1E4338;
+  --color-brand-primary-hover: #16322A;
+  --color-brand-primary-active: #0F231D;
+  --color-brand-primary-subtle: #E8EFEA;
   /* Accent. Logo, large display accents, decoration. */
-  --color-brand-accent: #c2410c;
-  --color-brand-accent-subtle: #fff7ed;
-  --color-surface: #fafaf9;
+  --color-brand-accent: #DE2A33;
+  --color-brand-accent-subtle: #FDF2F2;
+  --color-surface: #F9F8F2;
   --color-surface-raised: #ffffff;
-  --color-surface-sunken: #e7e5e4;
-  --color-surface-inverse: #1c1917;
+  --color-surface-sunken: #EAE0DA;
+  --color-surface-inverse: #16322A;
 
   /* Colour — ink */
   --color-ink: #0c0a09;
