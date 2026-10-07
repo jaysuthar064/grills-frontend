@@ -252,18 +252,7 @@ export function InstagramFeed({
                   sizes="(min-width: 1024px) 16vw, (min-width: 640px) 33vw, 50vw"
                 />
 
-                {/* Reel Indicator Badge */}
-                {isReel && (
-                  <div
-                    className="absolute top-2 right-2 z-10 flex items-center gap-1 rounded-md bg-black/65 px-1.5 py-0.5 text-[11px] font-semibold text-white shadow-xs backdrop-blur-xs"
-                    title="Instagram Reel"
-                  >
-                    <svg className="h-3 w-3 fill-current" viewBox="0 0 24 24">
-                      <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 14.5v-9l6 4.5-6 4.5z" />
-                    </svg>
-                    <span>Reel</span>
-                  </div>
-                )}
+
 
                 {/* Hover Scrim with Instagram Branding & Caption */}
                 <div className="absolute inset-0 z-10 flex flex-col justify-end bg-gradient-to-t from-black/85 via-black/40 to-transparent p-3 opacity-0 transition-opacity duration-200 group-hover:opacity-100">
