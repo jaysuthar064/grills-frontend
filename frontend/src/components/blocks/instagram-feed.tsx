@@ -168,18 +168,15 @@ export function InstagramFeed({
 }: InstagramFeedProps): ReactNode {
   const containerRef = useRef<HTMLDivElement>(null);
 
-  // If WordPress CMS provides posts, use them directly without delay
+  // When WordPress CMS provides posts, use them directly as single source of truth
   const hasCmsPosts = Array.isArray(block.posts) && block.posts.length > 0;
-  const [state, setState] = useState<FeedState>(() => {
-    if (hasCmsPosts && block.posts) {
-      return { status: 'loaded', posts: block.posts.slice(0, block.count || 6) };
-    }
-    return { status: 'loading' };
-  });
+  const cmsPosts = hasCmsPosts && block.posts ? block.posts.slice(0, block.count || 6) : null;
+
+  const [fallbackState, setFallbackState] = useState<FeedState>({ status: 'loading' });
 
   useEffect(() => {
-    if (hasCmsPosts && block.posts) {
-      setState({ status: 'loaded', posts: block.posts.slice(0, block.count || 6) });
+    // If CMS posts are present, skip client-side fetch entirely
+    if (cmsPosts) {
       return;
     }
 
@@ -194,7 +191,7 @@ export function InstagramFeed({
       withTimeout(loadPosts(block.handle, block.count), LOAD_TIMEOUT_MS)
         .then((posts) => {
           if (!cancelled) {
-            setState(
+            setFallbackState(
               posts.length > 0
                 ? { status: 'loaded', posts }
                 : { status: 'error' },
@@ -203,7 +200,7 @@ export function InstagramFeed({
         })
         .catch(() => {
           if (!cancelled) {
-            setState({ status: 'error' });
+            setFallbackState({ status: 'error' });
           }
         });
     };
@@ -222,7 +219,9 @@ export function InstagramFeed({
       cancelled = true;
       observer.disconnect();
     };
-  }, [block.handle, block.count, block.posts, hasCmsPosts]);
+  }, [block.handle, block.count, cmsPosts]);
+
+  const displayedPosts = cmsPosts ?? (fallbackState.status === 'loaded' ? fallbackState.posts : null);
 
   const headingId = slugId('instagram', block.heading);
   const profileUrl = block.profileUrl || `https://www.instagram.com/${block.handle}/`;
@@ -231,23 +230,11 @@ export function InstagramFeed({
     'Daily smoker reveals, weekend concert announcements, and life on the 18th hole fairway.';
 
   let body: ReactNode;
-  if (state.status === 'loading') {
-    body = (
-      <div aria-busy="true">
-        <Grid columns={3} gap={2}>
-          {Array.from({ length: block.count || 6 }, (_, index) => (
-            <div key={index} className="aspect-square">
-              <Skeleton variant="rect" />
-            </div>
-          ))}
-        </Grid>
-      </div>
-    );
-  } else if (state.status === 'loaded') {
+  if (displayedPosts && displayedPosts.length > 0) {
     body = (
       <div className="flex flex-col gap-6 w-full">
         <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-6 gap-3">
-          {state.posts.map((post, idx) => {
+          {displayedPosts.map((post, idx) => {
             const isReel = post.isReel ?? (post.permalink?.includes('/reel/') || false);
             return (
               <a
@@ -304,6 +291,18 @@ export function InstagramFeed({
             Follow @{block.handle}
           </LinkButton>
         </div>
+      </div>
+    );
+  } else if (!displayedPosts && fallbackState.status === 'loading') {
+    body = (
+      <div aria-busy="true">
+        <Grid columns={3} gap={2}>
+          {Array.from({ length: block.count || 6 }, (_, index) => (
+            <div key={index} className="aspect-square">
+              <Skeleton variant="rect" />
+            </div>
+          ))}
+        </Grid>
       </div>
     );
   } else {
