@@ -8,6 +8,7 @@ import { getHome } from '@/lib/api';
 import { homeJsonLd } from '@/lib/json-ld';
 import { getWpUploadUrl, normalizeMediaUrl } from '@/lib/media';
 import { buildMetadata } from '@/lib/seo';
+import type { InstagramFeedBlock } from '@/types/api';
 
 export const dynamic = 'force-dynamic';
 
@@ -54,8 +55,6 @@ export default async function HomePage(): Promise<ReactNode> {
   // We use "Fresh from the Pit" as the official Instagram showcase and filter out the duplicate second IG feed.
   const enhancedBlocks = blocks
     .filter((block) => {
-      // Client feedback: omit duplicate second IG feed (represented by "Fresh from the Pit" showcase)
-      if (block.type === 'instagram_feed') return false;
       // Client feedback (line 41): "Full Service and Drop-off Kit, let's just kill this, this whole thing"
       if (block.type === 'split_feature') return false;
       // Client feedback (lines 50-53): kill redundant pre-footer CTA band that repeats footer hours & phone
@@ -152,70 +151,14 @@ export default async function HomePage(): Promise<ReactNode> {
         };
       }
       if (block.type === 'gallery') {
-        // Curate 9 photos for "Fresh from the Pit" Instagram showcase,
-        // prioritizing genuine client outdoor photos and omitting awkward kitchen shots like IMG_2171
-        const curatedPhotos = [
-          {
-            src: '/media/brisket-sandwich.jpg',
-            alt: 'Texas Smoked Brisket Sandwich with BBQ baked beans',
-            width: 800,
-            height: 800,
-          },
-          {
-            src: getWpUploadUrl('IMG_2175.JPG.jpeg'),
-            alt: 'Sliced smoked beef brisket with rich mahogany bark',
-            width: 800,
-            height: 800,
-          },
-          {
-            src: '/media/fairway-hotdog.jpg',
-            alt: 'Nathan’s All Beef Hot Dog on the 18th hole fairway',
-            width: 800,
-            height: 800,
-          },
-          {
-            src: getWpUploadUrl('IMG_2185.JPG.jpeg'),
-            alt: 'Golden crispy buffalo fried chicken sandwich with seasoned fries',
-            width: 800,
-            height: 800,
-          },
-          {
-            src: '/media/bbq-salad.jpg',
-            alt: 'Crisp BBQ chopped salad with grilled chicken and roasted corn',
-            width: 800,
-            height: 800,
-          },
-          {
-            src: getWpUploadUrl('IMG_2176.JPG.jpeg'),
-            alt: 'Banquet pass dining plating on the fairway patio',
-            width: 800,
-            height: 800,
-          },
-          {
-            src: '/media/club-sandwich.jpg',
-            alt: 'Triple-decker clubhouse sandwich on toasted sourdough',
-            width: 800,
-            height: 800,
-          },
-          {
-            src: getWpUploadUrl('IMG_2170.JPG.jpeg'),
-            alt: 'Smoked baby back ribs and burger feast platter',
-            width: 800,
-            height: 800,
-          },
-          {
-            src: '/media/burger-patio.jpg',
-            alt: 'Craft burger on the fairway patio with golf course backdrop',
-            width: 800,
-            height: 800,
-          },
-        ];
-
-        return {
-          ...block,
+        // Client feedback: "so fresh from the pitt can we just use that for the IG feed? and lets just link that"
+        const igBlock: InstagramFeedBlock = {
+          type: 'instagram_feed',
           heading: 'Fresh from the Pit',
-          images: curatedPhotos,
+          handle: 'grillonthegreen_simi',
+          count: 6,
         };
+        return igBlock;
       }
       if (block.type === 'cta_band' && block.image) {
         return {
@@ -228,6 +171,17 @@ export default async function HomePage(): Promise<ReactNode> {
       }
       return block;
     });
+
+  // Guarantee the Instagram feed is present on the homepage
+  if (!enhancedBlocks.some((b) => b.type === 'instagram_feed')) {
+    const fallbackIg: InstagramFeedBlock = {
+      type: 'instagram_feed',
+      heading: 'Fresh from the Pit',
+      handle: 'grillonthegreen_simi',
+      count: 6,
+    };
+    enhancedBlocks.push(fallbackIg);
+  }
 
   return (
     <>

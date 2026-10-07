@@ -47,7 +47,7 @@ const LOAD_TIMEOUT_MS = 5000;
 const DEFAULT_POSTS: InstagramPost[] = [
   {
     id: 'post-1',
-    permalink: 'https://www.instagram.com/grillonthegreen_simi/',
+    permalink: 'https://www.instagram.com/grillonthegreen_simi/p/DWE51CQgcSd/',
     image: {
       src: '/media/instagram/post-1.jpg',
       alt: 'Texas Smoked Brisket Sandwich with BBQ baked beans on the fairway',
@@ -57,7 +57,7 @@ const DEFAULT_POSTS: InstagramPost[] = [
   },
   {
     id: 'post-2',
-    permalink: 'https://www.instagram.com/grillonthegreen_simi/',
+    permalink: 'https://www.instagram.com/grillonthegreen_simi/p/DWZLt-oDS59/',
     image: {
       src: '/media/instagram/post-2.jpg',
       alt: 'Juicy craft burger on the fairway patio with mountain views',
@@ -67,7 +67,7 @@ const DEFAULT_POSTS: InstagramPost[] = [
   },
   {
     id: 'post-3',
-    permalink: 'https://www.instagram.com/grillonthegreen_simi/',
+    permalink: 'https://www.instagram.com/grillonthegreen_simi/p/DQu4NH4AXhf/',
     image: {
       src: '/media/instagram/post-3.jpg',
       alt: 'Nathan’s All Beef Hot Dog on the 18th hole fairway',
@@ -77,7 +77,7 @@ const DEFAULT_POSTS: InstagramPost[] = [
   },
   {
     id: 'post-4',
-    permalink: 'https://www.instagram.com/grillonthegreen_simi/',
+    permalink: 'https://www.instagram.com/grillonthegreen_simi/p/DQsh5ZDDSgK/',
     image: {
       src: '/media/instagram/post-4.jpg',
       alt: 'Clubhouse Sandwich with roasted turkey, ham and crispy bacon',
@@ -87,7 +87,7 @@ const DEFAULT_POSTS: InstagramPost[] = [
   },
   {
     id: 'post-5',
-    permalink: 'https://www.instagram.com/grillonthegreen_simi/',
+    permalink: 'https://www.instagram.com/grillonthegreen_simi/p/DRLi40uDQhe/',
     image: {
       src: '/media/instagram/post-5.jpg',
       alt: 'Crispy Southern Fried Chicken Sandwich with golden fries',
@@ -97,10 +97,10 @@ const DEFAULT_POSTS: InstagramPost[] = [
   },
   {
     id: 'post-6',
-    permalink: 'https://www.instagram.com/grillonthegreen_simi/',
+    permalink: 'https://www.instagram.com/grillonthegreen_simi/reel/Ddy3uurB44x/',
     image: {
       src: '/media/instagram/post-6.jpg',
-      alt: 'Crisp BBQ chopped salad with grilled chicken and roasted corn',
+      alt: 'Watch the Reel — Live from the smoker on the 18th hole patio',
       width: 800,
       height: 800,
     },
