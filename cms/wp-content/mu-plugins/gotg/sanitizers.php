@@ -662,6 +662,46 @@ function gotg_sanitize_people_rows( $value ) {
 }
 
 /**
+ * Normalises an array of Instagram post items for an instagram_feed block.
+ *
+ * @param mixed $value Raw value.
+ * @return array<int, array{image_id: int, image_url: string, permalink: string, caption: string, is_reel: bool}> Rows.
+ */
+function gotg_sanitize_instagram_posts( $value ) {
+	if ( ! is_array( $value ) ) {
+		return array();
+	}
+
+	$clean = array();
+
+	foreach ( $value as $row ) {
+		if ( ! is_array( $row ) ) {
+			continue;
+		}
+
+		$image_id  = isset( $row['image_id'] ) && is_scalar( $row['image_id'] ) ? absint( $row['image_id'] ) : 0;
+		$image_url = isset( $row['image_url'] ) && is_scalar( $row['image_url'] ) ? sanitize_text_field( (string) $row['image_url'] ) : '';
+		$permalink = isset( $row['permalink'] ) && is_scalar( $row['permalink'] ) ? gotg_sanitize_link( (string) $row['permalink'] ) : '';
+		$caption   = isset( $row['caption'] ) && is_scalar( $row['caption'] ) ? sanitize_text_field( (string) $row['caption'] ) : '';
+		$is_reel   = ! empty( $row['is_reel'] ) || ( '' !== $permalink && false !== strpos( $permalink, '/reel/' ) );
+
+		if ( 0 === $image_id && '' === $image_url && '' === $permalink && '' === $caption ) {
+			continue;
+		}
+
+		$clean[] = array(
+			'image_id'  => $image_id,
+			'image_url' => $image_url,
+			'permalink' => $permalink,
+			'caption'   => $caption,
+			'is_reel'   => (bool) $is_reel,
+		);
+	}
+
+	return array_slice( array_values( $clean ), 0, 12 );
+}
+
+/**
  * Returns the field schema for every page block type.
  *
  * Each entry maps a block field key to the cleaner that normalises it. The
@@ -731,9 +771,12 @@ function gotg_page_block_schema() {
 			'people'  => 'people',
 		),
 		'instagram_feed'  => array(
-			'heading' => 'text',
-			'handle'  => 'text',
-			'count'   => 'int',
+			'heading'     => 'text',
+			'subtitle'    => 'text',
+			'handle'      => 'text',
+			'profile_url' => 'link',
+			'count'       => 'int',
+			'posts'       => 'instagram_posts',
 		),
 		'reusable_block'  => array(
 			'block_ref_id' => 'int',
@@ -776,6 +819,9 @@ function gotg_clean_block_field( $cleaner, $value ) {
 
 		case 'people':
 			return gotg_sanitize_people_rows( $value );
+
+		case 'instagram_posts':
+			return gotg_sanitize_instagram_posts( $value );
 
 		default:
 			return '';

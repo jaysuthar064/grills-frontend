@@ -8,7 +8,7 @@ import { getHome } from '@/lib/api';
 import { homeJsonLd } from '@/lib/json-ld';
 import { getWpUploadUrl, normalizeMediaUrl } from '@/lib/media';
 import { buildMetadata } from '@/lib/seo';
-import type { InstagramFeedBlock } from '@/types/api';
+import type { InstagramFeedBlock, PageBlock } from '@/types/api';
 
 export const dynamic = 'force-dynamic';
 
@@ -53,12 +53,14 @@ export default async function HomePage(): Promise<ReactNode> {
   // Filter and enhance blocks
   // The client requested: "so fresh from the pitt can we just use that for the IG feed? and lets just link that"
   // We use "Fresh from the Pit" as the official Instagram showcase and filter out the duplicate second IG feed.
-  const enhancedBlocks = blocks
+  const enhancedBlocks: PageBlock[] = blocks
     .filter((block) => {
       // Client feedback (line 41): "Full Service and Drop-off Kit, let's just kill this, this whole thing"
       if (block.type === 'split_feature') return false;
       // Client feedback (lines 50-53): kill redundant pre-footer CTA band that repeats footer hours & phone
       if (block.type === 'cta_band') return false;
+      // Avoid duplicate gallery section since Instagram feed serves as the visual food & pit showcase
+      if (block.type === 'gallery') return false;
       return true;
     })
     .map((block) => {
@@ -150,14 +152,27 @@ export default async function HomePage(): Promise<ReactNode> {
           },
         };
       }
-      if (block.type === 'gallery') {
-        // Client feedback: "so fresh from the pitt can we just use that for the IG feed? and lets just link that"
+      if (block.type === 'instagram_feed') {
+        const posts = block.posts
+          ? block.posts.map((post) => ({
+              ...post,
+              image: {
+                ...post.image,
+                src: normalizeMediaUrl(post.image.src),
+              },
+            }))
+          : undefined;
+
         const igBlock: InstagramFeedBlock = {
           type: 'instagram_feed',
-          heading: 'Fresh from the Pit',
-          handle: 'grillonthegreen_simi',
-          count: 6,
+          heading: block.heading,
+          handle: block.handle,
+          count: block.count,
+          ...(block.subtitle ? { subtitle: block.subtitle } : {}),
+          ...(block.profileUrl ? { profileUrl: block.profileUrl } : {}),
+          ...(posts ? { posts } : {}),
         };
+
         return igBlock;
       }
       if (block.type === 'cta_band' && block.image) {
@@ -177,7 +192,9 @@ export default async function HomePage(): Promise<ReactNode> {
     const fallbackIg: InstagramFeedBlock = {
       type: 'instagram_feed',
       heading: 'Fresh from the Pit',
+      subtitle: 'Follow along for barbecue features, fairway views, and weekend specials.',
       handle: 'grillonthegreen_simi',
+      profileUrl: 'https://www.instagram.com/grillonthegreen_simi/',
       count: 6,
     };
     enhancedBlocks.push(fallbackIg);

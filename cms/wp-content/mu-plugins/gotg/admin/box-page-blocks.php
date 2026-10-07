@@ -132,6 +132,9 @@ function gotg_render_single_block_editor( $idx, array $block ) {
 				case 'cta_band':
 					gotg_render_cta_band_fields( $prefix, $block );
 					break;
+				case 'instagram_feed':
+					gotg_render_instagram_feed_fields( $prefix, $block );
+					break;
 				default:
 					gotg_render_generic_block_fields( $prefix, $block );
 					break;
@@ -506,6 +509,200 @@ function gotg_render_cta_band_fields( $prefix, array $b ) {
 }
 
 /**
+ * Renders Instagram Feed block fields with interactive 6-post media manager.
+ *
+ * Allows full editing of section title, subtitle, handle, profile link, and
+ * individual post photos (via WP Media modal or direct URL), permalinks, and captions.
+ *
+ * @param string $prefix Field name prefix (e.g. gotg_blocks[4]).
+ * @param array  $b      Block configuration.
+ */
+function gotg_render_instagram_feed_fields( $prefix, array $b ) {
+	$heading     = $b['heading'] ?? 'Fresh from the Pit';
+	$subtitle    = $b['subtitle'] ?? 'Follow along for barbecue features, fairway views, and weekend specials.';
+	$handle      = $b['handle'] ?? 'grillonthegreen_simi';
+	$profile_url = $b['profile_url'] ?? 'https://www.instagram.com/grillonthegreen_simi/';
+	$count       = isset( $b['count'] ) ? (int) $b['count'] : 6;
+
+	// Curated default posts provided by client
+	$default_posts_data = array(
+		array(
+			'permalink' => 'https://www.instagram.com/grillonthegreen_simi/p/DWE51CQgcSd/',
+			'image_id'  => 352,
+			'image_url' => '/media/instagram/post-1.jpg',
+			'caption'   => 'Texas Smoked Brisket Sandwich with BBQ baked beans on the fairway',
+			'is_reel'   => false,
+		),
+		array(
+			'permalink' => 'https://www.instagram.com/grillonthegreen_simi/p/DWZLt-oDS59/',
+			'image_id'  => 353,
+			'image_url' => '/media/instagram/post-2.jpg',
+			'caption'   => 'Juicy craft burger on the fairway patio with mountain views',
+			'is_reel'   => false,
+		),
+		array(
+			'permalink' => 'https://www.instagram.com/grillonthegreen_simi/p/DQu4NH4AXhf/',
+			'image_id'  => 354,
+			'image_url' => '/media/instagram/post-3.jpg',
+			'caption'   => "Nathan's All Beef Hot Dog on the 18th hole fairway",
+			'is_reel'   => false,
+		),
+		array(
+			'permalink' => 'https://www.instagram.com/grillonthegreen_simi/p/DQsh5ZDDSgK/',
+			'image_id'  => 355,
+			'image_url' => '/media/instagram/post-4.jpg',
+			'caption'   => 'Clubhouse Sandwich with roasted turkey, ham and crispy bacon',
+			'is_reel'   => false,
+		),
+		array(
+			'permalink' => 'https://www.instagram.com/grillonthegreen_simi/p/DRLi40uDQhe/',
+			'image_id'  => 356,
+			'image_url' => '/media/instagram/post-5.jpg',
+			'caption'   => 'Crispy Southern Fried Chicken Sandwich with golden fries',
+			'is_reel'   => false,
+		),
+		array(
+			'permalink' => 'https://www.instagram.com/grillonthegreen_simi/reel/Ddy3uurB44x/',
+			'image_id'  => 357,
+			'image_url' => '/media/instagram/post-6.jpg',
+			'caption'   => 'Watch the Reel — Live from the smoker on the 18th hole patio',
+			'is_reel'   => true,
+		),
+	);
+
+	$saved_posts = isset( $b['posts'] ) && is_array( $b['posts'] ) ? $b['posts'] : array();
+
+	// Merge with defaults so editor is never blank
+	$posts = array();
+	for ( $i = 0; $i < 6; $i++ ) {
+		$default = $default_posts_data[ $i ] ?? array();
+		$saved   = $saved_posts[ $i ] ?? array();
+
+		$posts[ $i ] = array(
+			'image_id'  => isset( $saved['image_id'] ) ? absint( $saved['image_id'] ) : ( $default['image_id'] ?? 0 ),
+			'image_url' => isset( $saved['image_url'] ) && '' !== $saved['image_url'] ? $saved['image_url'] : ( $default['image_url'] ?? '' ),
+			'permalink' => isset( $saved['permalink'] ) && '' !== $saved['permalink'] ? $saved['permalink'] : ( $default['permalink'] ?? '' ),
+			'caption'   => isset( $saved['caption'] ) && '' !== $saved['caption'] ? $saved['caption'] : ( $default['caption'] ?? '' ),
+			'is_reel'   => isset( $saved['is_reel'] ) ? ! empty( $saved['is_reel'] ) : ( $default['is_reel'] ?? false ),
+		);
+	}
+
+	?>
+	<div style="display:flex; flex-direction:column; gap:20px;">
+		<!-- Section Header Settings -->
+		<div style="background:#f8f9fa; border:1px solid #dcdcde; border-radius:6px; padding:16px;">
+			<h4 style="margin:0 0 12px; font-size:14px; color:#1d2327;">⚙️ Instagram Section Settings</h4>
+			<div class="gotg-grid-2col">
+				<div>
+					<label style="display:block; font-weight:600; margin-bottom:4px;">Section Heading *</label>
+					<input type="text" name="<?php echo esc_attr( "{$prefix}[heading]" ); ?>" value="<?php echo esc_attr( $heading ); ?>" style="width:100%; font-size:15px; font-weight:600;" required />
+				</div>
+				<div>
+					<label style="display:block; font-weight:600; margin-bottom:4px;">Instagram Handle (without @)</label>
+					<input type="text" name="<?php echo esc_attr( "{$prefix}[handle]" ); ?>" value="<?php echo esc_attr( ltrim( $handle, '@' ) ); ?>" style="width:100%;" placeholder="e.g. grillonthegreen_simi" />
+				</div>
+				<div style="grid-column:1 / -1;">
+					<label style="display:block; font-weight:600; margin-bottom:4px;">Section Subtitle / Tagline</label>
+					<input type="text" name="<?php echo esc_attr( "{$prefix}[subtitle]" ); ?>" value="<?php echo esc_attr( $subtitle ); ?>" style="width:100%;" />
+				</div>
+				<div>
+					<label style="display:block; font-weight:600; margin-bottom:4px;">Instagram Profile Link</label>
+					<input type="url" name="<?php echo esc_attr( "{$prefix}[profile_url]" ); ?>" value="<?php echo esc_attr( $profile_url ); ?>" style="width:100%;" placeholder="https://www.instagram.com/grillonthegreen_simi/" />
+				</div>
+				<div>
+					<label style="display:block; font-weight:600; margin-bottom:4px;">Display Count</label>
+					<select name="<?php echo esc_attr( "{$prefix}[count]" ); ?>" style="width:100%;">
+						<option value="6" <?php selected( $count, 6 ); ?>>6 Posts (Recommended 6-column grid)</option>
+						<option value="3" <?php selected( $count, 3 ); ?>>3 Posts</option>
+						<option value="4" <?php selected( $count, 4 ); ?>>4 Posts</option>
+						<option value="8" <?php selected( $count, 8 ); ?>>8 Posts</option>
+						<option value="12" <?php selected( $count, 12 ); ?>>12 Posts</option>
+					</select>
+				</div>
+			</div>
+		</div>
+
+		<!-- Posts Editor Banner -->
+		<div style="background:#f0f6fc; border-left:4px solid #2271b1; padding:12px 16px; border-radius:4px;">
+			<p style="margin:0 0 4px; font-weight:700; color:#1d2327;">
+				📸 Feed Posts & Permalinks Manager
+			</p>
+			<p style="margin:0; font-size:13px; color:#50575e;">
+				Select or upload photos using the WordPress Media Library, edit Instagram permalinks, and manage captions. These 6 posts sync directly with the live frontend feed.
+			</p>
+		</div>
+
+		<!-- 6-Post Interactive Grid -->
+		<div style="display:grid; grid-template-columns:repeat(auto-fit, minmax(320px, 1fr)); gap:16px;">
+			<?php for ( $i = 0; $i < 6; $i++ ) : ?>
+				<?php
+				$p         = $posts[ $i ];
+				$img_id    = $p['image_id'];
+				$img_url   = $p['image_url'];
+				$permalink = $p['permalink'];
+				$caption   = $p['caption'];
+				$is_reel   = $p['is_reel'];
+				$post_num  = $i + 1;
+				?>
+				<div class="gotg-ig-post-card" style="border:1px solid #dcdcde; border-radius:6px; background:#fff; padding:14px; display:flex; flex-direction:column; gap:10px; box-shadow:0 1px 2px rgba(0,0,0,0.03);">
+					<div style="display:flex; justify-content:space-between; align-items:center; border-bottom:1px solid #f0f0f1; padding-bottom:8px;">
+						<strong style="font-size:13px; color:#1d2327;">
+							<?php echo $is_reel ? '🎬 Reel' : '📸 Post'; ?> #<?php echo esc_html( (string) $post_num ); ?>
+						</strong>
+						<label style="font-size:12px; cursor:pointer; display:flex; align-items:center; gap:4px; color:#50575e;">
+							<input type="checkbox" name="<?php echo esc_attr( "{$prefix}[posts][{$i}][is_reel]" ); ?>" value="1" <?php checked( $is_reel ); ?> />
+							<span>Video / Reel Badge</span>
+						</label>
+					</div>
+
+					<!-- Image Picker -->
+					<div>
+						<label style="display:block; font-weight:600; font-size:12px; margin-bottom:4px;">Photo</label>
+						<div class="gotg-media-picker" data-picker="image">
+							<input type="hidden" class="gotg-media-id-input" name="<?php echo esc_attr( "{$prefix}[posts][{$i}][image_id]" ); ?>" value="<?php echo esc_attr( (string) $img_id ); ?>" />
+							
+							<div class="gotg-media-preview-box" style="margin-bottom:8px; height:120px; background:#f9f9f9; border:1px dashed #ccc; display:flex; align-items:center; justify-content:center; border-radius:4px; overflow:hidden;">
+								<?php if ( $img_id ) : ?>
+									<?php echo wp_get_attachment_image( $img_id, 'medium', false, array( 'style' => 'height:100%; width:100%; object-fit:cover;' ) ); ?>
+								<?php elseif ( ! empty( $img_url ) ) : ?>
+									<img src="<?php echo esc_url( $img_url ); ?>" style="height:100%; width:100%; object-fit:cover;" alt="" />
+								<?php else : ?>
+									<span style="color:#999; font-size:12px;">No photo chosen</span>
+								<?php endif; ?>
+							</div>
+
+							<div style="display:flex; gap:6px;">
+								<button type="button" class="button gotg-choose-image-btn gotg-choose-media-btn" style="flex:1;">Choose / Change Image</button>
+								<button type="button" class="button gotg-remove-image-btn gotg-remove-media-btn" style="<?php echo ( $img_id || ! empty( $img_url ) ) ? '' : 'display:none;'; ?>">Remove</button>
+							</div>
+						</div>
+					</div>
+
+					<!-- Direct / Fallback Image URL -->
+					<div>
+						<label style="display:block; font-weight:600; font-size:12px; margin-bottom:2px;">Custom / Fallback Image URL</label>
+						<input type="text" name="<?php echo esc_attr( "{$prefix}[posts][{$i}][image_url]" ); ?>" value="<?php echo esc_attr( $img_url ); ?>" style="width:100%; font-size:12px;" placeholder="/media/instagram/post-<?php echo esc_attr( (string) $post_num ); ?>.jpg or https://..." />
+					</div>
+
+					<!-- Instagram Post Permalink -->
+					<div>
+						<label style="display:block; font-weight:600; font-size:12px; margin-bottom:2px;">Instagram Post / Reel Link *</label>
+						<input type="url" name="<?php echo esc_attr( "{$prefix}[posts][{$i}][permalink]" ); ?>" value="<?php echo esc_attr( $permalink ); ?>" style="width:100%; font-size:12px;" placeholder="https://www.instagram.com/grillonthegreen_simi/p/..." required />
+					</div>
+
+					<!-- Caption -->
+					<div>
+						<label style="display:block; font-weight:600; font-size:12px; margin-bottom:2px;">Caption / Alt Text</label>
+						<textarea name="<?php echo esc_attr( "{$prefix}[posts][{$i}][caption]" ); ?>" rows="2" style="width:100%; font-size:12px;" placeholder="e.g. Texas Smoked Brisket Sandwich on the fairway"><?php echo esc_textarea( $caption ); ?></textarea>
+					</div>
+				</div>
+			<?php endfor; ?>
+		</div>
+	</div>
+	<?php
+}
+
+/**
  * Generic fallback fields renderer for other block types.
  */
 function gotg_render_generic_block_fields( $prefix, array $b ) {
@@ -563,6 +760,24 @@ function gotg_save_page_blocks_box( $post_id, $post ) {
 			unset( $block['image_ids_csv'] );
 		}
 
+		// Instagram feed block: process and clean posts array rows
+		if ( 'instagram_feed' === $block['type'] && isset( $block['posts'] ) && is_array( $block['posts'] ) ) {
+			$sanitized_posts = array();
+			foreach ( $block['posts'] as $p ) {
+				if ( ! is_array( $p ) ) {
+					continue;
+				}
+				$sanitized_posts[] = array(
+					'image_id'  => absint( $p['image_id'] ?? 0 ),
+					'image_url' => sanitize_text_field( $p['image_url'] ?? '' ),
+					'permalink' => sanitize_text_field( $p['permalink'] ?? '' ),
+					'caption'   => sanitize_text_field( $p['caption'] ?? '' ),
+					'is_reel'   => ! empty( $p['is_reel'] ),
+				);
+			}
+			$block['posts'] = $sanitized_posts;
+		}
+
 		$processed[] = $block;
 	}
 
@@ -570,3 +785,4 @@ function gotg_save_page_blocks_box( $post_id, $post ) {
 	update_post_meta( $post_id, '_gotg_page_blocks', $sanitized );
 }
 add_action( 'save_post_page', 'gotg_save_page_blocks_box', 10, 2 );
+

@@ -469,14 +469,76 @@ function gotg_shape_people_block( array $block ) {
  * @return array Shaped block.
  */
 function gotg_shape_instagram_block( array $block ) {
-	$count = isset( $block['count'] ) ? (int) $block['count'] : 6;
+	$count   = isset( $block['count'] ) ? (int) $block['count'] : 6;
+	$handle  = ltrim( gotg_decode_text( $block['handle'] ?? 'grillonthegreen_simi' ), '@' );
+	$heading = gotg_decode_text( $block['heading'] ?? 'Fresh from the Pit' );
 
-	return array(
+	$shaped = array(
 		'type'    => 'instagram_feed',
-		'heading' => gotg_decode_text( $block['heading'] ?? '' ),
-		'handle'  => ltrim( gotg_decode_text( $block['handle'] ?? '' ), '@' ),
-		'count'   => max( 3, min( 12, $count ) ),
+		'heading' => '' !== $heading ? $heading : 'Fresh from the Pit',
+		'handle'  => '' !== $handle ? $handle : 'grillonthegreen_simi',
+		'count'   => max( 1, min( 12, $count ) ),
 	);
+
+	if ( ! empty( $block['subtitle'] ) ) {
+		$shaped['subtitle'] = gotg_decode_text( $block['subtitle'] );
+	}
+
+	if ( ! empty( $block['profile_url'] ) ) {
+		$shaped['profileUrl'] = (string) $block['profile_url'];
+	} else if ( '' !== $handle ) {
+		$shaped['profileUrl'] = "https://www.instagram.com/{$handle}/";
+	}
+
+	$posts_raw = isset( $block['posts'] ) && is_array( $block['posts'] ) ? $block['posts'] : array();
+	$posts     = array();
+
+	foreach ( $posts_raw as $idx => $p ) {
+		if ( ! is_array( $p ) ) {
+			continue;
+		}
+
+		$image_id  = isset( $p['image_id'] ) ? absint( $p['image_id'] ) : 0;
+		$image_url = isset( $p['image_url'] ) ? trim( (string) $p['image_url'] ) : '';
+		$caption   = isset( $p['caption'] ) ? gotg_decode_text( $p['caption'] ) : '';
+		$permalink = isset( $p['permalink'] ) ? trim( (string) $p['permalink'] ) : '';
+
+		// Shape image: from WP attachment or direct URL
+		$image = null;
+		if ( $image_id > 0 ) {
+			$image = gotg_shape_image( $image_id, 'gotg_card' );
+		}
+		if ( null === $image && '' !== $image_url ) {
+			$image = array(
+				'src'    => $image_url,
+				'alt'    => $caption ? $caption : 'Grill on the Green Instagram feature',
+				'width'  => 800,
+				'height' => 800,
+			);
+		}
+
+		if ( null !== $image || '' !== $permalink ) {
+			$is_reel = ! empty( $p['is_reel'] ) || ( '' !== $permalink && false !== strpos( $permalink, '/reel/' ) );
+			$posts[] = array(
+				'id'        => 'post-' . ( $idx + 1 ),
+				'permalink' => '' !== $permalink ? $permalink : ( $shaped['profileUrl'] ?? "https://www.instagram.com/{$handle}/" ),
+				'image'     => $image ? $image : array(
+					'src'    => '/media/instagram/post-' . ( ( $idx % 6 ) + 1 ) . '.jpg',
+					'alt'    => $caption ? $caption : 'Grill on the Green Instagram feature',
+					'width'  => 800,
+					'height' => 800,
+				),
+				'caption'   => $caption,
+				'isReel'    => (bool) $is_reel,
+			);
+		}
+	}
+
+	if ( ! empty( $posts ) ) {
+		$shaped['posts'] = array_slice( $posts, 0, $shaped['count'] );
+	}
+
+	return $shaped;
 }
 
 /**

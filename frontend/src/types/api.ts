@@ -286,11 +286,22 @@ export interface PeopleBlock {
   people: Person[];
 }
 
+export interface InstagramPostItem {
+  id: string;
+  permalink: string;
+  image: ImageObject;
+  caption?: string | undefined;
+  isReel?: boolean | undefined;
+}
+
 export interface InstagramFeedBlock {
   type: 'instagram_feed';
   heading: string;
   handle: string;
+  subtitle?: string | undefined;
+  profileUrl?: string | undefined;
   count: number;
+  posts?: InstagramPostItem[] | undefined;
 }
 
 export type PageBlock =

@@ -7,23 +7,20 @@ import { Container } from '@/components/layout/container';
 import { Grid } from '@/components/layout/grid';
 import { Section } from '@/components/layout/section';
 import { Heading } from '@/components/primitives/heading';
+import { Icon } from '@/components/primitives/icons/icon';
 import { Image } from '@/components/primitives/image';
 import { LinkButton } from '@/components/primitives/link-button';
 import { Skeleton } from '@/components/primitives/skeleton';
 import { Text } from '@/components/primitives/text';
 import { slugId } from '@/lib/slug';
-import type { ImageObject, InstagramFeedBlock } from '@/types/api';
+import type { InstagramFeedBlock, InstagramPostItem } from '@/types/api';
 
 /*
- * InstagramFeed — Client Component (third-party fetch after hydration).
+ * InstagramFeed — Client Component synced with Headless WordPress CMS.
  *
- * Loading is deferred until the section scrolls into view (IntersectionObserver)
- * so the feed never joins the initial JS payload or contributes to LCP.
- *
- * Pulling live posts:
- * Connects to Behold JSON API (https://behold.so) when NEXT_PUBLIC_BEHOLD_FEED_ID
- * is configured in .env.local. If unconfigured or offline, gracefully falls back
- * to authentic high-resolution local food photography from the course.
+ * Prioritizes dynamic posts configured directly in WordPress Admin Page Blocks.
+ * Falls back to live Behold JSON API if configured, or authentic high-resolution
+ * local barbecue and fairway photography.
  */
 
 export interface InstagramFeedProps {
@@ -31,20 +28,14 @@ export interface InstagramFeedProps {
   block: InstagramFeedBlock;
 }
 
-interface InstagramPost {
-  id: string;
-  permalink: string;
-  image: ImageObject;
-}
-
 type FeedState =
   | { status: 'loading' }
-  | { status: 'loaded'; posts: InstagramPost[] }
+  | { status: 'loaded'; posts: InstagramPostItem[] }
   | { status: 'error' };
 
 const LOAD_TIMEOUT_MS = 5000;
 
-const DEFAULT_POSTS: InstagramPost[] = [
+const DEFAULT_POSTS: InstagramPostItem[] = [
   {
     id: 'post-1',
     permalink: 'https://www.instagram.com/grillonthegreen_simi/p/DWE51CQgcSd/',
@@ -54,6 +45,8 @@ const DEFAULT_POSTS: InstagramPost[] = [
       width: 800,
       height: 800,
     },
+    caption: 'Texas Smoked Brisket Sandwich with BBQ baked beans on the fairway',
+    isReel: false,
   },
   {
     id: 'post-2',
@@ -64,6 +57,8 @@ const DEFAULT_POSTS: InstagramPost[] = [
       width: 800,
       height: 800,
     },
+    caption: 'Juicy craft burger on the fairway patio with mountain views',
+    isReel: false,
   },
   {
     id: 'post-3',
@@ -74,6 +69,8 @@ const DEFAULT_POSTS: InstagramPost[] = [
       width: 800,
       height: 800,
     },
+    caption: 'Nathan’s All Beef Hot Dog on the 18th hole fairway',
+    isReel: false,
   },
   {
     id: 'post-4',
@@ -84,6 +81,8 @@ const DEFAULT_POSTS: InstagramPost[] = [
       width: 800,
       height: 800,
     },
+    caption: 'Clubhouse Sandwich with roasted turkey, ham and crispy bacon',
+    isReel: false,
   },
   {
     id: 'post-5',
@@ -94,6 +93,8 @@ const DEFAULT_POSTS: InstagramPost[] = [
       width: 800,
       height: 800,
     },
+    caption: 'Crispy Southern Fried Chicken Sandwich with golden fries',
+    isReel: false,
   },
   {
     id: 'post-6',
@@ -104,13 +105,15 @@ const DEFAULT_POSTS: InstagramPost[] = [
       width: 800,
       height: 800,
     },
+    caption: 'Watch the Reel — Live from the smoker on the 18th hole patio',
+    isReel: true,
   },
 ];
 
 async function loadPosts(
   handle: string,
   count: number,
-): Promise<InstagramPost[]> {
+): Promise<InstagramPostItem[]> {
   const feedId = process.env.NEXT_PUBLIC_BEHOLD_FEED_ID;
   if (feedId && feedId.trim() !== '') {
     try {
@@ -125,6 +128,7 @@ async function loadPosts(
             sizes?: { medium?: { mediaUrl?: string }; large?: { mediaUrl?: string } };
             prunedCaption?: string;
             caption?: string;
+            mediaType?: string;
           }) => ({
             id: item.id,
             permalink: item.permalink || `https://www.instagram.com/${handle}/`,
@@ -134,6 +138,8 @@ async function loadPosts(
               width: 800,
               height: 800,
             },
+            caption: item.prunedCaption ?? item.caption ?? undefined,
+            isReel: item.mediaType === 'VIDEO' || Boolean(item.permalink?.includes('/reel/')),
           }));
         }
       }
@@ -161,9 +167,22 @@ export function InstagramFeed({
   band = 'surface',
 }: InstagramFeedProps): ReactNode {
   const containerRef = useRef<HTMLDivElement>(null);
-  const [state, setState] = useState<FeedState>({ status: 'loading' });
+
+  // If WordPress CMS provides posts, use them directly without delay
+  const hasCmsPosts = Array.isArray(block.posts) && block.posts.length > 0;
+  const [state, setState] = useState<FeedState>(() => {
+    if (hasCmsPosts && block.posts) {
+      return { status: 'loaded', posts: block.posts.slice(0, block.count || 6) };
+    }
+    return { status: 'loading' };
+  });
 
   useEffect(() => {
+    if (hasCmsPosts && block.posts) {
+      setState({ status: 'loaded', posts: block.posts.slice(0, block.count || 6) });
+      return;
+    }
+
     const node = containerRef.current;
     if (!node) {
       return;
@@ -203,17 +222,20 @@ export function InstagramFeed({
       cancelled = true;
       observer.disconnect();
     };
-  }, [block.handle, block.count]);
+  }, [block.handle, block.count, block.posts, hasCmsPosts]);
 
   const headingId = slugId('instagram', block.heading);
-  const profileUrl = `https://www.instagram.com/${block.handle}/`;
+  const profileUrl = block.profileUrl || `https://www.instagram.com/${block.handle}/`;
+  const subtitle =
+    block.subtitle ||
+    'Daily smoker reveals, weekend concert announcements, and life on the 18th hole fairway.';
 
   let body: ReactNode;
   if (state.status === 'loading') {
     body = (
       <div aria-busy="true">
         <Grid columns={3} gap={2}>
-          {Array.from({ length: block.count }, (_, index) => (
+          {Array.from({ length: block.count || 6 }, (_, index) => (
             <div key={index} className="aspect-square">
               <Skeleton variant="rect" />
             </div>
@@ -225,21 +247,54 @@ export function InstagramFeed({
     body = (
       <div className="flex flex-col gap-6 w-full">
         <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-6 gap-3">
-          {state.posts.map((post) => (
-            <a
-              key={post.id}
-              href={post.permalink}
-              target="_blank"
-              rel="noopener noreferrer"
-              aria-label="View post on Instagram"
-              className="group relative block aspect-square overflow-hidden rounded-xl border border-border bg-surface-sunken shadow-xs transition-transform duration-300 hover:scale-[1.03]"
-            >
-              <Image image={post.image} fill aspectRatio="1/1" sizes="(min-width: 1024px) 16vw, 33vw" />
-              <div className="absolute inset-0 bg-black/45 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center text-white font-bold text-xs uppercase tracking-wider">
-                <span>View</span>
-              </div>
-            </a>
-          ))}
+          {state.posts.map((post, idx) => {
+            const isReel = post.isReel ?? (post.permalink?.includes('/reel/') || false);
+            return (
+              <a
+                key={post.id || `post-${idx}`}
+                href={post.permalink}
+                target="_blank"
+                rel="noopener noreferrer"
+                aria-label={post.caption || `View Instagram post by @${block.handle}`}
+                className="group relative block aspect-square overflow-hidden rounded-xl border border-border/80 bg-surface-sunken shadow-xs transition-all duration-300 hover:scale-[1.03] hover:shadow-md hover:border-brand-primary/40"
+              >
+                <Image
+                  image={post.image}
+                  fill
+                  aspectRatio="1/1"
+                  sizes="(min-width: 1024px) 16vw, (min-width: 640px) 33vw, 50vw"
+                />
+
+                {/* Reel Indicator Badge */}
+                {isReel && (
+                  <div
+                    className="absolute top-2 right-2 z-10 flex items-center gap-1 rounded-md bg-black/65 px-1.5 py-0.5 text-[11px] font-semibold text-white shadow-xs backdrop-blur-xs"
+                    title="Instagram Reel"
+                  >
+                    <svg className="h-3 w-3 fill-current" viewBox="0 0 24 24">
+                      <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 14.5v-9l6 4.5-6 4.5z" />
+                    </svg>
+                    <span>Reel</span>
+                  </div>
+                )}
+
+                {/* Hover Scrim with Instagram Branding & Caption */}
+                <div className="absolute inset-0 z-10 flex flex-col justify-end bg-gradient-to-t from-black/85 via-black/40 to-transparent p-3 opacity-0 transition-opacity duration-200 group-hover:opacity-100">
+                  <div className="flex items-center gap-1.5 text-white mb-1">
+                    <Icon name="instagram" size={16} />
+                    <span className="text-[11px] font-bold uppercase tracking-wider">
+                      {isReel ? 'Watch Reel' : 'View Post'}
+                    </span>
+                  </div>
+                  {post.caption && (
+                    <p className="line-clamp-2 text-[11px] leading-tight text-white/90">
+                      {post.caption}
+                    </p>
+                  )}
+                </div>
+              </a>
+            );
+          })}
         </div>
         <div className="flex items-center justify-between flex-wrap gap-4 pt-1">
           <p className="text-body-sm text-ink-muted">
@@ -274,10 +329,10 @@ export function InstagramFeed({
                 Follow The Smoke · @{block.handle}
               </span>
               <Heading level={2} id={headingId} visualLevel="h2">
-                {block.heading || 'From the Grill'}
+                {block.heading || 'Fresh from the Pit'}
               </Heading>
               <p className="text-body text-ink-muted leading-relaxed max-w-xl">
-                Daily smoker reveals, weekend concert announcements, and life on the 18th hole fairway.
+                {subtitle}
               </p>
             </div>
             <div>
