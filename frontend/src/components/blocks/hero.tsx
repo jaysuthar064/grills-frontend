@@ -101,8 +101,9 @@ export function Hero({ block, isPrimary = false }: HeroProps): ReactNode {
             >
               <Logo
                 variant="stacked-reverse"
+                height="none"
                 priority
-                className="h-auto w-[260px] sm:w-[340px] md:w-[400px] max-w-full drop-shadow-[0_6px_20px_rgba(0,0,0,0.85)]"
+                className="h-auto w-[310px] sm:w-[416px] md:w-[494px] lg:w-[546px] max-w-[88vw] max-h-[50vh] drop-shadow-[0_6px_20px_rgba(0,0,0,0.85)]"
                 alt="Grill on the Green"
               />
             </Link>

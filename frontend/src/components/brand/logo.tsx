@@ -58,8 +58,8 @@ const ASSET = {
 
 export interface LogoProps {
   variant?: LogoVariant;
-  /** Token driving rendered height. Width follows from the asset's ratio. */
-  height?: 'header' | 'footer' | 'badge';
+  /** Token driving rendered height. Width follows from the asset's ratio. Set to 'none' when className drives dimensions. */
+  height?: 'header' | 'footer' | 'badge' | 'none';
   priority?: boolean;
   className?: string;
   /**
@@ -74,18 +74,18 @@ const HEIGHT_TOKEN = {
   header: 'var(--logo-height)',
   footer: 'var(--logo-height-footer)',
   badge: 'var(--logo-height-badge)',
-} as const satisfies Record<NonNullable<LogoProps['height']>, string>;
+} as const;
 
 /*
  * `sizes` is the largest CSS pixel width each variant is ever rendered at, so
  * Next requests a 2x source for retina and no more.
  */
 const SIZES = {
-  primary: '(min-width: 768px) 128px, 101px',
-  reverse: '(min-width: 768px) 156px, 129px',
+  primary: '(min-width: 768px) 180px, 140px',
+  reverse: '(min-width: 768px) 180px, 140px',
   mono: '(min-width: 768px) 156px, 129px',
-  stacked: '(min-width: 768px) 148px, 119px',
-  'stacked-reverse': '(min-width: 768px) 400px, 340px',
+  stacked: '(min-width: 768px) 200px, 160px',
+  'stacked-reverse': '(min-width: 1024px) 560px, (min-width: 768px) 500px, 340px',
   mark: '(min-width: 768px) 52px, 41px',
   'mark-reverse': '(min-width: 768px) 52px, 41px',
 } as const satisfies Record<LogoVariant, string>;
@@ -99,7 +99,10 @@ export function Logo({
   className,
   alt = '',
 }: LogoProps): ReactNode {
-  const style: CSSProperties = { height: HEIGHT_TOKEN[height], width: 'auto' };
+  const style: CSSProperties | undefined =
+    height !== 'none'
+      ? { height: HEIGHT_TOKEN[height], width: 'auto' }
+      : undefined;
 
   return (
     <NextImage
@@ -108,7 +111,7 @@ export function Logo({
       sizes={SIZES[variant]}
       priority={priority}
       quality={90}
-      className={cn('object-contain w-auto max-w-full', className)}
+      className={cn('object-contain', height === 'none' ? 'w-auto' : 'w-auto max-w-full', className)}
       style={style}
     />
   );

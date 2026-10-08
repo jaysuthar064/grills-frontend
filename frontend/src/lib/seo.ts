@@ -49,7 +49,13 @@ export function buildMetadata(
     height: 630,
     alt: 'Grill on the Green - Smoked BBQ on Simi Hills Golf Course',
   };
-  const image = seo.ogImage ?? global.seoDefaults.ogImage ?? defaultOgImage;
+  const rawImage = seo.ogImage ?? global.seoDefaults.ogImage;
+  const isPlaceholderOrLocal =
+    !rawImage?.src ||
+    rawImage.src.includes('og-default') ||
+    rawImage.src.includes('localhost:8885') ||
+    rawImage.src.includes('brisket-sandwich');
+  const image = isPlaceholderOrLocal ? defaultOgImage : rawImage;
   const shouldIndex = IS_PRODUCTION && !seo.noindex;
 
   const metadata: Metadata = {
