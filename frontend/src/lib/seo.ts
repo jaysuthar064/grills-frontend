@@ -44,10 +44,10 @@ export function buildMetadata(
   const description = seo.description || global.seoDefaults.description;
   const title = resolveTitle(seo, global, pathname);
   const defaultOgImage = {
-    src: '/media/brisket-sandwich.jpg',
+    src: '/brand/og-social.jpg',
     width: 1200,
     height: 630,
-    alt: 'Grill on the Green - Fresh Smoked Fairway Dining & Texas Barbecue',
+    alt: 'Grill on the Green - Smoked BBQ on Simi Hills Golf Course',
   };
   const image = seo.ogImage ?? global.seoDefaults.ogImage ?? defaultOgImage;
   const shouldIndex = IS_PRODUCTION && !seo.noindex;

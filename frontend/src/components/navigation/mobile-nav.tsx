@@ -172,10 +172,9 @@ export function MobileNav({ global }: MobileNavProps): ReactNode {
                 className="gotg-drawer bg-surface-raised fixed inset-y-0 right-0 flex w-full max-w-sm translate-x-0 flex-col gap-8 overflow-y-auto px-6 py-4 shadow-lg"
                 style={panelStyle}
               >
-                {/* The compact mark, not the lockup: the drawer's top row is
-                    narrow and shares it with the close button. */}
+                {/* Full brand logo to match header (per client request) */}
                 <div className="flex items-center justify-between">
-                  <Logo variant="mark" height="header" />
+                  <Logo variant="primary" height="header" />
                   <IconButton
                     icon="close"
                     label="Close menu"

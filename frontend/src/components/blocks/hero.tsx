@@ -92,7 +92,7 @@ export function Hero({ block, isPrimary = false }: HeroProps): ReactNode {
       {/* Center Hero Content (Simplified & Clean Per Client Feedback) */}
       <div className="relative z-10 flex min-h-[100svh] w-full flex-col items-center justify-center px-4 pt-28 pb-20 text-center sm:px-6 lg:px-8">
         <div className="flex max-w-3xl flex-col items-center gap-6">
-          {/* Main Brand Logo Lockup - Clean reverse lockup with red flag (Clickable to home) */}
+          {/* Main Brand Logo Lockup - Oval vertical stacked logo (per client request) */}
           <AnimatedReveal delay={0.1}>
             <Link
               href="/"
@@ -100,9 +100,9 @@ export function Hero({ block, isPrimary = false }: HeroProps): ReactNode {
               aria-label="Grill on the Green Home"
             >
               <Logo
-                variant="reverse"
+                variant="stacked-reverse"
                 priority
-                className="h-auto w-[280px] sm:w-[360px] md:w-[440px] max-w-full drop-shadow-[0_6px_20px_rgba(0,0,0,0.85)]"
+                className="h-auto w-[260px] sm:w-[340px] md:w-[400px] max-w-full drop-shadow-[0_6px_20px_rgba(0,0,0,0.85)]"
                 alt="Grill on the Green"
               />
             </Link>

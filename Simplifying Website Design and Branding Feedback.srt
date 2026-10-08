@@ -1,0 +1,575 @@
+1
+00:00:00,000 --> 00:00:03,804
+Hi,
+
+2
+00:00:01,983 --> 00:00:06,239
+okay, so I just really quickly wanted to show you,
+
+3
+00:00:06,250 --> 00:00:10,016
+my feedback, because So I think overall, I just really want to simplify this,
+
+4
+00:00:10,017 --> 00:00:14,429
+like, a ton. I think, as a girly-pop who works with AI all the
+
+5
+00:00:14,430 --> 00:00:17,646
+time, this is currently looking, like, extremely AI-coded,
+
+6
+00:00:17,919 --> 00:00:21,221
+which means they love AI tools,
+
+7
+00:00:21,222 --> 00:00:24,409
+love to just add unnecessary information,
+
+8
+00:00:24,410 --> 00:00:26,836
+and, like, things that look like buttons that aren't buttons,
+
+9
+00:00:27,217 --> 00:00:30,646
+and then, like, repeated the same information over and over again.
+
+10
+00:00:30,647 --> 00:00:32,977
+So, I think we just, like, the,
+
+11
+00:00:33,081 --> 00:00:35,225
+the stuff is here, now we just, like,
+
+12
+00:00:35,226 --> 00:00:38,085
+kill stuff. two more overall things,
+
+13
+00:00:38,086 --> 00:00:41,831
+I think some of the text needs to be bigger,
+
+14
+00:00:41,888 --> 00:00:45,096
+cause the people that are looking at this site are probably much older,
+
+15
+00:00:45,107 --> 00:00:47,708
+and they're not gonna read the little, the little notes.
+
+16
+00:00:47,718 --> 00:00:50,421
+and then, orange is not part of the branding,
+
+17
+00:00:50,422 --> 00:00:54,265
+so let's just make sure that we're using the brand colors throughout,
+
+18
+00:00:54,266 --> 00:00:57,131
+which is the off-white, the green,
+
+19
+00:00:57,316 --> 00:01:00,362
+I think there's two greens, but there's a darker green for sure,
+
+20
+00:01:00,738 --> 00:01:03,061
+and the red as, like, the accent color.
+
+21
+00:01:03,071 --> 00:01:07,267
+and then, white and black is fine, but I'd rather go off-white than just
+
+22
+00:01:07,268 --> 00:01:10,321
+white, everywhere. Cool,
+
+23
+00:01:10,322 --> 00:01:14,959
+and then, also, like, just making sure the text fonts are
+
+24
+00:01:14,960 --> 00:01:17,412
+within the branding as well.
+
+25
+00:01:16,657 --> 00:01:19,454
+then here, let's kill the Simi Hills Golf Course,
+
+26
+00:01:19,455 --> 00:01:23,082
+18th Hole Fairway Dining, let's kill Breakfast through Dinner,
+
+27
+00:01:23,083 --> 00:01:25,632
+70's a Week, this little,
+
+28
+00:01:25,643 --> 00:01:28,122
+emble-ish emblem, and then this thing,
+
+29
+00:01:28,123 --> 00:01:31,367
+this four thing, which is, like, unnecessary information.
+
+30
+00:01:31,291 --> 00:01:35,018
+let's kill this whole thing,
+
+31
+00:01:35,019 --> 00:01:38,536
+these three, let's kill Life on the 18th hole see me see me how's
+
+32
+00:01:38,537 --> 00:01:42,496
+like this can just be right under American Classics,
+
+33
+00:01:42,541 --> 00:01:47,754
+Texas Patients, then we have the menu, but you don't really know that
+
+34
+00:01:47,755 --> 00:01:51,870
+you're looking at the menu,
+
+35
+00:01:51,871 --> 00:01:55,043
+so I think, like, the name menu needs to be somewhere here because there's
+
+36
+00:01:55,044 --> 00:01:57,389
+just so much information that you're looking at,
+
+37
+00:01:57,390 --> 00:02:01,563
+like, you don't really know what you're looking at. Let's kill these.
+
+38
+00:02:01,564 --> 00:02:04,303
+Button things, Live Music, this is great,
+
+39
+00:02:04,304 --> 00:02:08,821
+thank you so much. If there's any way we can add images to
+
+40
+00:02:09,072 --> 00:02:11,116
+these, that would be great, if not,
+
+41
+00:02:11,117 --> 00:02:13,840
+no worries. Full Service and Drop-off Kit, let's just kill this,
+
+42
+00:02:13,841 --> 00:02:16,677
+this whole thing. the Instagram is great.
+
+43
+00:02:16,678 --> 00:02:19,177
+I just, it needs to look like the actual Instagram,
+
+44
+00:02:19,178 --> 00:02:21,325
+I think these images are not from the Instagram,
+
+45
+00:02:21,326 --> 00:02:25,386
+and it's just like repeated, there's like four of the same salads.
+
+46
+00:02:25,922 --> 00:02:29,375
+This image is not, I don't see it on the Instagram,
+
+47
+00:02:29,376 --> 00:02:31,719
+this is repeated. This is blurry.
+
+48
+00:02:32,085 --> 00:02:35,813
+This is blurry. so, it would be great to just show the actual Instagram.
+
+49
+00:02:37,202 --> 00:02:40,833
+And then, Again,
+
+50
+00:02:40,834 --> 00:02:43,939
+like, just, information is repeated, we already have this button above,
+
+51
+00:02:43,950 --> 00:02:47,533
+we don't need this information. We don't need this information,
+
+52
+00:02:47,534 --> 00:02:51,584
+let's just kill it all. And no more orange. And then this is repeated
+
+53
+00:02:51,585 --> 00:02:54,626
+right here. So, just kill that first part.
+
+54
+00:02:56,358 --> 00:02:59,293
+Cool. Menu. Menu's great.
+
+55
+00:02:59,294 --> 00:03:02,523
+The clickable part is awesome. These are awesome.
+
+56
+00:03:02,790 --> 00:03:05,742
+I think one big thing, here's an example, not this one. Here's an example,
+
+57
+00:03:06,742 --> 00:03:11,678
+like, they have, you can look at each
+
+58
+00:03:11,679 --> 00:03:14,247
+of their, their menus here,
+
+59
+00:03:14,386 --> 00:03:16,422
+and then you see the PDF,
+
+60
+00:03:16,934 --> 00:03:19,770
+which we have, and is in the original,
+
+61
+00:03:19,780 --> 00:03:23,006
+website, so I would love to have a button where you can click to
+
+62
+00:03:23,007 --> 00:03:25,607
+view the PDF, or like, see whole menu here,
+
+63
+00:03:25,929 --> 00:03:29,276
+so then someone can just have the whole menu on their phone as well,
+
+64
+00:03:29,277 --> 00:03:31,535
+instead of it being like, super interactive,
+
+65
+00:03:32,550 --> 00:03:35,571
+as it is currently. Cool,
+
+66
+00:03:35,582 --> 00:03:38,834
+that's the menu, catering.
+
+67
+00:03:38,835 --> 00:03:41,149
+I think this is,
+
+68
+00:03:42,403 --> 00:03:45,263
+this is fine. Let's just make sure,
+
+69
+00:03:45,264 --> 00:03:48,888
+like, all this information is absolutely correct.
+
+70
+00:03:48,899 --> 00:03:51,708
+I don't, didn't know we had these catering packages,
+
+71
+00:03:51,709 --> 00:03:54,115
+so if we do, amazing. If not,
+
+72
+00:03:54,558 --> 00:03:57,439
+let's just update them with the correct packages.
+
+73
+00:03:57,449 --> 00:04:00,840
+and then, these pictures aren't really pictures.
+
+74
+00:04:00,841 --> 00:04:04,172
+These are of catering, so I don't really want to,
+
+75
+00:04:04,173 --> 00:04:07,152
+like, show something that it's not.
+
+76
+00:04:07,163 --> 00:04:09,808
+if we have pictures of catering, great. If not,
+
+77
+00:04:10,669 --> 00:04:13,241
+I think we can just do,
+
+78
+00:04:13,612 --> 00:04:16,982
+show nothing. No images would be great.
+
+79
+00:04:16,993 --> 00:04:23,289
+I don't think, we don't need this whole section. Thank for your cool
+
+80
+00:04:23,290 --> 00:04:27,266
+events. this is great. If we can have images in here from the bands,
+
+81
+00:04:27,267 --> 00:04:33,478
+that would be great. This about section is fine.
+
+82
+00:04:33,479 --> 00:04:36,372
+I think. Let's just, like, keep this as fine.
+
+83
+00:04:36,373 --> 00:04:39,358
+This, it's, please remove these.
+
+84
+00:04:39,359 --> 00:04:42,828
+This, like, rounded, and then with,
+
+85
+00:04:42,829 --> 00:04:45,382
+with a, with a title on the image is just,
+
+86
+00:04:45,383 --> 00:04:48,463
+like, not great to look at,
+
+87
+00:04:48,464 --> 00:04:51,320
+and it's, AI loves to do that. I don't know,
+
+88
+00:04:51,439 --> 00:04:54,333
+this is not true. So,
+
+89
+00:04:54,334 --> 00:04:58,859
+let's just make sure that this, let's just grab the about section from
+
+90
+00:04:58,860 --> 00:05:01,240
+the current site. this is, let's remove this, let's just remove this whole thing.
+
+91
+00:05:01,820 --> 00:05:04,848
+Because we already have a catering. And,
+
+92
+00:05:04,852 --> 00:05:07,094
+same with the Instagram note here. Like,
+
+93
+00:05:07,095 --> 00:05:09,797
+these images are definitely not the images that we want to show.
+
+94
+00:05:09,798 --> 00:05:13,934
+Thank you. Bye-bye. Let's make sure the images are the,
+
+95
+00:05:13,935 --> 00:05:15,992
+what is on the Instagram. who's here?
+
+96
+00:05:15,993 --> 00:05:19,958
+I think that could, that could move up. and let's use images of Mark
+
+97
+00:05:19,959 --> 00:05:22,842
+and Marco. And if we don't have images of them,
+
+98
+00:05:22,853 --> 00:05:27,091
+let's not have images of random things.
+
+99
+00:05:27,134 --> 00:05:29,501
+So, no images at all. this,
+
+100
+00:05:29,502 --> 00:05:32,252
+let's remove that. And remove this,
+
+101
+00:05:32,253 --> 00:05:34,353
+we already have the Instagram up here.
+
+102
+00:05:35,108 --> 00:05:37,993
+Remove this whole thing. Cool,
+
+103
+00:05:37,994 --> 00:05:40,998
+and then contacts. is, this is fine,
+
+104
+00:05:40,731 --> 00:05:42,910
+so let's just triple check that this is actually correct.
+
+105
+00:05:43,910 --> 00:05:48,094
+And then all of these, like, these, these outlines look different,
+
+106
+00:05:48,095 --> 00:05:51,815
+like for some reason the stroke on the musicians and bands is different.
+
+107
+00:05:51,816 --> 00:05:56,351
+It's thicker than the stroke on the holiday and special closures and music,
+
+108
+00:05:56,352 --> 00:06:00,408
+and then live music on the patio and opening hours have a title,
+
+109
+00:06:00,409 --> 00:06:04,071
+but musicians and bands and holiday and special closures do not,
+
+110
+00:06:04,072 --> 00:06:06,172
+so, like, all of this is just, like,
+
+111
+00:06:06,693 --> 00:06:09,168
+the design is just not consistent,
+
+112
+00:06:09,177 --> 00:06:14,071
+so if we can just simplify and show consistent design,
+
+113
+00:06:14,072 --> 00:06:17,415
+that would be great. I'll see we don't need this send a message,
+
+114
+00:06:17,777 --> 00:06:20,326
+we do not need this follow us, we don't need this,
+
+115
+00:06:20,400 --> 00:06:23,322
+we don't need this. cool. Great.
+
+116
+00:06:23,364 --> 00:06:25,945
+And then, I just wanted to, and then can you,
+
+117
+00:06:25,946 --> 00:06:29,026
+can we make it so you can click on the homepage here,
+
+118
+00:06:29,036 --> 00:06:32,004
+with the grill on the green logo. Cool.
+
+119
+00:06:32,005 --> 00:06:34,233
+So, again, wanna just make it, like,
+
+120
+00:06:34,234 --> 00:06:37,901
+super, super simple. here's some other examples,
+
+121
+00:06:37,902 --> 00:06:41,175
+like Wood Ranch, you just literally have the logo up top,
+
+122
+00:06:41,643 --> 00:06:46,655
+gorgeous video of food, then order online,
+
+123
+00:06:46,686 --> 00:06:49,160
+reserve, menu, locations, catering and events,
+
+124
+00:06:49,161 --> 00:06:51,754
+gift cards. And then just,
+
+125
+00:06:51,755 --> 00:06:56,008
+like, three little things into pictures,
+
+126
+00:06:56,009 --> 00:06:58,947
+that's it. And then the Instagram,
+
+127
+00:06:59,489 --> 00:07:02,811
+yeah, that's it. So, that's great.
+
+128
+00:07:02,812 --> 00:07:06,505
+Here's another example, literally theirs is just an image of gorgeous food,
+
+129
+00:07:06,506 --> 00:07:09,762
+and then the bottom, which is great.
+
+130
+00:07:09,772 --> 00:07:12,674
+this person's too. Has, like, big images,
+
+131
+00:07:13,674 --> 00:07:17,594
+and then they're catering in events, which is, I'm not saying this is,
+
+132
+00:07:17,595 --> 00:07:20,405
+okay, this is way too much information. yeah. Okay.
+
+133
+00:07:20,657 --> 00:07:23,314
+Cool. Thank you so much. I really appreciate,
+
+134
+00:07:23,325 --> 00:07:25,800
+all of this. And then, one more thing is, the,
+
+135
+00:07:26,639 --> 00:07:29,180
+when you send the, the website.
+
+136
+00:07:29,571 --> 00:07:32,041
+Can we just be sure that there's a social icon,
+
+137
+00:07:32,042 --> 00:07:36,599
+and that the icon is an image of our absolute best food
+
+138
+00:07:36,600 --> 00:07:39,832
+image. I've taken, I took a lot of food imagery,
+
+139
+00:07:39,833 --> 00:07:42,700
+and I know you guys have too, so I would just love to,
+
+140
+00:07:42,701 --> 00:07:44,918
+like, see that footage,
+
+141
+00:07:44,919 --> 00:07:47,665
+and also pictures of the course,
+
+142
+00:07:47,854 --> 00:07:51,411
+which I've also taken, throughout the website.
+
+143
+00:07:51,412 --> 00:07:55,170
+Because that's, like, the best part about the restaurant.
+
+144
+00:07:55,172 --> 00:07:57,994
+So, yeah. Thank you so much.

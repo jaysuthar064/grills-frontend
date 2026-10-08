@@ -85,7 +85,7 @@ const SIZES = {
   reverse: '(min-width: 768px) 156px, 129px',
   mono: '(min-width: 768px) 156px, 129px',
   stacked: '(min-width: 768px) 148px, 119px',
-  'stacked-reverse': '(min-width: 768px) 148px, 119px',
+  'stacked-reverse': '(min-width: 768px) 400px, 340px',
   mark: '(min-width: 768px) 52px, 41px',
   'mark-reverse': '(min-width: 768px) 52px, 41px',
 } as const satisfies Record<LogoVariant, string>;

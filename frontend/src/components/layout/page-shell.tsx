@@ -66,24 +66,14 @@ export function PageShell({
               className="flex shrink-0 items-center transition-opacity hover:opacity-90"
               aria-label={site.name}
             >
-              {/* White reverse logos (active only when floating over transparent hero) */}
+              {/* White reverse logo (active only when floating over transparent hero) */}
               <div className="hidden group-[.header-transparent-mode]:flex items-center">
-                <span className="flex sm:hidden">
-                  <Logo variant="mark-reverse" height="header" priority />
-                </span>
-                <span className="hidden sm:flex">
-                  <Logo variant="reverse" height="header" priority />
-                </span>
+                <Logo variant="reverse" height="header" priority />
               </div>
 
-              {/* Standard dark/cream logos (active on solid header or when scrolled) */}
+              {/* Standard dark/cream logo (active on solid header or when scrolled) */}
               <div className="flex group-[.header-transparent-mode]:hidden items-center">
-                <span className="flex sm:hidden">
-                  <Logo variant="mark" height="header" priority />
-                </span>
-                <span className="hidden sm:flex">
-                  <Logo variant="primary" height="header" priority />
-                </span>
+                <Logo variant="primary" height="header" priority />
               </div>
             </Link>
             <div className="flex items-center gap-6">
