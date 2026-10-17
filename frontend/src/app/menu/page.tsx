@@ -1,4 +1,4 @@
-﻿import type { Metadata } from 'next';
+import type { Metadata } from 'next';
 import { Fragment } from 'react';
 import type { ReactNode } from 'react';
 
@@ -16,6 +16,7 @@ import { Text } from '@/components/primitives/text';
 import { JsonLd } from '@/components/seo/json-ld';
 import { getMenu } from '@/lib/api';
 import { menuJsonLd } from '@/lib/json-ld';
+import { getWpUploadUrl } from '@/lib/media';
 import { buildMetadata } from '@/lib/seo';
 
 export const dynamic = 'force-dynamic';
@@ -36,11 +37,88 @@ export default async function MenuPage(): Promise<ReactNode> {
     disclaimer,
   } = menu;
 
+  // High-resolution appetizing food photography thumbnails for key dishes across menu sections
+  // Per client requirement: "Lastly, I would like to have small thumb nail pics of some of the food items on the menu part."
+  const itemThumbnailMap: Record<string, { src: string; alt: string }> = {
+    // Appetizers & Starters
+    'wings': {
+      src: '/media/menu/crispy-wings.jpg',
+      alt: 'Crispy Jumbo Smoked Wings',
+    },
+    'all-beef-nathans-hot-dog': {
+      src: '/media/fairway-hotdog.jpg',
+      alt: "All Beef Nathan's Hot Dog",
+    },
+    'quesadilla-roll': {
+      src: '/media/menu/loaded-nachos.jpg',
+      alt: 'Loaded Fairway Nachos & Quesadilla',
+    },
+    // Salads & Wraps
+    'bbq-chopped-salad': {
+      src: '/media/bbq-salad.jpg',
+      alt: 'BBQ Chopped Salad with crisp greens and corn',
+    },
+    // Sandwiches & Burgers
+    'smoked-brisket-sandwich': {
+      src: '/media/brisket-sandwich.jpg',
+      alt: 'Texas Smoked Brisket Sandwich',
+    },
+    'bbq-bacon-cheese-burger': {
+      src: '/media/burger-patio.jpg',
+      alt: 'BBQ Bacon Cheese Burger on brioche',
+    },
+    'pulled-pork-sandwich': {
+      src: '/media/menu/pulled-pork.jpg',
+      alt: 'Smoked Pulled Pork Sandwich',
+    },
+    'short-rib-sandwich': {
+      src: '/media/menu/smoked-ribs.jpg',
+      alt: 'St. Louis Cut Smoked Ribs & Short Rib',
+    },
+    'turkey-club': {
+      src: '/media/club-sandwich.jpg',
+      alt: 'Fairway Clubhouse Turkey Sandwich',
+    },
+    'fried-chicken-sandwich': {
+      src: '/media/instagram/post-5.jpg',
+      alt: 'Southern Fried Buttermilk Chicken Sandwich',
+    },
+    'smoked-prime-rib-sandwich': {
+      src: getWpUploadUrl('IMG_2175.JPG.jpeg'),
+      alt: 'Smoked Prime Rib Sandwich',
+    },
+  };
+
+  const enhancedSections = sections.map((section) => ({
+    ...section,
+    items: section.items.map((item) => {
+      const mapped = itemThumbnailMap[item.slug];
+      if (
+        mapped &&
+        (!item.image ||
+          !item.image.src ||
+          item.image.src.includes('placeholder') ||
+          item.image.src.includes('brisket-plate.png'))
+      ) {
+        return {
+          ...item,
+          image: {
+            src: mapped.src,
+            alt: mapped.alt || item.name,
+            width: 600,
+            height: 600,
+          },
+        };
+      }
+      return item;
+    }),
+  }));
+
   const showLegend = showDietaryLegend && dietaryTags.length > 0;
 
   return (
     <PageShell global={_global} currentPath="/menu">
-      <JsonLd data={menuJsonLd(_global, sections)} />
+      <JsonLd data={menuJsonLd(_global, enhancedSections)} />
       <PageHeader
         title={title || 'Our Menu'}
         eyebrow="Smoked Daily · 18th Hole"
@@ -122,7 +200,7 @@ export default async function MenuPage(): Promise<ReactNode> {
             </Text>
           ) : (
             <div className="flex flex-col gap-16">
-              {sections.map((section, index) => (
+              {enhancedSections.map((section, index) => (
                 <Fragment key={section.slug}>
                   {/* A flag divider between sections, never above the first */}
                   {index > 0 ? <SectionDivider /> : null}

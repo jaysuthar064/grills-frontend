@@ -79,7 +79,7 @@ export function MenuCard({
         </div>
       ) : null}
 
-      <div className="flex flex-1 flex-col justify-between gap-3">
+      <div className="flex flex-1 items-start justify-between gap-4">
         <div className="flex-1 min-w-0">
           <div className="flex flex-wrap items-baseline justify-between gap-x-4 gap-y-1 pb-1">
             <div className="flex items-center gap-2">
@@ -126,18 +126,30 @@ export function MenuCard({
           ) : null}
         </div>
 
-        {variant === 'featured' ? (
-          <div className="flex items-center justify-between pt-3 border-t border-border/50 text-caption font-medium text-ink-muted">
-            <span className="inline-flex items-center gap-1.5 text-accent">
-              <span className="h-1.5 w-1.5 rounded-full bg-brand-primary animate-pulse" />
-              Smoked Fresh Daily
-            </span>
-            <span className="text-brand-primary font-semibold group-hover:translate-x-1 transition-transform inline-flex items-center gap-0.5">
-              Order at Counter &rarr;
-            </span>
+        {/* Small Thumbnail Pic of Food Item (Per Client Request) */}
+        {variant !== 'featured' && Boolean(item.image?.src) && item.image ? (
+          <div className="relative h-20 w-20 sm:h-24 sm:w-24 md:h-28 md:w-28 shrink-0 overflow-hidden rounded-xl border border-border/80 bg-surface-sunken shadow-xs transition-all duration-300 group-hover:scale-105 group-hover:shadow-md group-hover:border-brand-primary/40">
+            <Image
+              image={item.image}
+              fill
+              aspectRatio="1/1"
+              sizes="(min-width: 768px) 112px, (min-width: 640px) 96px, 80px"
+            />
           </div>
         ) : null}
       </div>
+
+      {variant === 'featured' ? (
+        <div className="flex items-center justify-between pt-3 border-t border-border/50 text-caption font-medium text-ink-muted">
+          <span className="inline-flex items-center gap-1.5 text-accent">
+            <span className="h-1.5 w-1.5 rounded-full bg-brand-primary animate-pulse" />
+            Smoked Fresh Daily
+          </span>
+          <span className="text-brand-primary font-semibold group-hover:translate-x-1 transition-transform inline-flex items-center gap-0.5">
+            Order at Counter &rarr;
+          </span>
+        </div>
+      ) : null}
     </article>
   );
 }

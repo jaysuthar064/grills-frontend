@@ -1,10 +1,8 @@
 'use client';
 
-import Link from 'next/link';
 import { useEffect, useRef, useState } from 'react';
 import type { ReactNode } from 'react';
 
-import { Logo } from '@/components/brand/logo';
 import { AnimatedReveal } from '@/components/primitives/animated-reveal';
 import { Heading } from '@/components/primitives/heading';
 import { Image } from '@/components/primitives/image';
@@ -89,36 +87,28 @@ export function Hero({ block, isPrimary = false }: HeroProps): ReactNode {
         className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,rgba(0,0,0,0.15)_0%,rgba(0,0,0,0.55)_100%)] pointer-events-none"
       />
 
-      {/* Center Hero Content (Simplified & Clean Per Client Feedback) */}
+      {/* Center Hero Content — Focused on Clear Headline Typography & Actionable CTAs */}
       <div className="relative z-10 flex min-h-[100svh] w-full flex-col items-center justify-center px-4 pt-28 pb-20 text-center sm:px-6 lg:px-8">
-        <div className="flex max-w-3xl flex-col items-center gap-6">
-          {/* Main Brand Logo Lockup - Oval vertical stacked logo (per client request) */}
+        <div className="flex max-w-4xl flex-col items-center gap-6">
+          {/* Eyebrow badge */}
           <AnimatedReveal delay={0.1}>
-            <Link
-              href="/"
-              className="flex flex-col items-center drop-shadow-[0_12px_28px_rgba(0,0,0,0.9)] transition-opacity hover:opacity-95"
-              aria-label="Grill on the Green Home"
-            >
-              <Logo
-                variant="stacked-reverse"
-                height="none"
-                priority
-                className="h-auto w-[310px] sm:w-[416px] md:w-[494px] lg:w-[546px] max-w-[88vw] max-h-[50vh] drop-shadow-[0_6px_20px_rgba(0,0,0,0.85)]"
-                alt="Grill on the Green"
-              />
-            </Link>
+            <span className="inline-flex items-center gap-2 rounded-full bg-black/60 backdrop-blur-md px-4 py-1.5 text-xs font-bold uppercase tracking-[0.2em] text-accent border border-white/20 shadow-md">
+              <span>⛳</span> Simi Hills Golf Course • Smoked Daily
+            </span>
           </AnimatedReveal>
 
-          {/* Accessible Heading for SEO & Landmarks */}
-          <div className="sr-only">
+          {/* Main Cinematic Headline Text (Replacing center logo per client request) */}
+          <AnimatedReveal delay={0.15}>
             <Heading level={isPrimary ? 1 : 2} id={headingId}>
-              {block.heading || 'Grill on the Green - Fresh Smoked Fairway Side'}
+              <span className="font-display text-4xl sm:text-6xl md:text-7xl font-bold tracking-tight text-white drop-shadow-[0_4px_24px_rgba(0,0,0,0.95)] uppercase leading-[1.08] block max-w-3xl">
+                {block.heading || 'Fresh Smoked Fairway Dining'}
+              </span>
             </Heading>
-          </div>
+          </AnimatedReveal>
 
           {/* Subheading / Tagline from CMS - Larger, clear readable text for older guests */}
           {block.subheading ? (
-            <AnimatedReveal delay={0.2}>
+            <AnimatedReveal delay={0.25}>
               <p className="max-w-2xl text-balance text-lg sm:text-xl md:text-2xl text-white font-medium tracking-normal drop-shadow-[0_2px_12px_rgba(0,0,0,0.95)] leading-relaxed">
                 {block.subheading}
               </p>
@@ -126,14 +116,14 @@ export function Hero({ block, isPrimary = false }: HeroProps): ReactNode {
           ) : null}
 
           {/* Action Buttons: View Menu & Call */}
-          <AnimatedReveal delay={0.3}>
+          <AnimatedReveal delay={0.35}>
             <div className="flex flex-col sm:flex-row items-center justify-center gap-4 pt-3 w-full sm:w-auto">
               <LinkButton
                 href={block.primaryCta.href || '/menu'}
                 variant="primary"
                 size="lg"
                 isExternal={block.primaryCta.isExternal}
-                className="w-full sm:w-auto min-w-[210px] shadow-[0_10px_25px_rgba(0,0,0,0.5)] px-8 text-base font-bold tracking-wider uppercase"
+                className="w-full sm:w-auto min-w-[210px] shadow-[0_10px_25px_rgba(0,0,0,0.5)] px-8 text-base font-bold tracking-wider uppercase hover:shadow-[0_12px_30px_rgba(215,90,40,0.4)]"
               >
                 {block.primaryCta.label || 'View Menu'}
               </LinkButton>
