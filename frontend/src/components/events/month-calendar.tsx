@@ -234,25 +234,6 @@ export function MonthCalendar({ events }: MonthCalendarProps): ReactNode {
               </div>
             </div>
 
-            {/* Legend & Hover Hint */}
-            <div className="flex flex-wrap items-center justify-between gap-3 text-body-sm bg-surface-raised p-3 rounded-xl border border-border">
-              <div className="flex items-center gap-3">
-                <span className="flex items-center gap-1.5 text-xs font-bold text-amber-500 bg-amber-950/40 px-2.5 py-1 rounded-full border border-amber-500/30">
-                  <span className="relative flex h-2 w-2">
-                    <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-amber-400 opacity-75" />
-                    <span className="relative inline-flex rounded-full h-2 w-2 bg-amber-500" />
-                  </span>
-                  Highlighted Bands & Live Music
-                </span>
-                <span className="hidden sm:inline text-xs text-ink-muted">
-                  💡 <strong>Touch / Hover over any band</strong> with your cursor to see the band picture, stage, and showtime!
-                </span>
-              </div>
-              <span className="text-[11px] text-ink-muted uppercase tracking-wider font-semibold">
-                Outdoor Heated Patio
-              </span>
-            </div>
-
             {/* Calendar Grid Container */}
             <div className="w-full overflow-x-auto -mx-4 sm:mx-0 px-4 sm:px-0 pb-2">
               <div className="min-w-[620px] bg-surface-raised rounded-2xl border border-border shadow-xs overflow-hidden">
@@ -313,14 +294,18 @@ export function MonthCalendar({ events }: MonthCalendarProps): ReactNode {
 
                             if (band.isBand) {
                               return (
-                                <a
+                                <button
+                                  type="button"
                                   key={evt.id}
-                                  href={`#event-${evt.slug}`}
+                                  onClick={(e) => {
+                                    e.preventDefault();
+                                    handleBandHover(evt, e);
+                                  }}
                                   onMouseEnter={(e) => handleBandHover(evt, e)}
                                   onMouseLeave={handleBandLeave}
                                   onFocus={(e) => handleBandHover(evt, e)}
                                   onBlur={handleBandLeave}
-                                  className="group relative block rounded-md px-2 py-1 transition-all duration-200 cursor-pointer shadow-xs bg-linear-to-r from-[#2a1708] via-[#1a1105] to-[#2a1708] border border-amber-500/70 hover:border-amber-400 hover:shadow-[0_4px_14px_rgba(245,158,11,0.35)] hover:scale-[1.03]"
+                                  className="group relative block w-full text-left rounded-md px-2 py-1 transition-all duration-200 cursor-pointer shadow-xs bg-linear-to-r from-[#2a1708] via-[#1a1105] to-[#2a1708] border border-amber-500/70 hover:border-amber-400 hover:shadow-[0_4px_14px_rgba(245,158,11,0.35)] hover:scale-[1.03]"
                                   title={`${band.bandName} — Touch/Hover to preview photo`}
                                 >
                                   <div className="flex items-center justify-between gap-1">
@@ -337,7 +322,7 @@ export function MonthCalendar({ events }: MonthCalendarProps): ReactNode {
                                       PIC ↗
                                     </span>
                                   </div>
-                                </a>
+                                </button>
                               );
                             }
 
@@ -439,17 +424,13 @@ export function MonthCalendar({ events }: MonthCalendarProps): ReactNode {
                   'Live music under the festoon lights on our heated fairway patio with slow-smoked BBQ and 16 craft beers on tap.'}
               </p>
 
-              <div className="flex items-center justify-between pt-1">
+              <div className="flex items-center justify-between pt-2 border-t border-white/10">
                 <span className="text-[11px] font-semibold text-emerald-400 flex items-center gap-1">
                   ✓ Free Patio Admission
                 </span>
-                <a
-                  href={`#event-${activePreview.evt.slug}`}
-                  onClick={() => setActivePreview(null)}
-                  className="inline-flex items-center justify-center rounded-lg bg-amber-500 hover:bg-amber-400 text-black text-xs font-bold py-1.5 px-3 shadow-xs transition-colors cursor-pointer"
-                >
-                  View Details &rarr;
-                </a>
+                <span className="text-[11px] text-amber-300/90 font-medium">
+                  Patio Table Seating
+                </span>
               </div>
             </div>
           </div>

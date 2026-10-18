@@ -90,13 +90,6 @@ export function Hero({ block, isPrimary = false }: HeroProps): ReactNode {
       {/* Center Hero Content — Focused on Clear Headline Typography & Actionable CTAs */}
       <div className="relative z-10 flex min-h-[100svh] w-full flex-col items-center justify-center px-4 pt-28 pb-20 text-center sm:px-6 lg:px-8">
         <div className="flex max-w-4xl flex-col items-center gap-6">
-          {/* Eyebrow badge */}
-          <AnimatedReveal delay={0.1}>
-            <span className="inline-flex items-center gap-2 rounded-full bg-black/60 backdrop-blur-md px-4 py-1.5 text-xs font-bold uppercase tracking-[0.2em] text-accent border border-white/20 shadow-md">
-              <span>⛳</span> Simi Hills Golf Course • Smoked Daily
-            </span>
-          </AnimatedReveal>
-
           {/* Main Cinematic Headline Text (Replacing center logo per client request) */}
           <AnimatedReveal delay={0.15}>
             <Heading level={isPrimary ? 1 : 2} id={headingId}>
