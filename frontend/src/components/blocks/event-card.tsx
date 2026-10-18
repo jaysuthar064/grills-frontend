@@ -1,9 +1,7 @@
-import Link from 'next/link';
 import type { ReactNode } from 'react';
 
 import { Badge } from '@/components/primitives/badge';
 import { Heading } from '@/components/primitives/heading';
-import { LinkButton } from '@/components/primitives/link-button';
 import { Text } from '@/components/primitives/text';
 import { cn } from '@/lib/cn';
 import {
@@ -15,11 +13,8 @@ import type { EventItem } from '@/types/api';
 
 /*
  * EventCard — 06-COMPONENT-SPEC.md §EventCard. <article> > date block > [image]
- * > linked heading > summary > metadata row (time, performer, ticket badge) >
- * LinkButton to the detail page.
+ * > heading > summary > metadata row (time, performer, ticket badge).
  *
- * The title is the only link, wrapped in the heading — no card-wide click
- * target, which would force a duplicate link or a non-semantic clickable div.
  * Dates render in America/Los_Angeles regardless of the visitor's zone, so the
  * server and client agree and the displayed date is factually the event's
  * Pacific date.
@@ -68,9 +63,8 @@ export function EventCard({
       </time>
 
       <div className="flex flex-1 flex-col gap-2">
-
         <Heading level={headingLevel} visualLevel="h4">
-          <Link href={`/events/${event.slug}`}>{event.title}</Link>
+          {event.title}
         </Heading>
 
         {event.summary !== '' ? (
@@ -93,12 +87,6 @@ export function EventCard({
           {event.isTicketed ? (
             <Badge tone="brand">{ticketLabel(event)}</Badge>
           ) : null}
-        </div>
-
-        <div className="pt-1">
-          <LinkButton href={`/events/${event.slug}`} variant="ghost" size="sm">
-            View details
-          </LinkButton>
         </div>
       </div>
     </article>
