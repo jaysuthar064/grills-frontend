@@ -121,8 +121,9 @@ export default async function MenuPage(): Promise<ReactNode> {
       <JsonLd data={menuJsonLd(_global, enhancedSections)} />
       <PageHeader
         title={title || 'Our Menu'}
-        eyebrow="Smoked Daily · 18th Hole"
+        eyebrow="18th Hole Fairway Dining"
         intro="Prepared fresh from 4:00 AM daily right at the Simi Hills Golf Course fairway."
+        imageSrc={getWpUploadUrl('IMG_2175.JPG.jpeg')}
       />
 
       {/* Prominent PDF Option Banner */}

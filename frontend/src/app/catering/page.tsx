@@ -100,6 +100,7 @@ export default async function CateringPage(): Promise<ReactNode> {
               className="absolute inset-0 h-full w-full object-cover opacity-85"
             >
               <source src={heroVideo} type="video/mp4" />
+              <source src="/media/hero-broll.mp4" type="video/mp4" />
             </video>
             <div className="absolute inset-0 bg-black/20 bg-gradient-to-b from-black/55 via-black/20 to-black/60" />
           </div>

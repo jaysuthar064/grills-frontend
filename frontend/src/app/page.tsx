@@ -66,16 +66,18 @@ export default async function HomePage(): Promise<ReactNode> {
     .map((block) => {
       if (block.type === 'hero') {
         const rawUrl = block.videoUrl && block.videoUrl !== '' ? block.videoUrl : '/media/hero-broll.mp4';
-        // In production/remote, ensure localhost:8885 is mapped to public WP host
-        const normalizedUrl = process.env.NODE_ENV === 'production' ? normalizeMediaUrl(rawUrl) : rawUrl;
-        // Prefer faststart MP4 over raw MOV for universal browser streaming support
-        const videoUrl = normalizedUrl.replace(/\.mov$/i, '.mp4');
+        const normalizedUrl = normalizeMediaUrl(rawUrl);
+        // Prefer the official cinematic b-roll video /media/hero-broll.mp4 for the hero
+        const videoUrl =
+          !normalizedUrl || normalizedUrl.includes('IMG_2195') || normalizedUrl.startsWith('http://localhost')
+            ? '/media/hero-broll.mp4'
+            : normalizedUrl.replace(/\.mov$/i, '.mp4');
 
         return {
           ...block,
           videoUrl,
           image: {
-            src: '/media/brisket-sandwich.jpg',
+            src: '/media/uploads/IMG_2175.JPG.jpeg',
             alt: 'Grill on the Green 18th Hole Fairway Dining',
             width: 1200,
             height: 800,

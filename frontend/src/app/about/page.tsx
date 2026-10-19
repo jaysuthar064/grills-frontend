@@ -1,12 +1,14 @@
-﻿import type { Metadata } from 'next';
+import type { Metadata } from 'next';
 import type { ReactNode } from 'react';
 
+import { PageHeader } from '@/components/blocks/page-header';
 import { Container } from '@/components/layout/container';
 import { PageShell } from '@/components/layout/page-shell';
 import { AnimatedReveal } from '@/components/primitives/animated-reveal';
 import { Heading } from '@/components/primitives/heading';
 import { LinkButton } from '@/components/primitives/link-button';
 import { getAbout } from '@/lib/api';
+import { getWpUploadUrl } from '@/lib/media';
 import { buildMetadata } from '@/lib/seo';
 
 export const dynamic = 'force-dynamic';
@@ -26,24 +28,18 @@ export default async function AboutPage(): Promise<ReactNode> {
 
   return (
     <PageShell global={_global} currentPath="/about">
-      {/* Story Header - Editorial, clean typography (No AI-style rounded photo/badge cards per client feedback) */}
-      <section className="relative overflow-hidden bg-surface-raised border-b border-border py-14 md:py-20">
+      <PageHeader
+        title={storyHeading}
+        eyebrow="Since 2024 · Simi Valley, California"
+        intro="Two lifelong passions — barbecue and golf — coming together at the 18th hole."
+        imageSrc={getWpUploadUrl('IMG_2176.JPG.jpeg')}
+      />
+
+      {/* Story Content */}
+      <section className="bg-surface py-12 md:py-16">
         <Container width="narrow">
           <div className="flex flex-col gap-8 max-w-2xl mx-auto">
             <AnimatedReveal delay={0.1}>
-              <div className="flex items-center gap-3">
-                <span className="text-sm uppercase tracking-widest text-brand-primary font-bold">
-                  Since 2024 &middot; Simi Hills, California
-                </span>
-              </div>
-              <div className="mt-2 text-ink">
-                <Heading level={1} visualLevel="display" className="text-4xl sm:text-5xl font-display font-bold">
-                  {storyHeading}
-                </Heading>
-              </div>
-            </AnimatedReveal>
-
-            <AnimatedReveal delay={0.2}>
               <div className="prose prose-lg text-ink-muted leading-relaxed flex flex-col gap-4 text-base sm:text-lg">
                 <p className="font-medium text-ink leading-relaxed">
                   Marco fires up the smoker from four in the morning; Mark runs the course. What began as a passion for authentic Central Texas barbecue evolved into a welcoming neighborhood destination on the green.
@@ -57,7 +53,7 @@ export default async function AboutPage(): Promise<ReactNode> {
               </div>
             </AnimatedReveal>
 
-            <AnimatedReveal delay={0.3}>
+            <AnimatedReveal delay={0.2}>
               <div className="flex flex-wrap items-center gap-4 pt-2">
                 <LinkButton href="/menu" variant="primary" size="md">
                   Explore Our Menu

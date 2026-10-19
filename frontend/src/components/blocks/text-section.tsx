@@ -44,7 +44,7 @@ export function TextSection({
           <AnimatedReveal>
             <div className="max-w-2xl mx-auto flex flex-col gap-4 text-center">
               <span className="text-sm uppercase tracking-[0.2em] text-brand-primary font-bold">
-                The Pit &amp; The Fairway &middot; Smoked Daily
+                The Pit &amp; The Fairway
               </span>
               {hasHeading ? (
                 <Heading

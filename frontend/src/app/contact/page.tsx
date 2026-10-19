@@ -14,6 +14,7 @@ import { LinkButton } from '@/components/primitives/link-button';
 import { JsonLd } from '@/components/seo/json-ld';
 import { getContact } from '@/lib/api';
 import { contactJsonLd } from '@/lib/json-ld';
+import { getWpUploadUrl } from '@/lib/media';
 import { buildMetadata } from '@/lib/seo';
 
 export const dynamic = 'force-dynamic';
@@ -31,7 +32,12 @@ export default async function ContactPage(): Promise<ReactNode> {
   return (
     <PageShell global={_global} currentPath="/contact">
       <JsonLd data={contactJsonLd(_global)} />
-      <PageHeader title={title || 'Contact & Location'} />
+      <PageHeader
+        title={title || 'Contact & Location'}
+        eyebrow="Simi Hills Golf Course · 18th Hole"
+        intro="Open daily. Swing by for breakfast, lunch, dinner, or weekend live music on the patio."
+        imageSrc={getWpUploadUrl('IMG_2172.JPG.jpeg')}
+      />
 
       {/* Main Visit & Schedule Section - Consistent 1px strokes & uniform headings */}
       <Section ariaLabelledBy="contact-find-heading">
