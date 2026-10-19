@@ -67,20 +67,17 @@ export default async function HomePage(): Promise<ReactNode> {
       if (block.type === 'hero') {
         const rawUrl = block.videoUrl && block.videoUrl !== '' ? block.videoUrl : '/media/hero-broll.mp4';
         const normalizedUrl = normalizeMediaUrl(rawUrl);
-        // Prefer the official cinematic b-roll video /media/hero-broll.mp4 for the hero
-        const videoUrl =
-          !normalizedUrl || normalizedUrl.includes('IMG_2195') || normalizedUrl.startsWith('http://localhost')
-            ? '/media/hero-broll.mp4'
-            : normalizedUrl.replace(/\.mov$/i, '.mp4');
+        // Dynamically play whatever video is selected in WordPress CMS
+        const videoUrl = normalizedUrl ? normalizedUrl.replace(/\.mov$/i, '.mp4') : '/media/hero-broll.mp4';
 
         return {
           ...block,
           videoUrl,
           image: {
-            src: '/media/uploads/IMG_2175.JPG.jpeg',
-            alt: 'Grill on the Green 18th Hole Fairway Dining',
-            width: 1200,
-            height: 800,
+            src: block.image?.src ? normalizeMediaUrl(block.image.src) : '/media/uploads/IMG_2175.JPG.jpeg',
+            alt: block.image?.alt || 'Grill on the Green 18th Hole Fairway Dining',
+            width: block.image?.width || 1200,
+            height: block.image?.height || 800,
           },
         };
       }

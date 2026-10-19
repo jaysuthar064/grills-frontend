@@ -8,6 +8,7 @@ import { Heading } from '@/components/primitives/heading';
 import { Image } from '@/components/primitives/image';
 import { LinkButton } from '@/components/primitives/link-button';
 import { cn } from '@/lib/cn';
+import { normalizeMediaUrl } from '@/lib/media';
 import { slugId } from '@/lib/slug';
 import type { HeroBlock } from '@/types/api';
 
@@ -22,12 +23,13 @@ export function Hero({ block, isPrimary = false }: HeroProps): ReactNode {
   const [isPlaying, setIsPlaying] = useState(true);
   const [isMuted, setIsMuted] = useState(true);
 
-  // Default to reliable local b-roll if empty or pointing to unreachable host
+  // Dynamically resolve video URL from CMS, with reliable b-roll fallback
   const getInitialSrc = (url?: string): string => {
-    if (!url || url === '' || url.includes('localhost') || url.includes('launchpreview.live')) {
+    if (!url || url === '') {
       return '/media/hero-broll.mp4';
     }
-    return url;
+    const normalized = normalizeMediaUrl(url);
+    return normalized || '/media/hero-broll.mp4';
   };
 
   const [videoSrc, setVideoSrc] = useState(() => getInitialSrc(block.videoUrl));

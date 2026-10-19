@@ -17,10 +17,14 @@ export function normalizeMediaUrl(url: string): string {
   }
 
   // If URL references WordPress uploads, map to bundled static uploads
-  if (url.includes('/wp-content/uploads/2026/09/')) {
-    const filename = url.split('/wp-content/uploads/2026/09/')[1];
-    if (filename) {
-      return `/media/uploads/${filename}`;
+  if (url.includes('/wp-content/uploads/')) {
+    const afterUploads = url.split('/wp-content/uploads/')[1];
+    if (afterUploads) {
+      const parts = afterUploads.split('/');
+      const filename = parts[parts.length - 1];
+      if (filename) {
+        return `/media/uploads/${filename}`;
+      }
     }
   }
 
