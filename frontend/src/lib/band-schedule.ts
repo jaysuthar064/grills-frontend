@@ -6,7 +6,6 @@ export interface BandProfile {
   readonly shortName: string;
   readonly genre: string;
   readonly description: string;
-  readonly image: string;
   readonly badgeTone: 'amber' | 'orange' | 'emerald' | 'purple' | 'neutral';
   readonly colorClasses: {
     readonly bg: string;
@@ -35,7 +34,6 @@ export const BAND_PROFILES: Record<BandKey, BandProfile> = {
     genre: 'Classic Rock, Pop & Dance Hits (Resident Favorite)',
     description:
       'Resident fairway favorite delivering crowd-pleasing classic rock anthems, 80s/90s dance hits, and energetic singalong live sets on the heated patio.',
-    image: '/media/bands/zaremba.jpg',
     badgeTone: 'amber',
     colorClasses: {
       bg: 'bg-linear-to-r from-amber-950/90 via-stone-900/90 to-amber-950/90',
@@ -55,7 +53,6 @@ export const BAND_PROFILES: Record<BandKey, BandProfile> = {
     genre: 'Country, Blues & Southern Rock',
     description:
       'Full-throttle Southern rock, driving country favorites, and Texas blues with full rhythm section and blistering guitar under the festoon lights.',
-    image: '/media/bands/todd-hines-band.jpg',
     badgeTone: 'orange',
     colorClasses: {
       bg: 'bg-linear-to-r from-orange-950/90 via-stone-900/90 to-orange-950/90',
@@ -75,7 +72,6 @@ export const BAND_PROFILES: Record<BandKey, BandProfile> = {
     genre: 'Coastal Rock, Acoustic Classics & Fairway Harmonies',
     description:
       'Smooth acoustic guitar favorites, breezy coastal rock, and singalong classics perfect for sunset fire pit dining fairway-side.',
-    image: '/media/bands/captain-kori.jpg',
     badgeTone: 'emerald',
     colorClasses: {
       bg: 'bg-linear-to-r from-emerald-950/90 via-stone-900/90 to-emerald-950/90',
@@ -95,7 +91,6 @@ export const BAND_PROFILES: Record<BandKey, BandProfile> = {
     genre: 'Americana, Roots Rock & Blues',
     description:
       'Gritty roots rock, soulful Americana storytelling, and deep-groove California blues live on the 18th hole patio stage.',
-    image: '/media/bands/ashwater-saints.jpg',
     badgeTone: 'purple',
     colorClasses: {
       bg: 'bg-linear-to-r from-purple-950/90 via-stone-900/90 to-purple-950/90',
@@ -115,7 +110,6 @@ export const BAND_PROFILES: Record<BandKey, BandProfile> = {
     genre: 'Holiday Live Patio Concert',
     description:
       'Special holiday weekend live patio music. Special guest performer announcement coming soon! Slow-smoked BBQ and craft drafts served all evening.',
-    image: '/media/bands/live-music-tba.jpg',
     badgeTone: 'neutral',
     colorClasses: {
       bg: 'bg-linear-to-r from-stone-900/90 via-stone-800/90 to-stone-900/90',
@@ -131,8 +125,9 @@ export const BAND_PROFILES: Record<BandKey, BandProfile> = {
 };
 
 /**
- * Full live music schedule provided by client for October, November, and December.
- * All shows take place on the Fairway Patio Stage (Friday & Saturday evenings, 7:00 PM – 10:00 PM).
+ * Full live music schedule provided by client for October, November, and December 2026.
+ * Zero dummy images. Pure typography and band name focus.
+ * All shows take place on the Fairway Patio Stage (7:00 PM – 10:00 PM Pacific).
  */
 export const SCHEDULED_BANDS: EventItem[] = [
   // ── OCTOBER 2026 ─────────────────────────────────────────────────────────────
@@ -150,12 +145,6 @@ export const SCHEDULED_BANDS: EventItem[] = [
     eventType: 'live_music',
     isTicketed: false,
     isRecurringInstance: true,
-    image: {
-      src: '/media/bands/captain-kori.jpg',
-      alt: 'Captain Kori performing acoustic coastal rock live on patio',
-      width: 800,
-      height: 600,
-    },
     seo: {
       title: 'Captain Kori Live on the Patio | Grill on the Green',
       description: 'Acoustic coastal rock live on the heated fairway patio in Simi Valley.',
@@ -176,12 +165,6 @@ export const SCHEDULED_BANDS: EventItem[] = [
     eventType: 'live_music',
     isTicketed: false,
     isRecurringInstance: true,
-    image: {
-      src: '/media/bands/zaremba.jpg',
-      alt: 'Zaremba rock band performing live on stage',
-      width: 800,
-      height: 600,
-    },
     seo: {
       title: 'Halloween Live Music Bash with Zaremba | Grill on the Green',
       description: 'Celebrate Halloween with Zaremba live on the fairway patio stage.',
@@ -204,12 +187,6 @@ export const SCHEDULED_BANDS: EventItem[] = [
     eventType: 'live_music',
     isTicketed: false,
     isRecurringInstance: true,
-    image: {
-      src: '/media/bands/todd-hines-band.jpg',
-      alt: 'Todd Hines Band live country rock performance',
-      width: 800,
-      height: 600,
-    },
     seo: {
       title: 'Todd Hines Band Live | Grill on the Green',
       description: 'High-energy country rock and blues on the fairway patio in Simi Valley.',
@@ -230,12 +207,6 @@ export const SCHEDULED_BANDS: EventItem[] = [
     eventType: 'live_music',
     isTicketed: false,
     isRecurringInstance: true,
-    image: {
-      src: '/media/bands/zaremba.jpg',
-      alt: 'Zaremba band performing live on patio',
-      width: 800,
-      height: 600,
-    },
     seo: {
       title: 'Zaremba Live on the Fairway Patio | Grill on the Green',
       description: 'Classic rock dance hits live on Saturday night at Grill on the Green.',
@@ -256,12 +227,6 @@ export const SCHEDULED_BANDS: EventItem[] = [
     eventType: 'live_music',
     isTicketed: false,
     isRecurringInstance: true,
-    image: {
-      src: '/media/bands/todd-hines-band.jpg',
-      alt: 'Todd Hines Band performing live',
-      width: 800,
-      height: 600,
-    },
     seo: {
       title: 'Todd Hines Band Live | Grill on the Green',
       description: 'Country rock live on the heated patio stage at Simi Hills.',
@@ -282,12 +247,6 @@ export const SCHEDULED_BANDS: EventItem[] = [
     eventType: 'live_music',
     isTicketed: false,
     isRecurringInstance: true,
-    image: {
-      src: '/media/bands/zaremba.jpg',
-      alt: 'Zaremba performing live on stage',
-      width: 800,
-      height: 600,
-    },
     seo: {
       title: 'Zaremba Live Concert | Grill on the Green',
       description: 'Live classic rock and dance hits on Saturday night.',
@@ -308,12 +267,6 @@ export const SCHEDULED_BANDS: EventItem[] = [
     eventType: 'live_music',
     isTicketed: false,
     isRecurringInstance: true,
-    image: {
-      src: '/media/bands/captain-kori.jpg',
-      alt: 'Captain Kori performing acoustic classics',
-      width: 800,
-      height: 600,
-    },
     seo: {
       title: 'Captain Kori Live Acoustic | Grill on the Green',
       description: 'Acoustic coastal favorites live on the fairway patio.',
@@ -334,12 +287,6 @@ export const SCHEDULED_BANDS: EventItem[] = [
     eventType: 'live_music',
     isTicketed: false,
     isRecurringInstance: true,
-    image: {
-      src: '/media/bands/ashwater-saints.jpg',
-      alt: 'AshWater Saints performing Americana roots rock live',
-      width: 800,
-      height: 600,
-    },
     seo: {
       title: 'AshWater Saints Live on the Patio | Grill on the Green',
       description: 'Americana and roots rock live on the heated fairway patio in Simi Valley.',
@@ -360,12 +307,6 @@ export const SCHEDULED_BANDS: EventItem[] = [
     eventType: 'live_music',
     isTicketed: false,
     isRecurringInstance: true,
-    image: {
-      src: '/media/bands/live-music-tba.jpg',
-      alt: 'Holiday weekend live patio concert at Grill on the Green',
-      width: 800,
-      height: 600,
-    },
     seo: {
       title: 'Thanksgiving Weekend Live Music | Grill on the Green',
       description: 'Black Friday weekend live music and patio barbecue.',
@@ -386,12 +327,6 @@ export const SCHEDULED_BANDS: EventItem[] = [
     eventType: 'live_music',
     isTicketed: false,
     isRecurringInstance: true,
-    image: {
-      src: '/media/bands/zaremba.jpg',
-      alt: 'Zaremba performing on stage',
-      width: 800,
-      height: 600,
-    },
     seo: {
       title: 'Zaremba Holiday Weekend Live | Grill on the Green',
       description: 'Zaremba live classic rock concert on the fairway patio.',
@@ -414,12 +349,6 @@ export const SCHEDULED_BANDS: EventItem[] = [
     eventType: 'live_music',
     isTicketed: false,
     isRecurringInstance: true,
-    image: {
-      src: '/media/bands/todd-hines-band.jpg',
-      alt: 'Todd Hines Band performing live on patio',
-      width: 800,
-      height: 600,
-    },
     seo: {
       title: 'Todd Hines Band Live in December | Grill on the Green',
       description: 'High-energy country rock live on the heated fairway patio stage.',
@@ -440,12 +369,6 @@ export const SCHEDULED_BANDS: EventItem[] = [
     eventType: 'live_music',
     isTicketed: false,
     isRecurringInstance: true,
-    image: {
-      src: '/media/bands/zaremba.jpg',
-      alt: 'Zaremba live classic rock concert',
-      width: 800,
-      height: 600,
-    },
     seo: {
       title: 'Zaremba Live Concert | Grill on the Green',
       description: 'Saturday night live music with Zaremba on the patio.',
@@ -466,12 +389,6 @@ export const SCHEDULED_BANDS: EventItem[] = [
     eventType: 'live_music',
     isTicketed: false,
     isRecurringInstance: true,
-    image: {
-      src: '/media/bands/zaremba.jpg',
-      alt: 'Zaremba rock performance',
-      width: 800,
-      height: 600,
-    },
     seo: {
       title: 'Zaremba Holiday Live Music | Grill on the Green',
       description: 'Holiday live music with Zaremba in Simi Valley.',
@@ -492,12 +409,6 @@ export const SCHEDULED_BANDS: EventItem[] = [
     eventType: 'live_music',
     isTicketed: false,
     isRecurringInstance: true,
-    image: {
-      src: '/media/bands/captain-kori.jpg',
-      alt: 'Captain Kori live acoustic guitar',
-      width: 800,
-      height: 600,
-    },
     seo: {
       title: 'Captain Kori Live Acoustic | Grill on the Green',
       description: 'Acoustic classics and coastal rock live fairway-side.',
@@ -518,12 +429,6 @@ export const SCHEDULED_BANDS: EventItem[] = [
     eventType: 'live_music',
     isTicketed: false,
     isRecurringInstance: true,
-    image: {
-      src: '/media/bands/zaremba.jpg',
-      alt: 'Zaremba live performance on patio stage',
-      width: 800,
-      height: 600,
-    },
     seo: {
       title: 'Zaremba Pre-Christmas Live Concert | Grill on the Green',
       description: 'Holiday live concert with Zaremba on the heated patio.',
@@ -544,12 +449,6 @@ export const SCHEDULED_BANDS: EventItem[] = [
     eventType: 'live_music',
     isTicketed: false,
     isRecurringInstance: true,
-    image: {
-      src: '/media/bands/todd-hines-band.jpg',
-      alt: 'Todd Hines Band performing live country rock',
-      width: 800,
-      height: 600,
-    },
     seo: {
       title: 'Todd Hines Band Holiday Live Concert | Grill on the Green',
       description: 'Country rock live concert on Saturday night at Simi Hills.',
@@ -570,12 +469,6 @@ export const SCHEDULED_BANDS: EventItem[] = [
     eventType: 'live_music',
     isTicketed: false,
     isRecurringInstance: true,
-    image: {
-      src: '/media/bands/live-music-tba.jpg',
-      alt: 'Post-Christmas live music concert on patio',
-      width: 800,
-      height: 600,
-    },
     seo: {
       title: 'Post-Christmas Live Music | Grill on the Green',
       description: 'Live music on the heated patio on Saturday, December 26.',
@@ -585,7 +478,7 @@ export const SCHEDULED_BANDS: EventItem[] = [
 ];
 
 /**
- * Resolves band details, profile, badge colors, and images from an event item.
+ * Resolves band details, profile, badge colors from an event item.
  */
 export function getBandProfileForEvent(evt: EventItem): BandProfile {
   const text = `${evt.performerName || ''} ${evt.title} ${evt.summary}`.toLowerCase();
@@ -605,4 +498,3 @@ export function getBandProfileForEvent(evt: EventItem): BandProfile {
 
   return BAND_PROFILES['live-music-tba'];
 }
-

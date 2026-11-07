@@ -30,13 +30,15 @@ export default async function EventsPage(): Promise<ReactNode> {
   const events = await getEvents();
   const { _global, title, recurring, upcoming, emptyMessage, blocks } = events;
 
-  // Merge CMS events with full live band calendar schedule, avoiding duplicate slugs
+  // Merge CMS events with full live band calendar schedule, stripping any dummy images
   const allEventsMap = new Map<string, EventItem>();
-  upcoming.forEach((evt) => allEventsMap.set(evt.slug, evt));
+  upcoming.forEach((evt) => {
+    const { image: _omitted, ...cleanEvt } = evt;
+    allEventsMap.set(cleanEvt.slug, cleanEvt);
+  });
+  // Client band schedule is authoritative
   SCHEDULED_BANDS.forEach((band) => {
-    if (!allEventsMap.has(band.slug)) {
-      allEventsMap.set(band.slug, band);
-    }
+    allEventsMap.set(band.slug, band);
   });
 
   const combinedUpcoming = Array.from(allEventsMap.values()).sort(

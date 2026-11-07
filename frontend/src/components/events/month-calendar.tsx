@@ -8,6 +8,7 @@ import { AnimatedReveal } from '@/components/primitives/animated-reveal';
 import { Heading } from '@/components/primitives/heading';
 import { getBandProfileForEvent } from '@/lib/band-schedule';
 import type { BandProfile } from '@/lib/band-schedule';
+import { parsePacificDate } from '@/lib/datetime';
 import type { EventItem } from '@/types/api';
 
 export interface MonthCalendarProps {
@@ -19,11 +20,11 @@ const DAYS_OF_WEEK = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
 interface ActiveBandPreview {
   evt: EventItem;
   bandName: string;
-  imageSrc: string;
   genre: string;
   timeStr: string;
   stage: string;
   profile: BandProfile;
+  dateStr: string;
   x: number;
   y: number;
   alignRight: boolean;
@@ -31,7 +32,7 @@ interface ActiveBandPreview {
 }
 
 export function MonthCalendar({ events }: MonthCalendarProps): ReactNode {
-  // Default to November 2026 (the active schedule season)
+  // Default to November 2026 (active schedule season)
   const [currentYear, setCurrentYear] = useState(2026);
   const [currentMonth, setCurrentMonth] = useState(10); // 10 is November (0-indexed)
   const [selectedBandFilter, setSelectedBandFilter] = useState<string>('all');
@@ -75,23 +76,24 @@ export function MonthCalendar({ events }: MonthCalendarProps): ReactNode {
     return () => window.removeEventListener('keydown', handleKeyDown);
   }, []);
 
-  // Map dates to events
+  // Map dates to events strictly using Pacific calendar parts (immune to visitor timezone shifts)
   const firstDayOfMonth = new Date(currentYear, currentMonth, 1).getDay();
   const daysInMonth = new Date(currentYear, currentMonth + 1, 0).getDate();
 
   const eventsByDate = new Map<number, EventItem[]>();
   events.forEach((evt) => {
-    const d = new Date(evt.startDateTime);
-    if (d.getFullYear() === currentYear && d.getMonth() === currentMonth) {
-      const dateNum = d.getDate();
-      const existing = eventsByDate.get(dateNum) || [];
-      eventsByDate.set(dateNum, [...existing, evt]);
+    const parts = parsePacificDate(evt.startDateTime);
+    if (parts.year === currentYear && parts.month === currentMonth) {
+      const existing = eventsByDate.get(parts.day) || [];
+      eventsByDate.set(parts.day, [...existing, evt]);
     }
   });
 
-  const monthName = new Date(currentYear, currentMonth).toLocaleString('default', {
-    month: 'long',
-  });
+  const monthNames = [
+    'January', 'February', 'March', 'April', 'May', 'June',
+    'July', 'August', 'September', 'October', 'November', 'December',
+  ];
+  const monthName = monthNames[currentMonth] || 'November';
 
   const handleBandHover = (evt: EventItem, e: React.MouseEvent<HTMLElement> | React.FocusEvent<HTMLElement>) => {
     if (hoverTimeoutRef.current) {
@@ -100,37 +102,23 @@ export function MonthCalendar({ events }: MonthCalendarProps): ReactNode {
 
     const profile = getBandProfileForEvent(evt);
     const bandName = evt.performerName || evt.title.replace(/^Live Music:\s*/i, '');
-    const imageSrc = evt.image?.src || profile.image;
+    const parts = parsePacificDate(evt.startDateTime);
+    const dateStr = `${parts.monthName} ${parts.day}, ${parts.year}`;
 
-    let timeStr = '7:00 PM – 10:00 PM';
-    if (evt.startDateTime) {
-      try {
-        const dStart = new Date(evt.startDateTime);
-        const startFormatted = dStart.toLocaleTimeString([], { hour: 'numeric', minute: '2-digit' });
-        if (evt.endDateTime) {
-          const dEnd = new Date(evt.endDateTime);
-          const endFormatted = dEnd.toLocaleTimeString([], { hour: 'numeric', minute: '2-digit' });
-          timeStr = `${startFormatted} – ${endFormatted}`;
-        } else {
-          timeStr = startFormatted;
-        }
-      } catch {
-        // fallback
-      }
-    }
+    const timeStr = '7:00 PM – 10:00 PM';
 
     const rect = e.currentTarget.getBoundingClientRect();
     const alignRight = rect.left + 350 > window.innerWidth;
-    const showAbove = rect.bottom + 380 > window.innerHeight;
+    const showAbove = rect.bottom + 260 > window.innerHeight;
 
     setActivePreview({
       evt,
       bandName,
-      imageSrc,
       genre: profile.genre,
       timeStr,
-      stage: 'Fairway Patio Stage',
+      stage: 'Fairway Patio Stage (Heated)',
       profile,
+      dateStr,
       x: alignRight ? rect.right : rect.left,
       y: showAbove ? rect.top : rect.bottom,
       alignRight,
@@ -170,14 +158,14 @@ export function MonthCalendar({ events }: MonthCalendarProps): ReactNode {
                 <div className="flex items-center gap-2 mb-1">
                   <span className="inline-flex h-2 w-2 rounded-full bg-emerald-500 animate-pulse" />
                   <span className="text-overline uppercase tracking-widest text-brand-primary font-bold">
-                    Fall & Winter Live Music Schedule
+                    Fall &amp; Winter Live Music Schedule
                   </span>
                 </div>
                 <Heading level={2} visualLevel="h2">
                   {monthName} {currentYear} Calendar
                 </Heading>
                 <p className="text-body-sm text-ink-muted mt-1">
-                  Hover or tap any band name to preview photos, genre, and showtime details.
+                  Live music every Friday &amp; Saturday evening. Tap or hover any band name for showtimes and performance details.
                 </p>
               </div>
 
@@ -293,7 +281,11 @@ export function MonthCalendar({ events }: MonthCalendarProps): ReactNode {
                         }`}
                       >
                         {day}
-                        {isWeekend ? <span className="block text-[9px] font-semibold text-amber-600">Live Music</span> : null}
+                        {isWeekend ? (
+                          <span className="block text-[9px] font-semibold text-amber-600">
+                            Live Music
+                          </span>
+                        ) : null}
                       </div>
                     );
                   })}
@@ -326,7 +318,9 @@ export function MonthCalendar({ events }: MonthCalendarProps): ReactNode {
                         <div className="flex justify-between items-center">
                           <span
                             className={`text-body-sm font-bold w-6 h-6 flex items-center justify-center rounded-full ${
-                              isFridayOrSaturday ? 'text-brand-primary bg-brand-primary/10 font-black' : 'text-ink'
+                              isFridayOrSaturday
+                                ? 'text-brand-primary bg-brand-primary/10 font-black'
+                                : 'text-ink'
                             }`}
                           >
                             {dayNumber}
@@ -339,7 +333,7 @@ export function MonthCalendar({ events }: MonthCalendarProps): ReactNode {
                           ) : null}
                         </div>
 
-                        {/* Event Pills */}
+                        {/* Event Pills (Pure Typography - No Dummy Images) */}
                         <div className="flex flex-col gap-1.5 mt-1 overflow-y-auto max-h-[100px]">
                           {dayEvents.map((evt) => {
                             const profile = getBandProfileForEvent(evt);
@@ -371,7 +365,7 @@ export function MonthCalendar({ events }: MonthCalendarProps): ReactNode {
                                 } ${isSelected ? 'ring-2 ring-amber-400 scale-[1.04]' : ''} ${
                                   isDimmed ? 'opacity-30 grayscale' : 'opacity-100 hover:scale-[1.02]'
                                 }`}
-                                title={`${bandName} — Touch or hover to preview photo`}
+                                title={`${bandName} — Showtime details`}
                               >
                                 <div className="flex items-center justify-between gap-1">
                                   <div className="flex items-center gap-1.5 min-w-0">
@@ -383,8 +377,8 @@ export function MonthCalendar({ events }: MonthCalendarProps): ReactNode {
                                       🎸 {bandName}
                                     </span>
                                   </div>
-                                  <span className="text-[9px] font-extrabold uppercase tracking-wider text-amber-400/90 shrink-0">
-                                    PIC ↗
+                                  <span className="text-[9px] font-bold uppercase tracking-wider text-amber-400/90 shrink-0">
+                                    7 PM
                                   </span>
                                 </div>
                               </button>
@@ -400,7 +394,7 @@ export function MonthCalendar({ events }: MonthCalendarProps): ReactNode {
           </div>
         </AnimatedReveal>
 
-        {/* Floating Band Preview Popover (Active on Touch / Cursor Hover) */}
+        {/* Floating Concert Info Popover (Clean Typography - Zero Dummy Images) */}
         {activePreview ? (
           <div
             role="dialog"
@@ -410,79 +404,68 @@ export function MonthCalendar({ events }: MonthCalendarProps): ReactNode {
             style={{
               position: 'fixed',
               top: activePreview.showAbove
-                ? `${Math.max(10, activePreview.y - 380)}px`
-                : `${Math.min(window.innerHeight - 380, activePreview.y + 10)}px`,
+                ? `${Math.max(10, activePreview.y - 280)}px`
+                : `${Math.min(window.innerHeight - 280, activePreview.y + 10)}px`,
               left: activePreview.alignRight
                 ? `${Math.max(10, activePreview.x - 340)}px`
                 : `${Math.max(10, Math.min(window.innerWidth - 350, activePreview.x))}px`,
               zIndex: 9999,
             }}
-            className="w-[330px] rounded-2xl border-2 border-amber-500/80 bg-[#16120e] shadow-[0_20px_50px_rgba(0,0,0,0.85)] overflow-hidden transition-all duration-200 animate-in fade-in zoom-in-95 pointer-events-auto"
+            className="w-[330px] rounded-2xl border-2 border-amber-500/80 bg-[#16120e] shadow-[0_20px_50px_rgba(0,0,0,0.85)] overflow-hidden transition-all duration-200 animate-in fade-in zoom-in-95 pointer-events-auto p-5 flex flex-col gap-3.5 text-left"
           >
-            {/* Band Image with Overlaid Stage Tag */}
-            <div className="relative aspect-4-3 w-full overflow-hidden bg-black/60">
-              {/* eslint-disable-next-line @next/next/no-img-element */}
-              <img
-                src={activePreview.imageSrc}
-                alt={activePreview.bandName}
-                className="h-full w-full object-cover transition-transform duration-500 hover:scale-105"
-              />
-              <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/30 to-transparent pointer-events-none" />
-
-              {/* Close Button for touch devices */}
+            {/* Top Bar with Badge & Dismiss */}
+            <div className="flex items-start justify-between gap-2">
+              <span className="inline-flex items-center gap-1.5 rounded-full bg-amber-500/20 text-amber-300 border border-amber-500/40 px-2.5 py-0.5 text-[10px] font-black uppercase tracking-wider">
+                <span className="h-1.5 w-1.5 rounded-full bg-amber-400 animate-pulse" />
+                Live Patio Concert
+              </span>
               <button
                 type="button"
                 onClick={() => setActivePreview(null)}
-                className="absolute top-2.5 right-2.5 z-20 h-7 w-7 rounded-full bg-black/70 text-white hover:bg-black flex items-center justify-center text-xs font-bold border border-white/20 transition-all cursor-pointer"
-                title="Close preview"
+                className="h-6 w-6 rounded-full bg-white/10 text-white/80 hover:bg-white/20 hover:text-white flex items-center justify-center text-xs font-bold transition-all cursor-pointer"
+                title="Close"
               >
                 ✕
               </button>
+            </div>
 
-              {/* Stage Badge */}
-              <div className="absolute top-2.5 left-2.5 z-10">
-                <span className="inline-flex items-center gap-1.5 rounded-full bg-amber-500 px-2.5 py-0.5 text-[10px] font-black uppercase tracking-wider text-black shadow-md">
-                  <span className="h-1.5 w-1.5 rounded-full bg-black animate-pulse" />
-                  Live Patio Stage
-                </span>
+            {/* Band Name & Date */}
+            <div>
+              <span className="text-[11px] font-bold uppercase tracking-wider text-amber-400">
+                {activePreview.dateStr}
+              </span>
+              <h4 className="font-display text-xl font-bold text-white leading-tight mt-0.5">
+                {activePreview.bandName}
+              </h4>
+              <p className="text-xs text-amber-200/90 font-medium mt-0.5">
+                {activePreview.genre}
+              </p>
+            </div>
+
+            {/* Timing & Stage Grid */}
+            <div className="grid grid-cols-2 gap-2 text-[11px] py-2 border-y border-white/10">
+              <div className="flex flex-col">
+                <span className="text-[10px] uppercase font-bold text-amber-400">Showtime</span>
+                <span className="font-bold text-white">{activePreview.timeStr}</span>
               </div>
-
-              {/* Band name over image bottom */}
-              <div className="absolute bottom-2.5 left-3 right-3 z-10">
-                <h4 className="font-display text-lg font-bold text-white drop-shadow-md leading-tight">
-                  {activePreview.bandName}
-                </h4>
-                <p className="text-[11px] text-amber-200/90 font-medium">
-                  {activePreview.genre}
-                </p>
+              <div className="flex flex-col">
+                <span className="text-[10px] uppercase font-bold text-amber-400">Stage</span>
+                <span className="font-bold text-white">Fairway Patio</span>
               </div>
             </div>
 
-            {/* Info Body */}
-            <div className="p-4 flex flex-col gap-3 text-left">
-              <div className="grid grid-cols-2 gap-2 text-[11px] pb-2 border-b border-white/10">
-                <div className="flex flex-col">
-                  <span className="text-[10px] uppercase font-bold text-amber-400">Showtime</span>
-                  <span className="font-bold text-white">{activePreview.timeStr}</span>
-                </div>
-                <div className="flex flex-col">
-                  <span className="text-[10px] uppercase font-bold text-amber-400">Venue</span>
-                  <span className="font-bold text-white">{activePreview.stage}</span>
-                </div>
-              </div>
+            <p className="text-xs text-stone-300 leading-relaxed">
+              {activePreview.evt.summary || activePreview.profile.description}
+            </p>
 
-              <p className="text-xs text-stone-300 leading-relaxed">
-                {activePreview.evt.summary || activePreview.profile.description}
-              </p>
-
-              <div className="flex items-center justify-between pt-2 border-t border-white/10">
-                <span className="text-[11px] font-bold text-emerald-400 flex items-center gap-1">
-                  ✓ Free Admission · No Cover
-                </span>
-                <span className="text-[11px] text-amber-300/90 font-semibold">
-                  Heated Fire Pit Patio
-                </span>
-              </div>
+            {/* Footer Features */}
+            <div className="flex items-center justify-between pt-1 text-[11px]">
+              <span className="font-bold text-emerald-400 flex items-center gap-1">
+                ✓ Free Admission
+              </span>
+              <span className="text-amber-300/90 font-semibold">
+                Heated Outdoor Seating
+              </span>
             </div>
           </div>
         ) : null}

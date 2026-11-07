@@ -185,10 +185,16 @@ export default async function HomePage(): Promise<ReactNode> {
         };
       }
       if (block.type === 'events_preview') {
-        return {
-          ...block,
-          events: block.events && block.events.length > 0 ? block.events : SCHEDULED_BANDS.slice(0, 6),
+        // Strip dummy images and prefer scheduled bands if CMS events are empty or stale
+        const sourceEvents =
+          block.events && block.events.length > 0 ? block.events : SCHEDULED_BANDS.slice(0, 6);
+        const eventsBlock: EventsPreviewBlock = {
+          type: 'events_preview',
+          heading: block.heading,
+          ...(block.cta ? { cta: block.cta } : {}),
+          events: sourceEvents.map(({ image: _omitted, ...cleanEvt }) => cleanEvt),
         };
+        return eventsBlock;
       }
       return block;
     });

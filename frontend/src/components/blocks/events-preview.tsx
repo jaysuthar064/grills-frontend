@@ -10,6 +10,7 @@ import { Section } from '@/components/layout/section';
 import { AnimatedReveal } from '@/components/primitives/animated-reveal';
 import { Heading } from '@/components/primitives/heading';
 import { LinkButton } from '@/components/primitives/link-button';
+import { parsePacificDate } from '@/lib/datetime';
 import { slugId } from '@/lib/slug';
 import type { EventsPreviewBlock, EventItem } from '@/types/api';
 
@@ -39,17 +40,15 @@ export function EventsPreview({
   // Smart initial date: if events exist in current month, pick current month; otherwise first event
   const now = new Date();
   const hasCurrentMonthEvents = block.events.some((evt) => {
-    const d = new Date(evt.startDateTime);
-    return d.getFullYear() === now.getFullYear() && d.getMonth() === now.getMonth();
+    const parts = parsePacificDate(evt.startDateTime);
+    return parts.year === now.getFullYear() && parts.month === now.getMonth();
   });
-  const initialDate = hasCurrentMonthEvents
-    ? now
-    : block.events[0]
-      ? new Date(block.events[0].startDateTime)
-      : now;
+  const firstEventParts = block.events[0] ? parsePacificDate(block.events[0].startDateTime) : null;
+  const initialYear = hasCurrentMonthEvents ? now.getFullYear() : (firstEventParts?.year ?? now.getFullYear());
+  const initialMonth = hasCurrentMonthEvents ? now.getMonth() : (firstEventParts?.month ?? now.getMonth());
 
-  const [currentYear, setCurrentYear] = useState(initialDate.getFullYear());
-  const [currentMonth, setCurrentMonth] = useState(initialDate.getMonth());
+  const [currentYear, setCurrentYear] = useState(initialYear);
+  const [currentMonth, setCurrentMonth] = useState(initialMonth);
   const [selectedDay, setSelectedDay] = useState<number | null>(null);
 
   function handlePrevMonth(): void {
@@ -76,14 +75,13 @@ export function EventsPreview({
   const firstDayOfWeek = new Date(currentYear, currentMonth, 1).getDay();
   const totalDaysInMonth = new Date(currentYear, currentMonth + 1, 0).getDate();
 
-  // Map dates to events for current viewed month
+  // Map dates to events for current viewed month strictly using Pacific calendar date
   const eventsByDay = new Map<number, EventItem[]>();
   block.events.forEach((evt) => {
-    const d = new Date(evt.startDateTime);
-    if (d.getFullYear() === currentYear && d.getMonth() === currentMonth) {
-      const day = d.getDate();
-      const existing = eventsByDay.get(day) || [];
-      eventsByDay.set(day, [...existing, evt]);
+    const parts = parsePacificDate(evt.startDateTime);
+    if (parts.year === currentYear && parts.month === currentMonth) {
+      const existing = eventsByDay.get(parts.day) || [];
+      eventsByDay.set(parts.day, [...existing, evt]);
     }
   });
 
@@ -93,8 +91,8 @@ export function EventsPreview({
 
   // Filter events if a specific day is clicked, otherwise show all events for this month or full lineup
   const monthEvents = block.events.filter((evt) => {
-    const d = new Date(evt.startDateTime);
-    return d.getFullYear() === currentYear && d.getMonth() === currentMonth;
+    const parts = parsePacificDate(evt.startDateTime);
+    return parts.year === currentYear && parts.month === currentMonth;
   });
 
   const displayedEvents =

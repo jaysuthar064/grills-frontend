@@ -50,6 +50,43 @@ export function formatEventTime(iso: string): string {
   return timeFormat.format(new Date(iso));
 }
 
+/**
+ * Safely parses the event's calendar date parts (year, 0-indexed month, day)
+ * directly from the Pacific ISO string (e.g. "2026-10-30T19:00:00-07:00")
+ * without being shifted by the visitor's local system timezone.
+ */
+export function parsePacificDate(iso: string): {
+  year: number;
+  month: number;
+  day: number;
+  monthName: string;
+} {
+  const match = iso.match(/^(\d{4})-(\d{2})-(\d{2})/);
+  if (match && match[1] && match[2] && match[3]) {
+    const year = parseInt(match[1], 10);
+    const month = parseInt(match[2], 10) - 1; // 0-indexed month (0 = Jan, 9 = Oct, 10 = Nov, 11 = Dec)
+    const day = parseInt(match[3], 10);
+    const monthNames = [
+      'January', 'February', 'March', 'April', 'May', 'June',
+      'July', 'August', 'September', 'October', 'November', 'December',
+    ];
+    return {
+      year,
+      month,
+      day,
+      monthName: monthNames[month] || '',
+    };
+  }
+
+  const d = new Date(iso);
+  return {
+    year: d.getUTCFullYear(),
+    month: d.getUTCMonth(),
+    day: d.getUTCDate(),
+    monthName: d.toLocaleString('en-US', { month: 'long', timeZone: 'UTC' }),
+  };
+}
+
 const DAY_PLURAL = {
   monday: 'Mondays',
   tuesday: 'Tuesdays',

@@ -7,6 +7,7 @@ import { AnimatedReveal } from '@/components/primitives/animated-reveal';
 import { Heading } from '@/components/primitives/heading';
 import { LinkButton } from '@/components/primitives/link-button';
 import { Text } from '@/components/primitives/text';
+import { parsePacificDate } from '@/lib/datetime';
 import type { EventItem } from '@/types/api';
 
 /*
@@ -35,15 +36,15 @@ export function EventList({
   const groupMap = new Map<string, EventItem[]>();
 
   events.forEach((evt) => {
-    const d = new Date(evt.startDateTime);
-    const monthKey = `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}`;
+    const parts = parsePacificDate(evt.startDateTime);
+    const monthKey = `${parts.year}-${String(parts.month + 1).padStart(2, '0')}`;
     const existing = groupMap.get(monthKey);
     if (existing) {
       existing.push(evt);
     } else {
       const arr = [evt];
       groupMap.set(monthKey, arr);
-      const monthTitle = d.toLocaleString('en-US', { month: 'long', year: 'numeric' });
+      const monthTitle = `${parts.monthName} ${parts.year}`;
       groups.push({ monthKey, monthTitle, events: arr });
     }
   });

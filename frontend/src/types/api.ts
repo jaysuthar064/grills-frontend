@@ -90,17 +90,17 @@ export interface EventItem {
   slug: string;
   title: string;
   summary: string;
-  descriptionHtml?: string;
+  descriptionHtml?: string | undefined;
   startDateTime: string;
   endDateTime: string;
   eventType: EventType;
-  performerName?: string;
-  performerUrl?: string;
+  performerName?: string | undefined;
+  performerUrl?: string | undefined;
   isTicketed: boolean;
-  ticketUrl?: string;
-  coverCharge?: number;
+  ticketUrl?: string | undefined;
+  coverCharge?: number | undefined;
   isRecurringInstance: boolean;
-  image?: ImageObject;
+  image?: ImageObject | undefined;
   seo: SeoFields;
 }
 
