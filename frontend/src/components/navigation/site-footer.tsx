@@ -119,10 +119,10 @@ export function SiteFooter({ global }: SiteFooterProps): ReactNode {
               {location.phone}
             </a>
             <a
-              href={`mailto:${location.email || 'bbq101catering@yahoo.com'}`}
+              href="mailto:bbq101catering@yahoo.com"
               className="font-body text-body-sm text-ink-inverse-muted hover:text-ink-inverse transition-colors"
             >
-              {location.email || 'bbq101catering@yahoo.com'}
+              bbq101catering@yahoo.com
             </a>
             {hoursSummary ? (
               <Text tone="inverse-muted" size="body-sm">

@@ -54,10 +54,10 @@ export function LocationCard({
           {location.phone}
         </a>
         <a
-          href={`mailto:${location.email || 'bbq101catering@yahoo.com'}`}
+          href="mailto:bbq101catering@yahoo.com"
           className="font-body font-semibold text-brand-primary transition-colors hover:underline"
         >
-          {location.email || 'bbq101catering@yahoo.com'}
+          bbq101catering@yahoo.com
         </a>
       </div>
 

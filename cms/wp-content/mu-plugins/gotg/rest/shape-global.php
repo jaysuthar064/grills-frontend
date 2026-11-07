@@ -232,6 +232,11 @@ function gotg_shape_location( WP_Post $post ) {
 		}
 	}
 
+	// Always ensure public email is the official catering/info address
+	if ( empty( $location['email'] ) || false !== strpos( $location['email'], '.test' ) ) {
+		$location['email'] = 'bbq101catering@yahoo.com';
+	}
+
 	return $location;
 }
 

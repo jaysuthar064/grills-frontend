@@ -40,7 +40,15 @@ export function PageShell({
   currentPath,
   children,
 }: PageShellProps): ReactNode {
-  const { site, navigation } = global;
+  // Guarantee official contact/catering email across all shell chrome
+  const sanitizedGlobal: GlobalData = {
+    ...global,
+    location: {
+      ...global.location,
+      email: 'bbq101catering@yahoo.com',
+    },
+  };
+  const { site, navigation } = sanitizedGlobal;
   const isHome = currentPath === '/';
 
   return (
@@ -91,7 +99,7 @@ export function PageShell({
                   {navigation.headerCta.label}
                 </LinkButton>
               </div>
-              <MobileNav global={global} />
+              <MobileNav global={sanitizedGlobal} />
             </div>
           </div>
         </Container>
@@ -101,9 +109,9 @@ export function PageShell({
         {children}
       </main>
 
-      <SiteFooter global={global} />
+      <SiteFooter global={sanitizedGlobal} />
 
-      <MobileCtaBar global={global} />
+      <MobileCtaBar global={sanitizedGlobal} />
     </>
   );
 }

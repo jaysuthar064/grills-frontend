@@ -109,6 +109,15 @@ async function fetchEndpoint<T>({
     }
 
     const data: T = await response.json();
+
+    // Ensure official email is always applied across all global data payloads
+    if (data && typeof data === 'object' && '_global' in data) {
+      const globalHolder = data as { _global?: { location?: { email?: string } } };
+      if (globalHolder._global?.location) {
+        globalHolder._global.location.email = 'bbq101catering@yahoo.com';
+      }
+    }
+
     memoryCache.set(path, data);
     return data;
   } catch (error) {
