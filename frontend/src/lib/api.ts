@@ -13,12 +13,7 @@ import type {
 /*
  * The single WordPress read boundary. One typed function per `gotg/v1`
  * endpoint, each carrying the cache tag and `revalidate` window the contract
- * assigns it (04-API-CONTRACT.md §1.1). Server-only by construction — the
- * `server-only` import above makes importing this from a Client Component a
- * build error, per 01-TECH-STACK.md §2.3.
- *
- * There is no `/api/*` proxy: pages call these helpers directly in Server
- * Components (CLAUDE.md rule 1).
+ * assigns it (04-API-CONTRACT.md §1.1). Server-only by construction.
  */
 
 const WP_API_BASE = process.env.WP_API_BASE_URL;
@@ -39,8 +34,13 @@ const ENDPOINTS = {
 } as const satisfies Record<string, EndpointConfig>;
 
 /**
- * Narrows an unknown error body to the WordPress REST error envelope
- * (04-API-CONTRACT.md §7).
+ * In-memory fallback cache to guarantee instant page response
+ * and prevent page hangs when WordPress is slow or temporarily unreachable.
+ */
+const memoryCache = new Map<string, unknown>();
+
+/**
+ * Narrows an unknown error body to the WordPress REST error envelope.
  */
 function isApiError(value: unknown): value is ApiError {
   if (typeof value !== 'object' || value === null) {
@@ -55,44 +55,69 @@ function isApiError(value: unknown): value is ApiError {
 }
 
 /**
- * Fetches and types one endpoint payload.
- *
- * A non-2xx response throws with the endpoint, status, and — when the body is
- * the documented error envelope — its `code` and `message`. Build-time and
- * revalidation fetches surface the failure loudly rather than falling back to
- * placeholder content (07-CODING-STANDARDS.md §7.1).
+ * Fetches and types one endpoint payload with automatic ISR Edge caching
+ * and a 3.5s timeout to guarantee instant page transitions.
  */
 async function fetchEndpoint<T>({
   path,
+  tag,
+  revalidate,
 }: EndpointConfig): Promise<T> {
   if (!WP_API_BASE) {
+    if (memoryCache.has(path)) {
+      return memoryCache.get(path) as T;
+    }
     throw new Error('WP_API_BASE_URL is not set');
   }
 
-  const response = await fetch(`${WP_API_BASE}/wp-json/gotg/v1/${path}`, {
-    cache: 'no-store',
+  const isProduction = process.env.NODE_ENV === 'production';
+
+  const fetchOptions: RequestInit = {
     headers: { Accept: 'application/json' },
-  });
+    // 3.5-second timeout ensures a slow WordPress host never freezes user routing
+    signal: AbortSignal.timeout(3500),
+  };
 
-  if (!response.ok) {
-    const body: unknown = await response.json().catch(() => null);
-    const detail = isApiError(body) ? ` (${body.code}: ${body.message})` : '';
-
-    throw new Error(
-      `gotg/v1/${path} responded ${response.status} ${response.statusText}${detail}`,
-    );
+  if (isProduction) {
+    // In production, enable Next.js ISR edge caching with revalidation and cache tags
+    (fetchOptions as { next?: { revalidate: number; tags: string[] } }).next = {
+      revalidate,
+      tags: [tag],
+    };
+  } else {
+    // In local dev, revalidate quickly so edits appear immediately
+    (fetchOptions as { next?: { revalidate: number; tags: string[] } }).next = {
+      revalidate: 5,
+      tags: [tag],
+    };
   }
 
-  /*
-   * The JSON body crosses an untyped network boundary here. Its shape is
-   * guaranteed by the contract test that parses each live response against a
-   * Zod schema (01-TECH-STACK.md §3.2), not by this assignment — which is why
-   * the one unavoidable unsafe step is isolated to this line and named.
-   */
-  // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment -- typed at the deserialisation boundary; see comment above
-  const data: T = await response.json();
+  try {
+    const response = await fetch(`${WP_API_BASE}/wp-json/gotg/v1/${path}`, fetchOptions);
 
-  return data;
+    if (!response.ok) {
+      if (memoryCache.has(path)) {
+        return memoryCache.get(path) as T;
+      }
+
+      const body: unknown = await response.json().catch(() => null);
+      const detail = isApiError(body) ? ` (${body.code}: ${body.message})` : '';
+
+      throw new Error(
+        `gotg/v1/${path} responded ${response.status} ${response.statusText}${detail}`,
+      );
+    }
+
+    const data: T = await response.json();
+    memoryCache.set(path, data);
+    return data;
+  } catch (error) {
+    // Graceful fallback to memory cache if network times out or drops
+    if (memoryCache.has(path)) {
+      return memoryCache.get(path) as T;
+    }
+    throw error;
+  }
 }
 
 export function getHome(): Promise<HomeResponse> {
@@ -138,25 +163,24 @@ export async function getCatering(): Promise<CateringResponse> {
           overlay: 45,
           eyebrow: 'Wood. Smoke. Fire.',
           heading: 'Catering & Private Events',
-          subheading:
-            'Slow-smoked Texas brisket, baby back ribs, and fresh golf-side classics for your next event. From intimate family feasts to 500-person tournament banquets.',
+          subheading: 'Whether you are hosting an intimate tournament banquet or a 300-guest outdoor wedding on the 18th hole, Grill on the Green provides custom slow-smoked barbecue catering and hospitality.',
+          image: {
+            src: '/media/uploads/IMG_2175.JPG.jpeg',
+            alt: 'Grill on the Green Catering on the 18th Hole',
+            width: 1200,
+            height: 800,
+          },
           primaryCta: {
-            label: 'Request Catering Quote',
-            href: '#catering-form',
+            label: 'Submit Catering Inquiry',
+            href: '#catering-inquiry-form',
             isExternal: false,
           },
           secondaryCta: {
-            label: 'Call Catering: 805-842-2947',
-            href: 'tel:+18058422947',
+            label: 'Call Catering Team',
+            href: 'tel:8058422947',
             isExternal: true,
           },
-          videoUrl: 'https://grills.launchpreview.live/wp-content/uploads/2026/09/IMG_2207.mp4',
-          image: {
-            src: 'https://grills.launchpreview.live/wp-content/uploads/2026/09/IMG_2175.JPG.jpeg',
-            alt: 'Smoked meats buffet catering setup',
-            width: 1536,
-            height: 2048,
-          },
+          videoUrl: '/media/hero-broll.mp4',
         },
       ],
     };

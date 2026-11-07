@@ -11,7 +11,7 @@ import { getAbout } from '@/lib/api';
 import { getWpUploadUrl } from '@/lib/media';
 import { buildMetadata } from '@/lib/seo';
 
-export const dynamic = 'force-dynamic';
+export const revalidate = 60;
 
 export async function generateMetadata(): Promise<Metadata> {
   const about = await getAbout();

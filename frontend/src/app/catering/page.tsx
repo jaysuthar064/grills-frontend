@@ -15,7 +15,7 @@ import { getWpUploadUrl, normalizeMediaUrl, PUBLIC_WP_URL } from '@/lib/media';
 import { buildMetadata } from '@/lib/seo';
 import type { PageBlock } from '@/types/api';
 
-export const dynamic = 'force-dynamic';
+export const revalidate = 60;
 
 export async function generateMetadata(): Promise<Metadata> {
   const data = await getCatering();

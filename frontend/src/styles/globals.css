@@ -149,6 +149,19 @@ body {
   }
 }
 
+@keyframes gotg-shimmer {
+  0% {
+    transform: translateX(-100%);
+  }
+  100% {
+    transform: translateX(200%);
+  }
+}
+
+.animate-shimmer {
+  animation: gotg-shimmer 1.8s infinite linear;
+}
+
 /* The drawer and scrim mount already open, so the entrance is a keyframe
  * animation (a transform transition would have nothing to animate from). */
 .gotg-drawer {

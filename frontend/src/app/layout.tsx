@@ -1,6 +1,7 @@
 import type { Metadata, Viewport } from 'next';
-import type { ReactNode } from 'react';
+import { Suspense, type ReactNode } from 'react';
 
+import { NavigationProgress } from '@/components/navigation/navigation-progress';
 import '@/styles/globals.css';
 
 export const viewport: Viewport = {
@@ -50,7 +51,12 @@ export default function RootLayout({
           crossOrigin="anonymous"
         />
       </head>
-      <body>{children}</body>
+      <body>
+        <Suspense fallback={null}>
+          <NavigationProgress />
+        </Suspense>
+        {children}
+      </body>
     </html>
   );
 }

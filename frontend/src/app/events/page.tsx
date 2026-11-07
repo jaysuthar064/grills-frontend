@@ -19,7 +19,7 @@ import { getWpUploadUrl } from '@/lib/media';
 import { buildMetadata } from '@/lib/seo';
 import type { EventItem } from '@/types/api';
 
-export const dynamic = 'force-dynamic';
+export const revalidate = 60;
 
 export async function generateMetadata(): Promise<Metadata> {
   const events = await getEvents();

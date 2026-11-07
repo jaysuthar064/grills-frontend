@@ -11,7 +11,7 @@ import { SCHEDULED_BANDS } from '@/lib/band-schedule';
 import { buildMetadata } from '@/lib/seo';
 import type { EventsPreviewBlock, InstagramFeedBlock, PageBlock } from '@/types/api';
 
-export const dynamic = 'force-dynamic';
+export const revalidate = 60;
 
 export async function generateMetadata(): Promise<Metadata> {
   const home = await getHome();
