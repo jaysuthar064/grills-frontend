@@ -94,7 +94,7 @@ function gotg_seed_location() {
 			'_gotg_latitude'       => 34.263611,
 			'_gotg_longitude'      => -118.735278,
 			'_gotg_phone'          => '805-842-2947',
-			'_gotg_email'          => 'hello@grillonthegreen.test',
+			'_gotg_email'          => 'bbq101catering@yahoo.com',
 			'_gotg_directions_url' => 'https://maps.google.com/?cid=0000000000000000000',
 			'_gotg_parking_note'   => 'Free parking in the clubhouse lot. Enter from Alamo Street.',
 			'_gotg_timezone'       => 'America/Los_Angeles',
@@ -675,7 +675,7 @@ function gotg_seed_settings() {
 	$settings['legal_name']             = 'Grill on the Green LLC';
 	$settings['tagline']                = 'American classics & slow-smoked barbecue';
 	$settings['short_description']      = 'Slow-smoked barbecue and fairway dining on Simi Hills Golf Course. Breakfast, lunch, and dinner, seven days a week.';
-	$settings['form_recipient_email']   = 'hello@grillonthegreen.test';
+	$settings['form_recipient_email']   = 'bbq101catering@yahoo.com';
 	$settings['social_links']           = array(
 		array( 'platform' => 'instagram', 'url' => 'https://www.instagram.com/grillonthegreen_simi/', 'handle' => 'grillonthegreen_simi' ),
 	);

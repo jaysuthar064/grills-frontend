@@ -108,7 +108,7 @@ export async function submitCatering(
 
   // 2. Fallback to Resend if configured
   const apiKey = process.env.RESEND_API_KEY;
-  const to = process.env.CONTACT_FORM_TO;
+  const to = process.env.CONTACT_FORM_TO || 'bbq101catering@yahoo.com';
   const from = process.env.CONTACT_FORM_FROM;
 
   if (apiKey && to && from) {

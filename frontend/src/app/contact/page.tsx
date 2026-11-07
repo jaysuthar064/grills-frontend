@@ -29,6 +29,11 @@ export default async function ContactPage(): Promise<ReactNode> {
   const { _global, title } = contact;
   const { location, hours } = _global;
 
+  const contactLocation = {
+    ...location,
+    email: 'bbq101catering@yahoo.com',
+  };
+
   return (
     <PageShell global={_global} currentPath="/contact">
       <JsonLd data={contactJsonLd(_global)} />
@@ -52,7 +57,7 @@ export default async function ContactPage(): Promise<ReactNode> {
                     Find Us
                   </Heading>
                   <div className="rounded-2xl border border-border bg-surface-raised p-6 shadow-xs">
-                    <LocationCard location={location} hours={hours} />
+                    <LocationCard location={contactLocation} hours={hours} />
                   </div>
                 </div>
 
@@ -170,12 +175,12 @@ export default async function ContactPage(): Promise<ReactNode> {
 
                       <div className="flex flex-wrap items-center gap-2">
                         <LinkButton
-                          href="mailto:music@grillonthegreen.com?subject=Live%20Music%20Booking%20Inquiry%20-%20Grill%20on%20the%20Green"
+                          href="mailto:bbq101catering@yahoo.com?subject=Live%20Music%20Booking%20Inquiry%20-%20Grill%20on%20the%20Green"
                           variant="primary"
                           size="md"
                           isExternal
                         >
-                          Contact Emily
+                          Email: bbq101catering@yahoo.com
                         </LinkButton>
                         <LinkButton
                           href="tel:+18058422947"

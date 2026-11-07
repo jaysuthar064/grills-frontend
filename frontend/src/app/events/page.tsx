@@ -83,7 +83,7 @@ export default async function EventsPage(): Promise<ReactNode> {
               </p>
               <div className="flex flex-wrap justify-center gap-4 pt-2">
                 <LinkButton
-                  href="mailto:music@grillonthegreen.com?subject=Live%20Music%20Booking%20Inquiry%20-%20Grill%20on%20the%20Green"
+                  href="mailto:bbq101catering@yahoo.com?subject=Live%20Music%20Booking%20Inquiry%20-%20Grill%20on%20the%20Green"
                   variant="primary"
                   size="md"
                   isExternal

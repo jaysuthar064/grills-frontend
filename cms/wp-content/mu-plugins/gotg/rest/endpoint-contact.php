@@ -65,7 +65,7 @@ function gotg_rest_contact( WP_REST_Request $request ) {
 	$settings = gotg_get_site_settings();
 
 	// The form can only be enabled if submissions have somewhere to go.
-	$recipient = (string) ( $settings['form_recipient_email'] ?? '' );
+	$recipient = (string) ( $settings['form_recipient_email'] ?? 'bbq101catering@yahoo.com' );
 
 	$payload = $base['payload'];
 
@@ -111,7 +111,7 @@ function gotg_rest_submit_contact( WP_REST_Request $request ) {
 	$settings = gotg_get_site_settings();
 	$to = ! empty( $settings['form_recipient_email'] ) && is_email( $settings['form_recipient_email'] )
 		? $settings['form_recipient_email']
-		: get_option( 'admin_email' );
+		: 'bbq101catering@yahoo.com';
 
 	$site_name = get_bloginfo( 'name' );
 	if ( empty( $site_name ) ) {
@@ -184,7 +184,7 @@ function gotg_rest_submit_catering( WP_REST_Request $request ) {
 	$settings = gotg_get_site_settings();
 	$to = ! empty( $settings['form_recipient_email'] ) && is_email( $settings['form_recipient_email'] )
 		? $settings['form_recipient_email']
-		: get_option( 'admin_email' );
+		: 'bbq101catering@yahoo.com';
 
 	$site_name = get_bloginfo( 'name' );
 	if ( empty( $site_name ) ) {

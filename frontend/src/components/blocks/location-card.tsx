@@ -46,21 +46,19 @@ export function LocationCard({
         </Text>
       </div>
 
-      <div className="flex flex-col gap-1">
+      <div className="flex flex-col gap-1.5 pt-1">
         <a
           href={location.phoneHref}
           className="font-body font-semibold text-ink transition-colors hover:text-brand"
         >
           {location.phone}
         </a>
-        {location.email !== undefined ? (
-          <a
-            href={`mailto:${location.email}`}
-            className="font-body text-ink transition-colors hover:text-brand"
-          >
-            {location.email}
-          </a>
-        ) : null}
+        <a
+          href={`mailto:${location.email || 'bbq101catering@yahoo.com'}`}
+          className="font-body font-semibold text-brand-primary transition-colors hover:underline"
+        >
+          {location.email || 'bbq101catering@yahoo.com'}
+        </a>
       </div>
 
       {variant === 'full' && location.parkingNote !== undefined ? (
