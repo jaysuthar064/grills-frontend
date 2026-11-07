@@ -4,6 +4,7 @@ import type { ReactNode } from 'react';
 import { HoursTable } from '@/components/blocks/hours-table';
 import { LocationCard } from '@/components/blocks/location-card';
 import { MapEmbed } from '@/components/blocks/map-embed';
+import { ContactForm } from '@/components/form/contact-form';
 import { Container } from '@/components/layout/container';
 import { PageHeader } from '@/components/blocks/page-header';
 import { PageShell } from '@/components/layout/page-shell';
@@ -26,13 +27,23 @@ export async function generateMetadata(): Promise<Metadata> {
 
 export default async function ContactPage(): Promise<ReactNode> {
   const contact = await getContact();
-  const { _global, title } = contact;
+  const { _global, title, formSubjects } = contact;
   const { location, hours } = _global;
 
   const contactLocation = {
     ...location,
     email: 'bbq101catering@yahoo.com',
   };
+
+  const subjects =
+    formSubjects && formSubjects.length > 0
+      ? formSubjects
+      : [
+          'General inquiry',
+          'Live music / performer booking',
+          'Private event / catering',
+          'Feedback',
+        ];
 
   return (
     <PageShell global={_global} currentPath="/contact">
@@ -189,6 +200,13 @@ export default async function ContactPage(): Promise<ReactNode> {
                         >
                           Call: 805-842-2947
                         </LinkButton>
+                        <LinkButton
+                          href="#contact-form-section"
+                          variant="ghost"
+                          size="md"
+                        >
+                          Send Message ↓
+                        </LinkButton>
                       </div>
                     </div>
                   </div>
@@ -198,6 +216,37 @@ export default async function ContactPage(): Promise<ReactNode> {
           </div>
         </Container>
       </Section>
+
+      {/* Interactive Contact & Musician Booking Form Section */}
+      <section
+        id="contact-form-section"
+        className="border-t border-border bg-surface-raised py-12 md:py-16 scroll-mt-20"
+      >
+        <Container width="narrow">
+          <AnimatedReveal>
+            <div id="booking-form" className="scroll-mt-24 flex flex-col gap-6">
+              <div className="text-center flex flex-col items-center gap-2">
+                <span className="text-overline uppercase tracking-widest text-brand-primary font-bold">
+                  Send a Message
+                </span>
+                <Heading level={2} visualLevel="h2">
+                  Contact Us &amp; Booking Inquiries
+                </Heading>
+                <p className="text-body text-ink-muted max-w-lg leading-relaxed">
+                  Have a question about our fairway dining, weekend live music lineup, or interested in performing at Grill on the Green? Drop us a note below and our team will get back to you promptly.
+                </p>
+              </div>
+
+              <div className="rounded-2xl border border-border bg-surface p-6 sm:p-8 shadow-sm">
+                <ContactForm
+                  subjects={subjects}
+                  recipientLabel="Emily & Team (bbq101catering@yahoo.com)"
+                />
+              </div>
+            </div>
+          </AnimatedReveal>
+        </Container>
+      </section>
     </PageShell>
   );
 }

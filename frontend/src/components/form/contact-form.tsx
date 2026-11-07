@@ -27,6 +27,7 @@ import { FormSuccess } from './form-success';
 export interface ContactFormProps {
   subjects: string[];
   recipientLabel?: string;
+  defaultSubject?: string;
 }
 
 const CONTROL_MIN_HEIGHT: CSSProperties = {
@@ -91,13 +92,29 @@ function computeErrors(
 export function ContactForm({
   subjects,
   recipientLabel,
+  defaultSubject,
 }: ContactFormProps): ReactNode {
   const [result, formAction, isPending] = useActionState(submitContact, null);
   const [clientErrors, setClientErrors] = useState<Record<string, string>>({});
   const [failedFields, setFailedFields] = useState<Set<string>>(new Set());
   const [submitAttempt, setSubmitAttempt] = useState(0);
   const [message, setMessage] = useState('');
+  const [selectedSubject, setSelectedSubject] = useState(defaultSubject ?? '');
   const [startedAt] = useState(() => Date.now());
+
+  useEffect(() => {
+    if (typeof window !== 'undefined') {
+      const hash = window.location.hash.toLowerCase();
+      if (hash.includes('booking')) {
+        const bookingSubj = subjects.find(
+          (s) => s.toLowerCase().includes('music') || s.toLowerCase().includes('booking'),
+        );
+        if (bookingSubj) {
+          setSelectedSubject(bookingSubj);
+        }
+      }
+    }
+  }, [subjects]);
 
   const formRef = useRef<HTMLFormElement>(null);
   const summaryRef = useRef<HTMLDivElement>(null);
@@ -264,7 +281,11 @@ export function ContactForm({
         <Select
           name="subject"
           options={subjectOptions}
-          defaultValue=""
+          value={selectedSubject}
+          onChange={(event) => {
+            setSelectedSubject(event.target.value);
+            revalidate('subject');
+          }}
           required
           disabled={isPending}
           hasError={errors.subject !== undefined}

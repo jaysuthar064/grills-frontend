@@ -38,6 +38,16 @@ function locationQuery(location: Location): string {
   ].join(', ');
 }
 
+const OFFICIAL_DIRECTIONS_URL =
+  'https://www.google.com/maps/dir/?api=1&destination=Grill+on+the+Green,+5031+Alamo+St,+Simi+Valley,+CA+93063';
+
+function resolvedDirectionsUrl(url?: string): string {
+  if (!url || url.includes('cid=0000000000000000000')) {
+    return OFFICIAL_DIRECTIONS_URL;
+  }
+  return url;
+}
+
 function AddressLine({ location }: { location: Location }): ReactNode {
   return (
     <div className="flex flex-wrap items-baseline justify-between gap-x-4 gap-y-1">
@@ -46,7 +56,7 @@ function AddressLine({ location }: { location: Location }): ReactNode {
         {location.postalCode}
       </Text>
       <a
-        href={location.directionsUrl}
+        href={resolvedDirectionsUrl(location.directionsUrl)}
         target="_blank"
         rel="noopener noreferrer"
         className="font-body text-body-sm text-brand font-semibold underline"
@@ -61,6 +71,8 @@ export function MapEmbed({
   location,
   variant = 'static',
 }: MapEmbedProps): ReactNode {
+  const directionsUrl = resolvedDirectionsUrl(location.directionsUrl);
+
   if (variant === 'interactive') {
     const src = `https://maps.google.com/maps?q=${encodeURIComponent(
       locationQuery(location),
@@ -87,7 +99,7 @@ export function MapEmbed({
 
   return (
     <a
-      href={location.directionsUrl}
+      href={directionsUrl}
       target="_blank"
       rel="noopener noreferrer"
       aria-label={accessibleName}

@@ -27,6 +27,11 @@ export function LocationCard({
 }: LocationCardProps): ReactNode {
   const cityLine = `${location.city}, ${location.state} ${location.postalCode}`;
 
+  const directionsUrl =
+    !location.directionsUrl || location.directionsUrl.includes('cid=0000000000000000000')
+      ? 'https://www.google.com/maps/dir/?api=1&destination=Grill+on+the+Green,+5031+Alamo+St,+Simi+Valley,+CA+93063'
+      : location.directionsUrl;
+
   return (
     <address className="flex flex-col gap-4 not-italic">
       <div className="flex flex-col gap-1">
@@ -69,7 +74,7 @@ export function LocationCard({
 
       <div>
         <LinkButton
-          href={location.directionsUrl}
+          href={directionsUrl}
           variant="secondary"
           size="md"
           isExternal

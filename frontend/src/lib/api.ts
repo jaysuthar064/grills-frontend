@@ -110,11 +110,25 @@ async function fetchEndpoint<T>({
 
     const data: T = await response.json();
 
-    // Ensure official email is always applied across all global data payloads
+    // Ensure official email and Google Maps directions URL are always applied
     if (data && typeof data === 'object' && '_global' in data) {
-      const globalHolder = data as { _global?: { location?: { email?: string } } };
+      const globalHolder = data as {
+        _global?: {
+          location?: {
+            email?: string;
+            directionsUrl?: string;
+          };
+        };
+      };
       if (globalHolder._global?.location) {
         globalHolder._global.location.email = 'bbq101catering@yahoo.com';
+        if (
+          !globalHolder._global.location.directionsUrl ||
+          globalHolder._global.location.directionsUrl.includes('cid=0000000000000000000')
+        ) {
+          globalHolder._global.location.directionsUrl =
+            'https://www.google.com/maps/dir/?api=1&destination=Grill+on+the+Green,+5031+Alamo+St,+Simi+Valley,+CA+93063';
+        }
       }
     }
 

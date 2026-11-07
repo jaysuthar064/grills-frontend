@@ -196,6 +196,7 @@ export default async function CateringPage(): Promise<ReactNode> {
         </Section>
 
         {/* Catering Request Form Section */}
+        <div id="catering-inquiry-form" className="scroll-mt-24" />
         <Section id="catering-form" tone="sunken">
           <Container>
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-start">

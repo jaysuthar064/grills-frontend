@@ -40,12 +40,16 @@ export function PageShell({
   currentPath,
   children,
 }: PageShellProps): ReactNode {
-  // Guarantee official contact/catering email across all shell chrome
+  // Guarantee official contact/catering email and Google Maps directions across all shell chrome
   const sanitizedGlobal: GlobalData = {
     ...global,
     location: {
       ...global.location,
       email: 'bbq101catering@yahoo.com',
+      directionsUrl:
+        !global.location.directionsUrl || global.location.directionsUrl.includes('cid=0000000000000000000')
+          ? 'https://www.google.com/maps/dir/?api=1&destination=Grill+on+the+Green,+5031+Alamo+St,+Simi+Valley,+CA+93063'
+          : global.location.directionsUrl,
     },
   };
   const { site, navigation } = sanitizedGlobal;

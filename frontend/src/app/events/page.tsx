@@ -83,16 +83,44 @@ export default async function EventsPage(): Promise<ReactNode> {
               <p className="text-body text-ink-muted max-w-lg leading-relaxed">
                 We host live music on our fairway patio every Friday and Saturday evening from 7:00 PM to 10:00 PM. We are always looking for great acoustic acts, country duos, and classic rock bands.
               </p>
-              <div className="flex flex-wrap justify-center gap-4 pt-2">
+              {/* Booking Coordinator Contact Card */}
+              <div className="w-full max-w-lg rounded-2xl bg-surface-raised border border-border/80 p-5 my-2 flex flex-col sm:flex-row items-center justify-between gap-4 text-left shadow-xs">
+                <div>
+                  <span className="text-[11px] font-bold uppercase tracking-wider text-brand-primary block">
+                    Music &amp; Performance Booking Coordinator
+                  </span>
+                  <span className="font-display font-bold text-ink text-h4 block mt-0.5">
+                    Emily Leonard
+                  </span>
+                  <a
+                    href="mailto:bbq101catering@yahoo.com?subject=Live%20Music%20Booking%20Inquiry%20-%20Grill%20on%20the%20Green"
+                    className="text-body-sm font-semibold text-brand-primary hover:underline inline-flex items-center gap-1.5 mt-1"
+                  >
+                    <span>✉</span>
+                    <span>bbq101catering@yahoo.com</span>
+                  </a>
+                </div>
+                <div className="shrink-0">
+                  <a
+                    href="tel:8058422947"
+                    className="inline-flex items-center gap-2 px-4 py-2 rounded-xl border border-border bg-surface text-ink text-body-sm font-bold hover:border-brand-primary hover:text-brand-primary transition-all hover:scale-[1.02]"
+                  >
+                    <span>📞</span>
+                    <span>805-842-2947</span>
+                  </a>
+                </div>
+              </div>
+
+              <div className="flex flex-wrap justify-center gap-3 pt-2">
                 <LinkButton
                   href="mailto:bbq101catering@yahoo.com?subject=Live%20Music%20Booking%20Inquiry%20-%20Grill%20on%20the%20Green"
                   variant="primary"
                   size="md"
                   isExternal
                 >
-                  Contact Emily for Booking
+                  Email Emily: bbq101catering@yahoo.com
                 </LinkButton>
-                <LinkButton href="/contact#contact-form-section" variant="secondary" size="md">
+                <LinkButton href="/contact#booking-form" variant="secondary" size="md">
                   Send Booking Message
                 </LinkButton>
               </div>

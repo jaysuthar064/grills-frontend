@@ -112,7 +112,9 @@ export interface SelectOption {
 export interface SelectProps {
   name: string;
   options: SelectOption[];
+  value?: string;
   defaultValue?: string;
+  onChange?: (e: React.ChangeEvent<HTMLSelectElement>) => void;
   hasError?: boolean;
   required?: boolean;
   disabled?: boolean;
@@ -124,6 +126,7 @@ export interface SelectProps {
 export function Select({
   name,
   options,
+  value,
   defaultValue,
   hasError = false,
   ...rest
@@ -131,6 +134,7 @@ export function Select({
   return (
     <select
       name={name}
+      value={value}
       defaultValue={defaultValue}
       className={controlClasses(hasError)}
       style={CONTROL_MIN_HEIGHT}

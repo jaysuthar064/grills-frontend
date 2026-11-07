@@ -55,6 +55,10 @@ export function SiteFooter({ global }: SiteFooterProps): ReactNode {
   const { site, navigation, location, hours, social } = global;
   const year = new Date().getFullYear();
   const hoursSummary = uniformHours(hours.regular);
+  const directionsUrl =
+    !location.directionsUrl || location.directionsUrl.includes('cid=0000000000000000000')
+      ? 'https://www.google.com/maps/dir/?api=1&destination=Grill+on+the+Green,+5031+Alamo+St,+Simi+Valley,+CA+93063'
+      : location.directionsUrl;
 
   return (
     <footer className="bg-surface-inverse text-ink-inverse border-t-2 border-brand-primary">
@@ -130,7 +134,7 @@ export function SiteFooter({ global }: SiteFooterProps): ReactNode {
               </Text>
             ) : null}
             <a
-              href={location.directionsUrl}
+              href={directionsUrl}
               target="_blank"
               rel="noopener noreferrer"
               className="font-body text-body-sm text-ink-inverse-muted hover:text-ink-inverse transition-colors"

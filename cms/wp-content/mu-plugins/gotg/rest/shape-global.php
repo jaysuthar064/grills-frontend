@@ -204,6 +204,11 @@ function gotg_shape_seo_fields( WP_Post $post, array $seo_defaults, $description
 function gotg_shape_location( WP_Post $post ) {
 	$phone = (string) get_post_meta( $post->ID, '_gotg_phone', true );
 
+	$directions_url = (string) get_post_meta( $post->ID, '_gotg_directions_url', true );
+	if ( empty( $directions_url ) || false !== strpos( $directions_url, 'cid=0000000000000000000' ) ) {
+		$directions_url = 'https://www.google.com/maps/dir/?api=1&destination=Grill+on+the+Green,+5031+Alamo+St,+Simi+Valley,+CA+93063';
+	}
+
 	$location = array(
 		'name'          => gotg_decode_text( get_the_title( $post ) ),
 		'streetAddress' => gotg_decode_text( get_post_meta( $post->ID, '_gotg_street_address', true ) ),
@@ -215,7 +220,7 @@ function gotg_shape_location( WP_Post $post ) {
 		'longitude'     => (float) get_post_meta( $post->ID, '_gotg_longitude', true ),
 		'phone'         => gotg_decode_text( $phone ),
 		'phoneHref'     => gotg_shape_phone_href( $phone ),
-		'directionsUrl' => (string) get_post_meta( $post->ID, '_gotg_directions_url', true ),
+		'directionsUrl' => $directions_url,
 	);
 
 	$optional = array(
