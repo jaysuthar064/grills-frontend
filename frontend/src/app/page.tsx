@@ -7,8 +7,9 @@ import { JsonLd } from '@/components/seo/json-ld';
 import { getHome } from '@/lib/api';
 import { homeJsonLd } from '@/lib/json-ld';
 import { getWpUploadUrl, normalizeMediaUrl } from '@/lib/media';
+import { SCHEDULED_BANDS } from '@/lib/band-schedule';
 import { buildMetadata } from '@/lib/seo';
-import type { InstagramFeedBlock, PageBlock } from '@/types/api';
+import type { EventsPreviewBlock, InstagramFeedBlock, PageBlock } from '@/types/api';
 
 export const dynamic = 'force-dynamic';
 
@@ -183,8 +184,34 @@ export default async function HomePage(): Promise<ReactNode> {
           },
         };
       }
+      if (block.type === 'events_preview') {
+        return {
+          ...block,
+          events: block.events && block.events.length > 0 ? block.events : SCHEDULED_BANDS.slice(0, 6),
+        };
+      }
       return block;
     });
+
+  // Guarantee the Live Music & Events preview is present on the homepage before Instagram
+  if (!enhancedBlocks.some((b) => b.type === 'events_preview')) {
+    const fallbackEvents: EventsPreviewBlock = {
+      type: 'events_preview',
+      heading: "Live Music on the Fairway Patio",
+      events: SCHEDULED_BANDS.slice(0, 6),
+      cta: {
+        label: 'View Full Calendar & Band Lineup',
+        href: '/events',
+        isExternal: false,
+      },
+    };
+    const igIndex = enhancedBlocks.findIndex((b) => b.type === 'instagram_feed');
+    if (igIndex !== -1) {
+      enhancedBlocks.splice(igIndex, 0, fallbackEvents);
+    } else {
+      enhancedBlocks.push(fallbackEvents);
+    }
+  }
 
   // Guarantee the Instagram feed is present on the homepage
   if (!enhancedBlocks.some((b) => b.type === 'instagram_feed')) {

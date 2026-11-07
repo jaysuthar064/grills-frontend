@@ -144,3 +144,4 @@ export async function submitCatering(
 
   return { status: 'error', message: CATERING_FALLBACK };
 }
+

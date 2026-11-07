@@ -36,10 +36,17 @@ export function EventsPreview({
 
   const headingId = slugId('events', block.heading || 'upcoming');
 
-  // Use the date of the first event as default initial month, falling back to current date.
-  const initialDate = block.events[0]
-    ? new Date(block.events[0].startDateTime)
-    : new Date();
+  // Smart initial date: if events exist in current month, pick current month; otherwise first event
+  const now = new Date();
+  const hasCurrentMonthEvents = block.events.some((evt) => {
+    const d = new Date(evt.startDateTime);
+    return d.getFullYear() === now.getFullYear() && d.getMonth() === now.getMonth();
+  });
+  const initialDate = hasCurrentMonthEvents
+    ? now
+    : block.events[0]
+      ? new Date(block.events[0].startDateTime)
+      : now;
 
   const [currentYear, setCurrentYear] = useState(initialDate.getFullYear());
   const [currentMonth, setCurrentMonth] = useState(initialDate.getMonth());
