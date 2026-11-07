@@ -48,6 +48,28 @@ function gotg_register_rest_routes() {
 			)
 		);
 	}
+
+	// Contact Form Submission endpoint (triggers wp_mail -> FluentSMTP)
+	register_rest_route(
+		'gotg/v1',
+		'/submit-contact',
+		array(
+			'methods'             => WP_REST_Server::CREATABLE,
+			'callback'            => 'gotg_rest_submit_contact',
+			'permission_callback' => '__return_true',
+		)
+	);
+
+	// Catering Form Submission endpoint (triggers wp_mail -> FluentSMTP)
+	register_rest_route(
+		'gotg/v1',
+		'/submit-catering',
+		array(
+			'methods'             => WP_REST_Server::CREATABLE,
+			'callback'            => 'gotg_rest_submit_catering',
+			'permission_callback' => '__return_true',
+		)
+	);
 }
 add_action( 'rest_api_init', 'gotg_register_rest_routes' );
 

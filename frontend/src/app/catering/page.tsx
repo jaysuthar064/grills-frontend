@@ -1,6 +1,7 @@
 import type { Metadata } from 'next';
 import type { ReactNode } from 'react';
 
+import { CateringForm } from '@/components/form/catering-form';
 import { Container } from '@/components/layout/container';
 import { PageShell } from '@/components/layout/page-shell';
 import { Section } from '@/components/layout/section';
@@ -245,125 +246,7 @@ export default async function CateringPage(): Promise<ReactNode> {
 
               {/* Form */}
               <AnimatedReveal delay={0.2}>
-                <div className="bg-surface-raised rounded-2xl p-8 border border-border shadow-md">
-                  <form className="flex flex-col gap-5" action="#" method="POST">
-                    <Heading level={3} visualLevel="h3">
-                      Catering Inquiry Form
-                    </Heading>
-
-                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                      <div className="flex flex-col gap-1">
-                        <label htmlFor="name" className="text-body-sm font-semibold text-ink">
-                          Your Name *
-                        </label>
-                        <input
-                          type="text"
-                          id="name"
-                          required
-                          placeholder="John Doe"
-                          className="w-full px-4 py-3 rounded-lg border border-border bg-surface focus:outline-none focus:ring-2 focus:ring-brand-primary"
-                        />
-                      </div>
-
-                      <div className="flex flex-col gap-1">
-                        <label htmlFor="phone" className="text-body-sm font-semibold text-ink">
-                          Phone Number *
-                        </label>
-                        <input
-                          type="tel"
-                          id="phone"
-                          required
-                          placeholder="805-000-0000"
-                          className="w-full px-4 py-3 rounded-lg border border-border bg-surface focus:outline-none focus:ring-2 focus:ring-brand-primary"
-                        />
-                      </div>
-                    </div>
-
-                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                      <div className="flex flex-col gap-1">
-                        <label htmlFor="email" className="text-body-sm font-semibold text-ink">
-                          Email Address *
-                        </label>
-                        <input
-                          type="email"
-                          id="email"
-                          required
-                          placeholder="john@example.com"
-                          className="w-full px-4 py-3 rounded-lg border border-border bg-surface focus:outline-none focus:ring-2 focus:ring-brand-primary"
-                        />
-                      </div>
-
-                      <div className="flex flex-col gap-1">
-                        <label htmlFor="date" className="text-body-sm font-semibold text-ink">
-                          Event Date *
-                        </label>
-                        <input
-                          type="date"
-                          id="date"
-                          required
-                          className="w-full px-4 py-3 rounded-lg border border-border bg-surface focus:outline-none focus:ring-2 focus:ring-brand-primary"
-                        />
-                      </div>
-                    </div>
-
-                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                      <div className="flex flex-col gap-1">
-                        <label htmlFor="guests" className="text-body-sm font-semibold text-ink">
-                          Estimated Guest Count *
-                        </label>
-                        <select
-                          id="guests"
-                          required
-                          className="w-full px-4 py-3 rounded-lg border border-border bg-surface focus:outline-none focus:ring-2 focus:ring-brand-primary"
-                        >
-                          <option value="">Select count...</option>
-                          <option value="10-25">10 – 25 Guests</option>
-                          <option value="25-50">25 – 50 Guests</option>
-                          <option value="50-100">50 – 100 Guests</option>
-                          <option value="100+">100+ Guests</option>
-                        </select>
-                      </div>
-
-                      <div className="flex flex-col gap-1">
-                        <label htmlFor="type" className="text-body-sm font-semibold text-ink">
-                          Event Type *
-                        </label>
-                        <select
-                          id="type"
-                          required
-                          className="w-full px-4 py-3 rounded-lg border border-border bg-surface focus:outline-none focus:ring-2 focus:ring-brand-primary"
-                        >
-                          <option value="">Select type...</option>
-                          <option value="golf">Golf Tournament</option>
-                          <option value="corporate">Corporate Outing</option>
-                          <option value="wedding">Wedding / Reception</option>
-                          <option value="birthday">Private Party</option>
-                          <option value="other">Other</option>
-                        </select>
-                      </div>
-                    </div>
-
-                    <div className="flex flex-col gap-1">
-                      <label htmlFor="notes" className="text-body-sm font-semibold text-ink">
-                        Tell us about your event / Dietary needs
-                      </label>
-                      <textarea
-                        id="notes"
-                        rows={4}
-                        placeholder="Special requests, favorite menu items, venue location..."
-                        className="w-full px-4 py-3 rounded-lg border border-border bg-surface focus:outline-none focus:ring-2 focus:ring-brand-primary"
-                      />
-                    </div>
-
-                    <button
-                      type="submit"
-                      className="inline-flex w-full items-center justify-center gap-2 rounded-full font-body font-semibold whitespace-nowrap transition-colors active:translate-y-px bg-accent text-ink-inverse hover:bg-opacity-90 active:bg-opacity-80 px-6 text-body-lg cursor-pointer mt-2"
-                      style={{ minHeight: 'var(--control-height-lg)' }}
-                    >
-                      Submit Catering Request
-                    </button>
-                  </form>
-                </div>
+                <CateringForm />
               </AnimatedReveal>
             </div>
           </Container>

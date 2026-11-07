@@ -112,45 +112,75 @@ export async function submitContact(
     return { status: 'success' };
   }
 
+  // 1. Try WordPress Backend via FluentSMTP (wp_mail)
+  const wpBase =
+    process.env.WP_API_BASE_URL ||
+    process.env.NEXT_PUBLIC_WORDPRESS_URL;
+
+  if (wpBase) {
+    try {
+      const wpResponse = await fetch(`${wpBase}/wp-json/gotg/v1/submit-contact`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          Accept: 'application/json',
+        },
+        body: JSON.stringify({
+          name: values.name,
+          email: values.email,
+          phone: values.phone,
+          subject: values.subject,
+          message: values.message,
+        }),
+        cache: 'no-store',
+      });
+
+      if (wpResponse.ok) {
+        const data = (await wpResponse.json().catch(() => null)) as { success?: boolean } | null;
+        if (data && data.success) {
+          return { status: 'success' };
+        }
+      }
+    } catch (wpError) {
+      console.warn('[submit-contact] WordPress FluentSMTP endpoint unreachable, checking fallbacks:', wpError);
+    }
+  }
+
+  // 2. Fallback to Resend API if configured
   const apiKey = process.env.RESEND_API_KEY;
   const to = process.env.CONTACT_FORM_TO;
   const from = process.env.CONTACT_FORM_FROM;
 
-  if (!apiKey || !to || !from) {
-    // STUB: delivery not configured yet (Resend pending approval). Do not throw
-    // — surface a graceful, actionable error so the UI stays usable.
-    console.warn(
-      '[submit-contact] Delivery is not configured (RESEND_API_KEY / CONTACT_FORM_TO / CONTACT_FORM_FROM missing). Message was validated but NOT sent.',
-    );
-    return { status: 'error', message: CONTACT_FALLBACK };
+  if (apiKey && to && from) {
+    const response = await fetch('https://api.resend.com/emails', {
+      method: 'POST',
+      headers: {
+        Authorization: `Bearer ${apiKey}`,
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        from,
+        to: [to],
+        reply_to: values.email,
+        subject: `Website enquiry: ${values.subject}`,
+        text: [
+          `Name: ${values.name}`,
+          `Email: ${values.email}`,
+          `Phone: ${values.phone === '' ? 'Not provided' : values.phone}`,
+          `Subject: ${values.subject}`,
+          '',
+          values.message,
+        ].join('\n'),
+      }),
+      cache: 'no-store',
+    });
+
+    if (response.ok) {
+      return { status: 'success' };
+    }
   }
 
-  const response = await fetch('https://api.resend.com/emails', {
-    method: 'POST',
-    headers: {
-      Authorization: `Bearer ${apiKey}`,
-      'Content-Type': 'application/json',
-    },
-    body: JSON.stringify({
-      from,
-      to: [to],
-      reply_to: values.email,
-      subject: `Website enquiry: ${values.subject}`,
-      text: [
-        `Name: ${values.name}`,
-        `Email: ${values.email}`,
-        `Phone: ${values.phone === '' ? 'Not provided' : values.phone}`,
-        `Subject: ${values.subject}`,
-        '',
-        values.message,
-      ].join('\n'),
-    }),
-    cache: 'no-store',
-  });
-
-  if (!response.ok) {
-    return { status: 'error', message: CONTACT_FALLBACK };
-  }
-
-  return { status: 'success' };
+  // If WordPress or Resend succeeded, it already returned above.
+  // Otherwise surface actionable error:
+  return { status: 'error', message: CONTACT_FALLBACK };
 }
