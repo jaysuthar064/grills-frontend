@@ -105,7 +105,7 @@ export function MonthCalendar({ events }: MonthCalendarProps): ReactNode {
     const parts = parsePacificDate(evt.startDateTime);
     const dateStr = `${parts.monthName} ${parts.day}, ${parts.year}`;
 
-    const timeStr = '7:00 PM – 10:00 PM';
+    const timeStr = '6:00 PM – 9:00 PM';
 
     const rect = e.currentTarget.getBoundingClientRect();
     const alignRight = rect.left + 350 > window.innerWidth;
@@ -378,7 +378,7 @@ export function MonthCalendar({ events }: MonthCalendarProps): ReactNode {
                                     </span>
                                   </div>
                                   <span className="text-[9px] font-bold uppercase tracking-wider text-amber-400/90 shrink-0">
-                                    7 PM
+                                    6 PM
                                   </span>
                                 </div>
                               </button>

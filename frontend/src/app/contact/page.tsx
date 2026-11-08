@@ -111,7 +111,7 @@ export default async function ContactPage(): Promise<ReactNode> {
                       </div>
                       <div>
                         <h3 className="font-display text-h4 text-ink font-bold leading-tight">
-                          Music Starts at 7:00 PM
+                          Music Starts at 6:00 PM
                         </h3>
                         <p className="text-caption text-brand-primary font-semibold uppercase tracking-wider">
                           Fairway Patio Stage &middot; Simi Hills
@@ -129,7 +129,7 @@ export default async function ContactPage(): Promise<ReactNode> {
                           Friday &amp; Saturday
                         </span>
                         <span className="text-brand-primary font-bold text-body-sm mt-0.5">
-                          7:00 PM &ndash; 10:00 PM
+                          6:00 PM &ndash; 9:00 PM
                         </span>
                         <span className="text-caption text-ink-muted mt-1">
                           Country, Classic Rock &amp; Blues

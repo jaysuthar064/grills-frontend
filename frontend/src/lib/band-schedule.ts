@@ -6,7 +6,7 @@ export interface BandProfile {
   readonly shortName: string;
   readonly genre: string;
   readonly description: string;
-  readonly image: ImageObject;
+  readonly image?: ImageObject | undefined;
   readonly badgeTone: 'amber' | 'orange' | 'emerald' | 'purple' | 'neutral';
   readonly colorClasses: {
     readonly bg: string;
@@ -135,12 +135,6 @@ export const BAND_PROFILES: Record<BandKey, BandProfile> = {
     genre: 'Holiday Live Patio Concert',
     description:
       'Special holiday weekend live patio music. Special guest performer announcement coming soon! Slow-smoked BBQ and craft drafts served all evening.',
-    image: {
-      src: '/media/bands/live-music-tba.jpg',
-      alt: 'Holiday live music on the fairway patio stage',
-      width: 800,
-      height: 500,
-    },
     badgeTone: 'neutral',
     colorClasses: {
       bg: 'bg-linear-to-r from-stone-900/90 via-stone-800/90 to-stone-900/90',
@@ -158,7 +152,7 @@ export const BAND_PROFILES: Record<BandKey, BandProfile> = {
 /**
  * Full live music schedule provided by client for October, November, and December 2026.
  * Attached with authentic client-provided band photography.
- * All shows take place on the Fairway Patio Stage (7:00 PM – 10:00 PM Pacific).
+ * All shows take place on the Fairway Patio Stage (6:00 PM – 9:00 PM Pacific).
  */
 const RAW_SCHEDULED_BANDS: EventItem[] = [
   // ── OCTOBER 2026 ─────────────────────────────────────────────────────────────
@@ -171,8 +165,8 @@ const RAW_SCHEDULED_BANDS: EventItem[] = [
       'Acoustic favorites, coastal rock, and classic fairway sunset harmonies on the heated patio stage.',
     descriptionHtml:
       '<p>Join us on the 18th hole patio for an evening of acoustic coastal rock, classic favorites, and great barbecue with Captain Kori. Free patio admission, fire pit seating, and 16 craft beers on tap.</p>',
-    startDateTime: '2026-10-30T19:00:00-07:00',
-    endDateTime: '2026-10-30T22:00:00-07:00',
+    startDateTime: '2026-10-30T18:00:00-07:00',
+    endDateTime: '2026-10-30T21:00:00-07:00',
     eventType: 'live_music',
     isTicketed: false,
     isRecurringInstance: true,
@@ -191,8 +185,8 @@ const RAW_SCHEDULED_BANDS: EventItem[] = [
       'Halloween live concert with Zaremba! Classic rock dance hits, costume contest, smoked brisket specials, and craft beers.',
     descriptionHtml:
       '<p>Celebrate Halloween under the festoon lights! Resident powerhouse Zaremba rocks the fairway patio with classic rock, dance covers, and costume prizes. Arrive early for patio seating.</p>',
-    startDateTime: '2026-10-31T19:00:00-07:00',
-    endDateTime: '2026-10-31T22:30:00-07:00',
+    startDateTime: '2026-10-31T18:00:00-07:00',
+    endDateTime: '2026-10-31T21:00:00-07:00',
     eventType: 'live_music',
     isTicketed: false,
     isRecurringInstance: true,
@@ -213,8 +207,8 @@ const RAW_SCHEDULED_BANDS: EventItem[] = [
       'High-energy country rock, driving blues, and Southern favorites live on the heated fairway patio stage.',
     descriptionHtml:
       '<p>Kick off November with the Todd Hines Band playing high-energy country and Southern rock classics. Smoked brisket sliders, craft drafts, and heated patio tables.</p>',
-    startDateTime: '2026-11-06T19:00:00-08:00',
-    endDateTime: '2026-11-06T22:00:00-08:00',
+    startDateTime: '2026-11-06T18:00:00-08:00',
+    endDateTime: '2026-11-06T21:00:00-08:00',
     eventType: 'live_music',
     isTicketed: false,
     isRecurringInstance: true,
@@ -233,8 +227,8 @@ const RAW_SCHEDULED_BANDS: EventItem[] = [
       'Resident patio favorite Zaremba delivers popular classic rock, pop dance hits, and crowd singalongs.',
     descriptionHtml:
       '<p>Saturday night fairway concert with Zaremba. Enjoy slow-smoked Texas BBQ, fire pit tables, and craft draft beers with golf course mountain views.</p>',
-    startDateTime: '2026-11-07T19:00:00-08:00',
-    endDateTime: '2026-11-07T22:00:00-08:00',
+    startDateTime: '2026-11-07T18:00:00-08:00',
+    endDateTime: '2026-11-07T21:00:00-08:00',
     eventType: 'live_music',
     isTicketed: false,
     isRecurringInstance: true,
@@ -253,8 +247,8 @@ const RAW_SCHEDULED_BANDS: EventItem[] = [
       'Country rock favorites and blues under the patio festoon lights with slow-smoked Texas BBQ.',
     descriptionHtml:
       '<p>Friday night country and Southern rock with the Todd Hines Band. Heated patio dining, craft draft beers, and great barbecue.</p>',
-    startDateTime: '2026-11-13T19:00:00-08:00',
-    endDateTime: '2026-11-13T22:00:00-08:00',
+    startDateTime: '2026-11-13T18:00:00-08:00',
+    endDateTime: '2026-11-13T21:00:00-08:00',
     eventType: 'live_music',
     isTicketed: false,
     isRecurringInstance: true,
@@ -273,8 +267,8 @@ const RAW_SCHEDULED_BANDS: EventItem[] = [
       'Saturday night live classic rock and dance grooves on the 18th hole patio stage.',
     descriptionHtml:
       '<p>Zaremba returns for another high-energy Saturday night set. Classic rock anthems, craft cocktails, and slow-smoked ribs.</p>',
-    startDateTime: '2026-11-14T19:00:00-08:00',
-    endDateTime: '2026-11-14T22:00:00-08:00',
+    startDateTime: '2026-11-14T18:00:00-08:00',
+    endDateTime: '2026-11-14T21:00:00-08:00',
     eventType: 'live_music',
     isTicketed: false,
     isRecurringInstance: true,
@@ -293,8 +287,8 @@ const RAW_SCHEDULED_BANDS: EventItem[] = [
       'Acoustic soul, coastal classics, and relaxed fairway sunset vibes by fire pit tables.',
     descriptionHtml:
       '<p>Unwind your Friday evening with Captain Kori playing acoustic favorites and coastal rock hits. Free admission, fire pits, and seasonal dinner specials.</p>',
-    startDateTime: '2026-11-20T19:00:00-08:00',
-    endDateTime: '2026-11-20T22:00:00-08:00',
+    startDateTime: '2026-11-20T18:00:00-08:00',
+    endDateTime: '2026-11-20T21:00:00-08:00',
     eventType: 'live_music',
     isTicketed: false,
     isRecurringInstance: true,
@@ -313,8 +307,8 @@ const RAW_SCHEDULED_BANDS: EventItem[] = [
       'Americana roots rock, soulful blues, and gritty Southern anthems live on the patio stage.',
     descriptionHtml:
       '<p>AshWater Saints bring their signature sound of California Americana, soulful roots rock, and deep-groove blues to Grill on the Green. Full band, great food, and craft beers on tap.</p>',
-    startDateTime: '2026-11-21T19:00:00-08:00',
-    endDateTime: '2026-11-21T22:00:00-08:00',
+    startDateTime: '2026-11-21T18:00:00-08:00',
+    endDateTime: '2026-11-21T21:00:00-08:00',
     eventType: 'live_music',
     isTicketed: false,
     isRecurringInstance: true,
@@ -333,8 +327,8 @@ const RAW_SCHEDULED_BANDS: EventItem[] = [
       'Black Friday holiday weekend live patio music. Special guest performer announcement coming soon!',
     descriptionHtml:
       '<p>Celebrate the Thanksgiving holiday weekend on our heated fairway patio with live music, holiday cocktail specials, and slow-smoked BBQ. Performer to be announced shortly!</p>',
-    startDateTime: '2026-11-27T19:00:00-08:00',
-    endDateTime: '2026-11-27T22:00:00-08:00',
+    startDateTime: '2026-11-27T18:00:00-08:00',
+    endDateTime: '2026-11-27T21:00:00-08:00',
     eventType: 'live_music',
     isTicketed: false,
     isRecurringInstance: true,
@@ -353,8 +347,8 @@ const RAW_SCHEDULED_BANDS: EventItem[] = [
       'Holiday weekend party with Zaremba playing classic rock dance hits on the fairway patio.',
     descriptionHtml:
       '<p>Keep the Thanksgiving weekend energy rolling with Zaremba live on stage. Classic rock hits, dance favorites, cold brews, and brisket.</p>',
-    startDateTime: '2026-11-28T19:00:00-08:00',
-    endDateTime: '2026-11-28T22:00:00-08:00',
+    startDateTime: '2026-11-28T18:00:00-08:00',
+    endDateTime: '2026-11-28T21:00:00-08:00',
     eventType: 'live_music',
     isTicketed: false,
     isRecurringInstance: true,
@@ -375,8 +369,8 @@ const RAW_SCHEDULED_BANDS: EventItem[] = [
       'Kick off December with high-octane country rock, blues, and heated fire pit dining.',
     descriptionHtml:
       '<p>December kicks off with the Todd Hines Band playing driving country rock and Southern anthems. Stay warm by our outdoor fire pits with craft beer and barbecue.</p>',
-    startDateTime: '2026-12-04T19:00:00-08:00',
-    endDateTime: '2026-12-04T22:00:00-08:00',
+    startDateTime: '2026-12-04T18:00:00-08:00',
+    endDateTime: '2026-12-04T21:00:00-08:00',
     eventType: 'live_music',
     isTicketed: false,
     isRecurringInstance: true,
@@ -395,8 +389,8 @@ const RAW_SCHEDULED_BANDS: EventItem[] = [
       'Saturday night live concert with Zaremba. Enjoy 16 craft beers and slow-smoked Texas BBQ.',
     descriptionHtml:
       '<p>Saturday night live concert with Zaremba. Rock singalongs, dance grooves, and warm fire pit seating on the 18th hole patio.</p>',
-    startDateTime: '2026-12-05T19:00:00-08:00',
-    endDateTime: '2026-12-05T22:00:00-08:00',
+    startDateTime: '2026-12-05T18:00:00-08:00',
+    endDateTime: '2026-12-05T21:00:00-08:00',
     eventType: 'live_music',
     isTicketed: false,
     isRecurringInstance: true,
@@ -415,8 +409,8 @@ const RAW_SCHEDULED_BANDS: EventItem[] = [
       'Holiday season live music with Zaremba playing classic rock favorites on the heated patio.',
     descriptionHtml:
       '<p>Join us for Friday night holiday cheers with Zaremba rocking the fairway patio stage. Free admission, heaters running, and great holiday cocktails.</p>',
-    startDateTime: '2026-12-11T19:00:00-08:00',
-    endDateTime: '2026-12-11T22:00:00-08:00',
+    startDateTime: '2026-12-11T18:00:00-08:00',
+    endDateTime: '2026-12-11T21:00:00-08:00',
     eventType: 'live_music',
     isTicketed: false,
     isRecurringInstance: true,
@@ -435,8 +429,8 @@ const RAW_SCHEDULED_BANDS: EventItem[] = [
       'Acoustic coastal favorites, folk rock, and singalong classics fairway-side.',
     descriptionHtml:
       '<p>Saturday night acoustic sets with Captain Kori. Relax under the festoon lights by our fire tables with slow-smoked meats and local craft brews.</p>',
-    startDateTime: '2026-12-12T19:00:00-08:00',
-    endDateTime: '2026-12-12T22:00:00-08:00',
+    startDateTime: '2026-12-12T18:00:00-08:00',
+    endDateTime: '2026-12-12T21:00:00-08:00',
     eventType: 'live_music',
     isTicketed: false,
     isRecurringInstance: true,
@@ -455,8 +449,8 @@ const RAW_SCHEDULED_BANDS: EventItem[] = [
       'Friday night holiday celebration with Zaremba bringing classic rock energy to Simi Valley.',
     descriptionHtml:
       '<p>One of our biggest holiday weekend live shows! Zaremba rocks the house on the patio with classic rock, high-energy dancing, and Texas BBQ favorites.</p>',
-    startDateTime: '2026-12-18T19:00:00-08:00',
-    endDateTime: '2026-12-18T22:00:00-08:00',
+    startDateTime: '2026-12-18T18:00:00-08:00',
+    endDateTime: '2026-12-18T21:00:00-08:00',
     eventType: 'live_music',
     isTicketed: false,
     isRecurringInstance: true,
@@ -475,8 +469,8 @@ const RAW_SCHEDULED_BANDS: EventItem[] = [
       'Holiday Saturday night live country and Southern rock bash before Christmas week.',
     descriptionHtml:
       '<p>The Todd Hines Band brings their full-band country rock powerhouse to Grill on the Green for a festive holiday Saturday show. Enjoy dinner, drinks, and live music.</p>',
-    startDateTime: '2026-12-19T19:00:00-08:00',
-    endDateTime: '2026-12-19T22:00:00-08:00',
+    startDateTime: '2026-12-19T18:00:00-08:00',
+    endDateTime: '2026-12-19T21:00:00-08:00',
     eventType: 'live_music',
     isTicketed: false,
     isRecurringInstance: true,
@@ -495,8 +489,8 @@ const RAW_SCHEDULED_BANDS: EventItem[] = [
       'Post-Christmas Saturday evening live music on the patio. Performer announcement coming soon!',
     descriptionHtml:
       '<p>Keep the holiday celebration alive with live music on our heated patio following Christmas. Special guest artist announcement coming soon!</p>',
-    startDateTime: '2026-12-26T19:00:00-08:00',
-    endDateTime: '2026-12-26T22:00:00-08:00',
+    startDateTime: '2026-12-26T18:00:00-08:00',
+    endDateTime: '2026-12-26T21:00:00-08:00',
     eventType: 'live_music',
     isTicketed: false,
     isRecurringInstance: true,
@@ -532,9 +526,13 @@ export function getBandProfileForEvent(evt: EventItem): BandProfile {
 
 /**
  * Full live music schedule provided by client for October, November, and December 2026.
- * Attached with authentic client-provided band photography.
+ * Attached with authentic client-provided band photography (Captain Kori, Zaremba, Todd Hines, AshWater Saints).
  */
-export const SCHEDULED_BANDS: EventItem[] = RAW_SCHEDULED_BANDS.map((evt) => ({
-  ...evt,
-  image: getBandProfileForEvent(evt).image,
-}));
+export const SCHEDULED_BANDS: EventItem[] = RAW_SCHEDULED_BANDS.map((evt) => {
+  const profile = getBandProfileForEvent(evt);
+  const item: EventItem = { ...evt };
+  if (profile.image) {
+    item.image = profile.image;
+  }
+  return item;
+});

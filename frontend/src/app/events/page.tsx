@@ -83,7 +83,7 @@ export default async function EventsPage(): Promise<ReactNode> {
                 Want to Play at Grill on the Green?
               </Heading>
               <p className="text-body text-ink-muted max-w-lg leading-relaxed">
-                We host live music on our fairway patio every Friday and Saturday evening from 7:00 PM to 10:00 PM. We are always looking for great acoustic acts, country duos, and classic rock bands.
+                We host live music on our fairway patio every Friday and Saturday evening from 6:00 PM to 9:00 PM. We are always looking for great acoustic acts, country duos, and classic rock bands.
               </p>
               {/* Booking Coordinator Contact Card */}
               <div className="w-full max-w-lg rounded-2xl bg-surface-raised border border-border/80 p-5 my-2 flex flex-col sm:flex-row items-center justify-between gap-4 text-left shadow-xs">

@@ -231,7 +231,7 @@ export function EventsPreview({
                     <span className="text-xl">🎸</span>
                     <div className="text-caption">
                       <strong className="block text-ink font-semibold">Live Music Schedule:</strong>
-                      <span className="text-ink-muted">Friday &amp; Saturday nights at 7:00 PM</span>
+                      <span className="text-ink-muted">Friday &amp; Saturday nights, 6:00 PM &ndash; 9:00 PM</span>
                     </div>
                   </div>
                 </div>

@@ -7,7 +7,7 @@ import { JsonLd } from '@/components/seo/json-ld';
 import { getHome } from '@/lib/api';
 import { homeJsonLd } from '@/lib/json-ld';
 import { getWpUploadUrl, normalizeMediaUrl } from '@/lib/media';
-import { getBandProfileForEvent, SCHEDULED_BANDS } from '@/lib/band-schedule';
+import { SCHEDULED_BANDS } from '@/lib/band-schedule';
 import { buildMetadata } from '@/lib/seo';
 import type { EventsPreviewBlock, InstagramFeedBlock, PageBlock } from '@/types/api';
 
@@ -185,16 +185,15 @@ export default async function HomePage(): Promise<ReactNode> {
         };
       }
       if (block.type === 'events_preview') {
-        const sourceEvents =
-          block.events && block.events.length > 0 ? block.events : SCHEDULED_BANDS.slice(0, 6);
         const eventsBlock: EventsPreviewBlock = {
           type: 'events_preview',
-          heading: block.heading,
-          ...(block.cta ? { cta: block.cta } : {}),
-          events: sourceEvents.map((evt) => ({
-            ...evt,
-            image: evt.image || getBandProfileForEvent(evt).image,
-          })),
+          heading: block.heading || 'Live Music on the Fairway Patio',
+          cta: {
+            label: 'View Full Events Calendar',
+            href: '/events',
+            isExternal: false,
+          },
+          events: SCHEDULED_BANDS,
         };
         return eventsBlock;
       }
@@ -206,7 +205,7 @@ export default async function HomePage(): Promise<ReactNode> {
     const fallbackEvents: EventsPreviewBlock = {
       type: 'events_preview',
       heading: "Live Music on the Fairway Patio",
-      events: SCHEDULED_BANDS.slice(0, 6),
+      events: SCHEDULED_BANDS,
       cta: {
         label: 'View Full Calendar & Band Lineup',
         href: '/events',
