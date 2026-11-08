@@ -13,7 +13,7 @@ import { Heading } from '@/components/primitives/heading';
 import { LinkButton } from '@/components/primitives/link-button';
 import { JsonLd } from '@/components/seo/json-ld';
 import { getEvents } from '@/lib/api';
-import { SCHEDULED_BANDS } from '@/lib/band-schedule';
+import { getBandProfileForEvent, SCHEDULED_BANDS } from '@/lib/band-schedule';
 import { eventsJsonLd } from '@/lib/json-ld';
 import { getWpUploadUrl } from '@/lib/media';
 import { buildMetadata } from '@/lib/seo';
@@ -30,13 +30,15 @@ export default async function EventsPage(): Promise<ReactNode> {
   const events = await getEvents();
   const { _global, title, recurring, upcoming, emptyMessage, blocks } = events;
 
-  // Merge CMS events with full live band calendar schedule, stripping any dummy images
+  // Merge CMS events with full live band calendar schedule, attaching authentic band photography
   const allEventsMap = new Map<string, EventItem>();
   upcoming.forEach((evt) => {
-    const { image: _omitted, ...cleanEvt } = evt;
-    allEventsMap.set(cleanEvt.slug, cleanEvt);
+    allEventsMap.set(evt.slug, {
+      ...evt,
+      image: evt.image || getBandProfileForEvent(evt).image,
+    });
   });
-  // Client band schedule is authoritative
+  // Client band schedule is authoritative with attached authentic band photos
   SCHEDULED_BANDS.forEach((band) => {
     allEventsMap.set(band.slug, band);
   });

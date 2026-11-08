@@ -9,6 +9,7 @@ import {
   formatEventMonth,
   formatEventTime,
 } from '@/lib/datetime';
+import { getBandProfileForEvent } from '@/lib/band-schedule';
 import type { EventItem } from '@/types/api';
 
 /*
@@ -33,6 +34,8 @@ export function EventCard({
   variant = 'list',
   headingLevel = 3,
 }: EventCardProps): ReactNode {
+  const profile = getBandProfileForEvent(event);
+  const bandImage = event.image || profile?.image;
   const hasPerformer =
     event.performerName !== undefined && event.performerName !== '';
 
@@ -137,6 +140,24 @@ export function EventCard({
           ) : null}
         </div>
       </div>
+
+      {/* Authentic Band Photo */}
+      {bandImage ? (
+        <div
+          className={cn(
+            'relative overflow-hidden rounded-xl bg-surface-sunken border border-border/80 shadow-xs shrink-0',
+            variant === 'list'
+              ? 'w-full sm:w-44 sm:h-32 h-44 order-first sm:order-last'
+              : 'w-full h-40 order-first',
+          )}
+        >
+          <img
+            src={bandImage.src}
+            alt={bandImage.alt || event.title}
+            className="h-full w-full object-cover object-center transition-transform duration-300 group-hover:scale-105"
+          />
+        </div>
+      ) : null}
     </article>
   );
 }

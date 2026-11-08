@@ -1,4 +1,4 @@
-import type { EventItem } from '@/types/api';
+import type { EventItem, ImageObject } from '@/types/api';
 
 export interface BandProfile {
   readonly id: string;
@@ -6,6 +6,7 @@ export interface BandProfile {
   readonly shortName: string;
   readonly genre: string;
   readonly description: string;
+  readonly image: ImageObject;
   readonly badgeTone: 'amber' | 'orange' | 'emerald' | 'purple' | 'neutral';
   readonly colorClasses: {
     readonly bg: string;
@@ -34,6 +35,12 @@ export const BAND_PROFILES: Record<BandKey, BandProfile> = {
     genre: 'Classic Rock, Pop & Dance Hits (Resident Favorite)',
     description:
       'Resident fairway favorite delivering crowd-pleasing classic rock anthems, 80s/90s dance hits, and energetic singalong live sets on the heated patio.',
+    image: {
+      src: '/media/bands/zaremba.jpg',
+      alt: 'Zaremba classic rock duo live on guitar and keyboard',
+      width: 800,
+      height: 600,
+    },
     badgeTone: 'amber',
     colorClasses: {
       bg: 'bg-linear-to-r from-amber-950/90 via-stone-900/90 to-amber-950/90',
@@ -53,6 +60,12 @@ export const BAND_PROFILES: Record<BandKey, BandProfile> = {
     genre: 'Country, Blues & Southern Rock',
     description:
       'Full-throttle Southern rock, driving country favorites, and Texas blues with full rhythm section and blistering guitar under the festoon lights.',
+    image: {
+      src: '/media/bands/todd-hines-band.jpg',
+      alt: 'The Todd Hines Band live on stage',
+      width: 800,
+      height: 500,
+    },
     badgeTone: 'orange',
     colorClasses: {
       bg: 'bg-linear-to-r from-orange-950/90 via-stone-900/90 to-orange-950/90',
@@ -72,6 +85,12 @@ export const BAND_PROFILES: Record<BandKey, BandProfile> = {
     genre: 'Coastal Rock, Acoustic Classics & Fairway Harmonies',
     description:
       'Smooth acoustic guitar favorites, breezy coastal rock, and singalong classics perfect for sunset fire pit dining fairway-side.',
+    image: {
+      src: '/media/bands/captain-kori.jpg',
+      alt: 'Captain Kori performing acoustic guitar and vocals',
+      width: 800,
+      height: 500,
+    },
     badgeTone: 'emerald',
     colorClasses: {
       bg: 'bg-linear-to-r from-emerald-950/90 via-stone-900/90 to-emerald-950/90',
@@ -91,6 +110,12 @@ export const BAND_PROFILES: Record<BandKey, BandProfile> = {
     genre: 'Americana, Roots Rock & Blues',
     description:
       'Gritty roots rock, soulful Americana storytelling, and deep-groove California blues live on the 18th hole patio stage.',
+    image: {
+      src: '/media/bands/ashwater-saints.png',
+      alt: 'The AshWater Saints live music',
+      width: 800,
+      height: 600,
+    },
     badgeTone: 'purple',
     colorClasses: {
       bg: 'bg-linear-to-r from-purple-950/90 via-stone-900/90 to-purple-950/90',
@@ -110,6 +135,12 @@ export const BAND_PROFILES: Record<BandKey, BandProfile> = {
     genre: 'Holiday Live Patio Concert',
     description:
       'Special holiday weekend live patio music. Special guest performer announcement coming soon! Slow-smoked BBQ and craft drafts served all evening.',
+    image: {
+      src: '/media/bands/live-music-tba.jpg',
+      alt: 'Holiday live music on the fairway patio stage',
+      width: 800,
+      height: 500,
+    },
     badgeTone: 'neutral',
     colorClasses: {
       bg: 'bg-linear-to-r from-stone-900/90 via-stone-800/90 to-stone-900/90',
@@ -126,10 +157,10 @@ export const BAND_PROFILES: Record<BandKey, BandProfile> = {
 
 /**
  * Full live music schedule provided by client for October, November, and December 2026.
- * Zero dummy images. Pure typography and band name focus.
+ * Attached with authentic client-provided band photography.
  * All shows take place on the Fairway Patio Stage (7:00 PM – 10:00 PM Pacific).
  */
-export const SCHEDULED_BANDS: EventItem[] = [
+const RAW_SCHEDULED_BANDS: EventItem[] = [
   // ── OCTOBER 2026 ─────────────────────────────────────────────────────────────
   {
     id: 9101,
@@ -478,7 +509,7 @@ export const SCHEDULED_BANDS: EventItem[] = [
 ];
 
 /**
- * Resolves band details, profile, badge colors from an event item.
+ * Resolves band details, profile, badge colors, and authentic photography from an event item.
  */
 export function getBandProfileForEvent(evt: EventItem): BandProfile {
   const text = `${evt.performerName || ''} ${evt.title} ${evt.summary}`.toLowerCase();
@@ -498,3 +529,12 @@ export function getBandProfileForEvent(evt: EventItem): BandProfile {
 
   return BAND_PROFILES['live-music-tba'];
 }
+
+/**
+ * Full live music schedule provided by client for October, November, and December 2026.
+ * Attached with authentic client-provided band photography.
+ */
+export const SCHEDULED_BANDS: EventItem[] = RAW_SCHEDULED_BANDS.map((evt) => ({
+  ...evt,
+  image: getBandProfileForEvent(evt).image,
+}));

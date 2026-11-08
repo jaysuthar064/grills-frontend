@@ -109,7 +109,7 @@ export function MonthCalendar({ events }: MonthCalendarProps): ReactNode {
 
     const rect = e.currentTarget.getBoundingClientRect();
     const alignRight = rect.left + 350 > window.innerWidth;
-    const showAbove = rect.bottom + 260 > window.innerHeight;
+    const showAbove = rect.bottom + 360 > window.innerHeight;
 
     setActivePreview({
       evt,
@@ -404,8 +404,8 @@ export function MonthCalendar({ events }: MonthCalendarProps): ReactNode {
             style={{
               position: 'fixed',
               top: activePreview.showAbove
-                ? `${Math.max(10, activePreview.y - 280)}px`
-                : `${Math.min(window.innerHeight - 280, activePreview.y + 10)}px`,
+                ? `${Math.max(10, activePreview.y - 380)}px`
+                : `${Math.min(window.innerHeight - 380, activePreview.y + 10)}px`,
               left: activePreview.alignRight
                 ? `${Math.max(10, activePreview.x - 340)}px`
                 : `${Math.max(10, Math.min(window.innerWidth - 350, activePreview.x))}px`,
@@ -413,21 +413,44 @@ export function MonthCalendar({ events }: MonthCalendarProps): ReactNode {
             }}
             className="w-[330px] rounded-2xl border-2 border-amber-500/80 bg-[#16120e] shadow-[0_20px_50px_rgba(0,0,0,0.85)] overflow-hidden transition-all duration-200 animate-in fade-in zoom-in-95 pointer-events-auto p-5 flex flex-col gap-3.5 text-left"
           >
-            {/* Top Bar with Badge & Dismiss */}
-            <div className="flex items-start justify-between gap-2">
-              <span className="inline-flex items-center gap-1.5 rounded-full bg-amber-500/20 text-amber-300 border border-amber-500/40 px-2.5 py-0.5 text-[10px] font-black uppercase tracking-wider">
-                <span className="h-1.5 w-1.5 rounded-full bg-amber-400 animate-pulse" />
-                Live Patio Concert
-              </span>
-              <button
-                type="button"
-                onClick={() => setActivePreview(null)}
-                className="h-6 w-6 rounded-full bg-white/10 text-white/80 hover:bg-white/20 hover:text-white flex items-center justify-center text-xs font-bold transition-all cursor-pointer"
-                title="Close"
-              >
-                ✕
-              </button>
-            </div>
+            {/* Authentic Band Photo */}
+            {activePreview.profile.image ? (
+              <div className="relative -mx-5 -mt-5 h-36 w-[calc(100%+2.5rem)] overflow-hidden bg-black/60">
+                <img
+                  src={activePreview.profile.image.src}
+                  alt={activePreview.profile.image.alt || activePreview.bandName}
+                  className="h-full w-full object-cover object-center"
+                />
+                <div className="absolute inset-0 bg-linear-to-t from-[#16120e] via-[#16120e]/40 to-transparent" />
+                <button
+                  type="button"
+                  onClick={() => setActivePreview(null)}
+                  className="absolute top-3 right-3 h-7 w-7 rounded-full bg-black/60 text-white/90 hover:bg-black/90 hover:text-white flex items-center justify-center text-xs font-bold transition-all cursor-pointer backdrop-blur-xs border border-white/20"
+                  title="Close"
+                >
+                  ✕
+                </button>
+                <span className="absolute bottom-2 left-3 inline-flex items-center gap-1.5 rounded-full bg-black/70 backdrop-blur-xs text-amber-300 border border-amber-500/50 px-2.5 py-0.5 text-[10px] font-black uppercase tracking-wider">
+                  <span className="h-1.5 w-1.5 rounded-full bg-amber-400 animate-pulse" />
+                  Live Patio Concert
+                </span>
+              </div>
+            ) : (
+              <div className="flex items-start justify-between gap-2">
+                <span className="inline-flex items-center gap-1.5 rounded-full bg-amber-500/20 text-amber-300 border border-amber-500/40 px-2.5 py-0.5 text-[10px] font-black uppercase tracking-wider">
+                  <span className="h-1.5 w-1.5 rounded-full bg-amber-400 animate-pulse" />
+                  Live Patio Concert
+                </span>
+                <button
+                  type="button"
+                  onClick={() => setActivePreview(null)}
+                  className="h-6 w-6 rounded-full bg-white/10 text-white/80 hover:bg-white/20 hover:text-white flex items-center justify-center text-xs font-bold transition-all cursor-pointer"
+                  title="Close"
+                >
+                  ✕
+                </button>
+              </div>
+            )}
 
             {/* Band Name & Date */}
             <div>
