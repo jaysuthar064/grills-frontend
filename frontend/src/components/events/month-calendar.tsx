@@ -145,6 +145,7 @@ export function MonthCalendar({ events }: MonthCalendarProps): ReactNode {
     { id: 'todd-hines-band', label: 'Todd Hines Band', count: 4, icon: '🤠' },
     { id: 'captain-kori', label: 'Captain Kori', count: 3, icon: '🌊' },
     { id: 'ashwater-saints', label: 'AshWater Saints', count: 1, icon: '🦅' },
+    { id: 'deez-nutz', label: 'Deez Nutz', count: 1, icon: '🔥' },
   ];
 
   return (

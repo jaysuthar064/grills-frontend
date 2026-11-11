@@ -16,7 +16,8 @@ import type {
  * assigns it (04-API-CONTRACT.md §1.1). Server-only by construction.
  */
 
-const WP_API_BASE = process.env.WP_API_BASE_URL;
+const WP_API_BASE = process.env.WP_API_BASE_URL || 'https://grills.launchpreview.live';
+const FALLBACK_WP_API_BASE = 'https://grills.launchpreview.live';
 
 interface EndpointConfig {
   readonly path: string;
@@ -93,7 +94,23 @@ async function fetchEndpoint<T>({
   }
 
   try {
-    const response = await fetch(`${WP_API_BASE}/wp-json/gotg/v1/${path}`, fetchOptions);
+    let response: Response;
+    try {
+      response = await fetch(`${WP_API_BASE}/wp-json/gotg/v1/${path}`, fetchOptions);
+      if (!response.ok && WP_API_BASE !== FALLBACK_WP_API_BASE) {
+        // If primary returned non-ok (e.g. 404 or 500 on local), attempt fallback live host
+        const fallbackRes = await fetch(`${FALLBACK_WP_API_BASE}/wp-json/gotg/v1/${path}`, fetchOptions);
+        if (fallbackRes.ok) {
+          response = fallbackRes;
+        }
+      }
+    } catch (networkErr) {
+      if (WP_API_BASE !== FALLBACK_WP_API_BASE) {
+        response = await fetch(`${FALLBACK_WP_API_BASE}/wp-json/gotg/v1/${path}`, fetchOptions);
+      } else {
+        throw networkErr;
+      }
+    }
 
     if (!response.ok) {
       if (memoryCache.has(path)) {

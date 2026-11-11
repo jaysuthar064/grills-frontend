@@ -7,7 +7,7 @@ export interface BandProfile {
   readonly genre: string;
   readonly description: string;
   readonly image?: ImageObject | undefined;
-  readonly badgeTone: 'amber' | 'orange' | 'emerald' | 'purple' | 'neutral';
+  readonly badgeTone: 'amber' | 'orange' | 'emerald' | 'purple' | 'red' | 'neutral';
   readonly colorClasses: {
     readonly bg: string;
     readonly border: string;
@@ -25,6 +25,7 @@ export type BandKey =
   | 'todd-hines-band'
   | 'captain-kori'
   | 'ashwater-saints'
+  | 'deez-nutz'
   | 'live-music-tba';
 
 export const BAND_PROFILES: Record<BandKey, BandProfile> = {
@@ -128,6 +129,31 @@ export const BAND_PROFILES: Record<BandKey, BandProfile> = {
     },
     totalShows: 1,
   },
+  'deez-nutz': {
+    id: 'deez-nutz',
+    name: 'Deez Nutz',
+    shortName: 'Deez Nutz',
+    genre: 'Classic Rock Covers • 60s to 80s',
+    description:
+      'High-voltage classic rock covers from the 60s, 70s, and 80s with searing guitar riffs, powerhouse vocals, and crowd-pleasing rock anthems live on the heated fairway patio.',
+    image: {
+      src: '/media/bands/deez-nutz.jpg',
+      alt: 'Deez Nutz classic rock band live on stage',
+      width: 609,
+      height: 454,
+    },
+    badgeTone: 'red',
+    colorClasses: {
+      bg: 'bg-linear-to-r from-red-950/90 via-stone-900/90 to-red-950/90',
+      border: 'border-red-500/70',
+      text: 'text-red-200',
+      hoverBorder: 'hover:border-red-400',
+      glow: 'hover:shadow-[0_4px_16px_rgba(239,68,68,0.35)]',
+      pillBg: 'bg-red-500/20 text-red-300 border-red-500/40',
+      pillText: 'text-red-300',
+    },
+    totalShows: 1,
+  },
   'live-music-tba': {
     id: 'live-music-tba',
     name: 'Holiday Live Music (Performer TBA)',
@@ -145,7 +171,7 @@ export const BAND_PROFILES: Record<BandKey, BandProfile> = {
       pillBg: 'bg-stone-500/20 text-stone-300 border-stone-500/40',
       pillText: 'text-stone-300',
     },
-    totalShows: 2,
+    totalShows: 1,
   },
 };
 
@@ -320,21 +346,21 @@ const RAW_SCHEDULED_BANDS: EventItem[] = [
   },
   {
     id: 9109,
-    slug: 'thanksgiving-live-music-nov-27',
-    title: 'Thanksgiving Weekend Live Music: Performer TBA',
-    performerName: 'Live Music TBA',
+    slug: 'deez-nutz-nov-27',
+    title: 'Live Music: Deez Nutz',
+    performerName: 'Deez Nutz',
     summary:
-      'Black Friday holiday weekend live patio music. Special guest performer announcement coming soon!',
+      'Black Friday classic rock party with Deez Nutz covering iconic 60s to 80s rock anthems.',
     descriptionHtml:
-      '<p>Celebrate the Thanksgiving holiday weekend on our heated fairway patio with live music, holiday cocktail specials, and slow-smoked BBQ. Performer to be announced shortly!</p>',
+      '<p>Celebrate Black Friday weekend at Grill on the Green with Deez Nutz! High-energy classic rock hits from the 60s, 70s, and 80s, blazing guitar solos, craft brews, and slow-smoked pit BBQ under the heated fairway patio.</p>',
     startDateTime: '2026-11-27T18:00:00-08:00',
     endDateTime: '2026-11-27T21:00:00-08:00',
     eventType: 'live_music',
     isTicketed: false,
     isRecurringInstance: true,
     seo: {
-      title: 'Thanksgiving Weekend Live Music | Grill on the Green',
-      description: 'Black Friday weekend live music and patio barbecue.',
+      title: 'Deez Nutz Live Classic Rock | Grill on the Green',
+      description: 'Deez Nutz live classic rock covers from the 60s to 80s on Friday, November 27.',
       noindex: false,
     },
   },
@@ -520,13 +546,16 @@ export function getBandProfileForEvent(evt: EventItem): BandProfile {
   if (text.includes('ashwater') || text.includes('saints')) {
     return BAND_PROFILES['ashwater-saints'];
   }
+  if (text.includes('deez') || text.includes('nutz')) {
+    return BAND_PROFILES['deez-nutz'];
+  }
 
   return BAND_PROFILES['live-music-tba'];
 }
 
 /**
  * Full live music schedule provided by client for October, November, and December 2026.
- * Attached with authentic client-provided band photography (Captain Kori, Zaremba, Todd Hines, AshWater Saints).
+ * Attached with authentic client-provided band photography (Captain Kori, Zaremba, Todd Hines, AshWater Saints, Deez Nutz).
  */
 export const SCHEDULED_BANDS: EventItem[] = RAW_SCHEDULED_BANDS.map((evt) => {
   const profile = getBandProfileForEvent(evt);
