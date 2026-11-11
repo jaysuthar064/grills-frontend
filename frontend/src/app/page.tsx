@@ -193,7 +193,10 @@ export default async function HomePage(): Promise<ReactNode> {
             href: '/events',
             isExternal: false,
           },
-          events: SCHEDULED_BANDS,
+          events: SCHEDULED_BANDS.filter((evt) => {
+            const text = `${evt.title} ${evt.performerName || ''} ${evt.summary} ${evt.slug}`.toLowerCase();
+            return !text.includes('line dance') && !text.includes('linedance');
+          }),
         };
         return eventsBlock;
       }

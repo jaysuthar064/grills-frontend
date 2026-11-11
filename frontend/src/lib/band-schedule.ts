@@ -474,7 +474,7 @@ const RAW_SCHEDULED_BANDS: EventItem[] = [
     summary:
       'Friday night holiday celebration with Zaremba bringing classic rock energy to Simi Valley.',
     descriptionHtml:
-      '<p>One of our biggest holiday weekend live shows! Zaremba rocks the house on the patio with classic rock, high-energy dancing, and Texas BBQ favorites.</p>',
+      '<p>One of our biggest holiday weekend live shows! Zaremba rocks the house on the patio with classic rock, high-energy crowd singalongs, and Texas BBQ favorites.</p>',
     startDateTime: '2026-12-18T18:00:00-08:00',
     endDateTime: '2026-12-18T21:00:00-08:00',
     eventType: 'live_music',

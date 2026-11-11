@@ -30,22 +30,44 @@ export default async function EventsPage(): Promise<ReactNode> {
   const events = await getEvents();
   const { _global, title, recurring, upcoming, emptyMessage, blocks } = events;
 
+  // Explicit filter to guarantee no Line Dancing or Thursday night dancing events appear on the website
+  const isLineDancingOrThursdayDance = (evt: EventItem) => {
+    const text = `${evt.title} ${evt.performerName || ''} ${evt.summary} ${evt.slug}`.toLowerCase();
+    return (
+      text.includes('line dance') ||
+      text.includes('line-dance') ||
+      text.includes('linedance') ||
+      (text.includes('thursday') && text.includes('dance'))
+    );
+  };
+
   // Merge CMS events with full live band calendar schedule, attaching authentic band photography
   const allEventsMap = new Map<string, EventItem>();
-  upcoming.forEach((evt) => {
-    allEventsMap.set(evt.slug, {
-      ...evt,
-      image: evt.image || getBandProfileForEvent(evt).image,
+  upcoming
+    .filter((evt) => !isLineDancingOrThursdayDance(evt))
+    .forEach((evt) => {
+      allEventsMap.set(evt.slug, {
+        ...evt,
+        image: evt.image || getBandProfileForEvent(evt).image,
+      });
     });
-  });
   // Client band schedule is authoritative with attached authentic band photos
-  SCHEDULED_BANDS.forEach((band) => {
+  SCHEDULED_BANDS.filter((band) => !isLineDancingOrThursdayDance(band)).forEach((band) => {
     allEventsMap.set(band.slug, band);
   });
 
   const combinedUpcoming = Array.from(allEventsMap.values()).sort(
     (a, b) => new Date(a.startDateTime).getTime() - new Date(b.startDateTime).getTime(),
   );
+
+  // Sanitize standing recurring programme to strictly exclude any Thursday or Line Dancing references
+  const cleanRecurring =
+    recurring &&
+    !recurring.days.includes('thursday') &&
+    !recurring.heading.toLowerCase().includes('line dance') &&
+    !recurring.body.toLowerCase().includes('line dance')
+      ? recurring
+      : null;
 
   return (
     <PageShell global={_global} currentPath="/events">
@@ -62,12 +84,12 @@ export default async function EventsPage(): Promise<ReactNode> {
       {/* Interactive Month Calendar View with Highlighted Bands & Touch/Hover Photo Popover */}
       <MonthCalendar events={combinedUpcoming} />
 
-      {recurring ? <RecurringProgrammeCard recurring={recurring} /> : null}
+      {cleanRecurring ? <RecurringProgrammeCard recurring={cleanRecurring} /> : null}
 
       <EventList
         events={combinedUpcoming}
         emptyMessage={emptyMessage}
-        hasRecurring={recurring !== null}
+        hasRecurring={cleanRecurring !== null}
         contactHref="/contact"
       />
 
